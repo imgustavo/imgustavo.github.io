@@ -1,0 +1,376 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+a,
+body {
+  background-color: #eff0f3;
+  color: #0d0d0d;
+  font-family: "Montserrat", sans-serif;
+}
+
+h2 {
+  font-size: 18px;
+}
+
+p {
+  color: #2a2a2a;
+  font-family: "Roboto", sans-serif;
+}
+
+a {
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #ff8e3c;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+#features,
+#pricing {
+  background-color: #fffffe;
+}
+
+.feature-content,
+.pricing-content,
+.video-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.feature-content .feature-box,
+.pricing-content .pricing-box {
+  text-align: center;
+  background-color: #eff0f3;
+  width: 300px;
+  margin: 15px;
+  padding: 30px;
+  border-radius: 5px;
+}
+
+/*************************************************HEADER-SECTION****************************************/
+#header {
+  background-color: #eff0f3;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#logo {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+
+#logo img {
+  width: 60px;
+  height: 60px;
+}
+
+#logo span {
+  font-size: 24px;
+  font-family: "Abril Fatface", cursive;
+}
+
+#nav-bar ul {
+  display: flex;
+  margin-right: 20px;
+}
+
+#nav-bar ul li {
+  list-style: none;
+  padding: 0 20px;
+}
+
+/***********************************************HERO-SECTION****************************************/
+.hero-content {
+  display: flex;
+  justify-content: center;
+  padding-top: 100px;
+}
+
+.hero-content .cta-box {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.hero-content img {
+  display: block;
+  margin: 0 auto;
+  width: 450px;
+  height: 450px;
+}
+
+.hero-content .cta-text {
+  padding: 30px;
+}
+
+.cta-text h1 {
+  font-size: 42px;
+}
+
+.cta-text p {
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 40px 0;
+}
+
+.cta-text .cta-btn {
+  padding: 60px 0;
+}
+
+.cta-btn .btn {
+  background-color: #ff8e3c;
+  color: #0d0d0d;
+  font-size: 21px;
+  font-weight: bold;
+  padding: 20px 60px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+.cta-btn .btn:hover {
+  background-color: #f3c623;
+}
+
+/*********************************************FEATURES-SECTION**************************************/
+
+.feature-box img {
+  width: 100px;
+}
+
+.feature-box h2 {
+  margin: 15px 0;
+}
+
+.feature-box p {
+  font-size: 18px;
+}
+
+/* *************************************************VIDEO-SECTION ***********************************/
+
+.video-content {
+  display: flex;
+  justify-content: center;
+  margin: 30px;
+}
+
+/**********************************************PRICING-SECTION****************************************/
+
+.pricing-box .pricing-title {
+  background-color: #f3c623;
+  border-radius: 5px;
+  padding: 15px 0;
+}
+
+.pricing-box ul {
+  margin: 20px 0;
+}
+
+.pricing-box span {
+  display: block;
+  margin: 20px 0;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.pricing-box ul li {
+  list-style: none;
+  font-size: 18px;
+
+}
+
+.pricing-box .price-btn {
+  font-size: 21px;
+  font-weight: bold;
+  border-radius: 5px;
+  border: none;
+  background-color: #ff8e3c;
+  margin: 20px 0;
+  padding: 15px 30px;
+  cursor: pointer;
+}
+
+.pricing-box .price-btn:hover {
+  background-color: #f3c623;
+}
+
+/*******************************************FORM-SECTION********************************************/
+.form-container {
+  text-align: center;
+  margin: 15px 0;
+  padding-top: 30px;
+}
+
+.form-container #form {
+  padding: 20px 0;
+}
+
+#form #email {
+  padding: 10px 60px 10px 10px;
+  font-size: 18px;
+  border: 1px solid #0d0d0d;
+  border-radius: 5px;
+}
+
+#form #submit {
+  border: none;
+  border-radius: 5px;
+  font-size: 21px;
+  font-weight: bold;
+  padding: 15px 30px;
+  margin: 15px 0;
+  background-color: #ff8e3c;
+  cursor: pointer;
+}
+
+#form #submit:hover {
+  background-color: #f3c623;
+}
+
+/*******************************************FOOTER-SECTION**********************************************/
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 30px 0;
+
+
+}
+
+.footer-content a {
+  padding: 0 15px;
+}
+
+/************************************************************** Media Query **********************************************/
+
+@media only screen and (max-width: 1024px) {
+  .hero-content {
+    padding-top: 120px;
+  }
+
+  .hero-content .cta-text {
+    padding: 10px;
+  }
+  
+  .cta-text p {
+    font-size: 16px;
+    margin: 20px 0;
+  }
+
+  .cta-text .cta-btn {
+    padding: 50px 0;
+  }
+
+}
+
+@media only screen and (max-width: 768px) {
+
+  #nav-bar ul li {
+    padding: 5px 10px;
+  }
+
+  .hero-content {
+    flex-wrap: wrap-reverse;
+    padding-top: 130px;
+  }
+
+  .hero-content img {
+    width: 400px;
+    height: 400px;
+  }
+
+  .hero-content .cta-text {
+    text-align: center;
+  }
+
+  .cta-text .cta-btn {
+    padding: 30px 0;
+  }
+
+  .footer-content {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  .footer-content a {
+    padding: 0 10px;
+  }
+
+  .footer-content p {
+    margin: 15px 0;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .header-content {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  #nav-bar ul {
+    flex-direction: row;
+    justify-content: center;
+    margin: 10px 0;
+  }
+
+  #logo {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  #logo img {
+    width: 50px;
+    height: 50px;
+  }
+
+  #logo span {
+    font-size: 20px;
+  }
+
+  .hero-content {
+    padding-top: 150px;
+  }
+
+  .cta-text h1 {
+    font-size: 32px;
+  }
+
+  .hero-content img {
+    width: 250px;
+    height: 250px;
+  }
+
+  .feature-content .feature-box,
+  .pricing-content .pricing-box {
+    width: 250px;
+  }
+
+}
