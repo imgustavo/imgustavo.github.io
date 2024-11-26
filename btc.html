@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Bitcoin a USD</title>
+    <link rel="stylesheet" href="btc_style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Conversor de Bitcoin a USD</h1>
+        
+        <label for="btcInput">Ingresa la cantidad de Bitcoin (BTC):</label>
+        <input type="number" id="btcInput" step="0.0001" placeholder="0.00">
+        
+        <label for="rateInput">Ingresa la tasa de conversión de BTC a USD:</label>
+        <input type="number" id="rateInput" step="0.01" placeholder="0.00">
+        
+        <button onclick="convertBtcToUsd()">Convertir</button>
+        
+        <p id="result"></p>
+    </div>
+
+    <script>
+        function convertBtcToUsd() {
+            const btcAmount = document.getElementById('btcInput').value;
+            const btcToUsdRate = document.getElementById('rateInput').value;
+
+            if (btcAmount && btcAmount > 0 && btcToUsdRate && btcToUsdRate > 0) {
+                const usdAmount = btcAmount * btcToUsdRate;
+                document.getElementById('result').textContent = `${btcAmount} BTC es equivalente a $${usdAmount.toFixed(2)} USD`;
+            } else {
+                document.getElementById('result').textContent = "Por favor, ingresa una cantidad válida de BTC y una tasa de conversión válida.";
+            }
+        }
+    </script>
+</body>
+</html>
+
