@@ -1,34 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intro Gustavo</title>
+    <style>
+      @font-face {
+        font-family: 'gustavo_font';
+        src: url('gustavo_font.ttf') format('gustavo_font'), url('gustavo_font.ttf') format('gustavo_font');
+        font-weight: normal;
+        font-style: normal;
+      }
+      @keyframes fadeInBlur {
+        0% {
+          opacity: 0;
+          transform: scale(0.8);
+          filter: blur(20px);
+          text-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+        }
+        50% {
+          opacity: 0.7;
+          transform: scale(1.1);
+          filter: blur(5px);
+          text-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+          filter: blur(0);
+          text-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+        }
+      }
 
-<head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-03FENSJJNJ"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag("js", new Date());
+      @keyframes pulse {
+        0% {
+          text-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+        }
+        50% {
+          text-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+        }
+        100% {
+          text-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+        }
+      }
 
-    gtag("config", "G-03FENSJJNJ");
-  </script>
-  <meta charset="UTF-8">
-  <title>Gustavo</title>
-  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Orbitron'>
-  <link rel="stylesheet" href="./style.css">
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(45deg, #111, #222, #000);
+        margin: 0;
+        overflow: hidden;
+      }
 
-</head>
-
-<body>
-  <div class="container" onload="setInterval()">
-    <div id="timeNow" class="time-now"></div>
-
-    <div id="timeLeft" class="time-left"></div>
-
-  </div>
-  <script src="./script.js"></script>
-
-</body>
-
+      h1 {
+        font-size: 5rem;
+        font-family: 'gustavo_font', sans-serif;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #111;
+        animation: fadeInBlur 3s ease-in-out forwards, pulse 2s infinite ease-in-out;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Gustavo</h1>
+  </body>
 </html>
