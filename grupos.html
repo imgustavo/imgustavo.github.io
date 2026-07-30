@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cohorte 2026 — Distribución de Grupos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0e14;
+      --surface: #131720;
+      --surface-raised: #1a1f2e;
+      --border: #232a3b;
+      --accent: #e2a63d;
+      --accent-glow: rgba(226, 166, 61, 0.15);
+      --accent-soft: #c4872a;
+      --text-primary: #e8e4dc;
+      --text-secondary: #9a9490;
+      --text-muted: #5e5854;
+      --danger: #e05555;
+      --danger-bg: rgba(224, 85, 85, 0.08);
+      --danger-border: rgba(224, 85, 85, 0.2);
+      --success: #55b88a;
+      --success-bg: rgba(85, 184, 138, 0.08);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 15% 10%, rgba(226, 166, 61, 0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 80%, rgba(60, 80, 140, 0.04) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .grain {
+      position: fixed;
+      inset: 0;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 2rem 4rem;
+    }
+
+    /* ─── HEADER ─── */
+    header {
+      margin-bottom: 3rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+      animation: fadeUp 0.7s ease forwards;
+    }
+
+    .badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-glow);
+      border: 1px solid rgba(226, 166, 61, 0.25);
+      padding: 0.3em 0.9em;
+      border-radius: 3px;
+      margin-bottom: 1rem;
+    }
+
+    header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+
+    header h1 em {
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    header p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      max-width: 600px;
+    }
+
+    /* ─── STATS ROW ─── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.2rem 1.4rem;
+      animation: fadeUp 0.6s ease forwards;
+      opacity: 0;
+    }
+
+    .stat-card:nth-child(1) { animation-delay: 0.15s; }
+    .stat-card:nth-child(2) { animation-delay: 0.25s; }
+    .stat-card:nth-child(3) { animation-delay: 0.35s; }
+    .stat-card:nth-child(4) { animation-delay: 0.45s; }
+
+    .stat-number {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      letter-spacing: 0.03em;
+    }
+
+    /* ─── SECTION TITLES ─── */
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+      padding-left: 1rem;
+      border-left: 3px solid var(--accent);
+      line-height: 1.3;
+    }
+
+    /* ─── GROUPS GRID ─── */
+    .groups-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .group-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeUp 0.5s ease forwards;
+      opacity: 0;
+    }
+
+    .group-card:nth-child(1) { animation-delay: 0.05s; }
+    .group-card:nth-child(2) { animation-delay: 0.08s; }
+    .group-card:nth-child(3) { animation-delay: 0.11s; }
+    .group-card:nth-child(4) { animation-delay: 0.14s; }
+    .group-card:nth-child(5) { animation-delay: 0.17s; }
+    .group-card:nth-child(6) { animation-delay: 0.20s; }
+    .group-card:nth-child(7) { animation-delay: 0.23s; }
+    .group-card:nth-child(8) { animation-delay: 0.26s; }
+    .group-card:nth-child(9) { animation-delay: 0.29s; }
+    .group-card:nth-child(10) { animation-delay: 0.32s; }
+    .group-card:nth-child(11) { animation-delay: 0.35s; }
+    .group-card:nth-child(12) { animation-delay: 0.38s; }
+    .group-card:nth-child(13) { animation-delay: 0.41s; }
+    .group-card:nth-child(14) { animation-delay: 0.44s; }
+    .group-card:nth-child(15) { animation-delay: 0.47s; }
+    .group-card:nth-child(16) { animation-delay: 0.50s; }
+    .group-card:nth-child(17) { animation-delay: 0.53s; }
+    .group-card:nth-child(18) { animation-delay: 0.56s; }
+    .group-card:nth-child(19) { animation-delay: 0.59s; }
+    .group-card:nth-child(20) { animation-delay: 0.62s; }
+    .group-card:nth-child(21) { animation-delay: 0.65s; }
+
+    .group-card:hover {
+      border-color: rgba(226, 166, 61, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .group-card.incomplete {
+      border-color: var(--danger-border);
+    }
+
+    .group-card.incomplete:hover {
+      border-color: rgba(224, 85, 85, 0.45);
+    }
+
+    .group-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 1.2rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-raised);
+    }
+
+    .group-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: 0.04em;
+    }
+
+    .group-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.2em 0.6em;
+      border-radius: 3px;
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid rgba(85, 184, 138, 0.2);
+    }
+
+    .group-card.incomplete .group-count {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border-color: var(--danger-border);
+    }
+
+    .group-members {
+      list-style: none;
+      padding: 0.6rem 0;
+    }
+
+    .group-members li {
+      padding: 0.35rem 1.2rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      transition: color 0.2s ease, padding-left 0.2s ease;
+    }
+
+    .group-members li:hover {
+      color: var(--text-primary);
+      padding-left: 1.6rem;
+    }
+
+    .group-members li::before {
+      content: '';
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      margin-right: 0.6rem;
+      vertical-align: middle;
+      transition: background 0.2s ease;
+    }
+
+    .group-members li:hover::before {
+      background: var(--accent);
+    }
+
+    /* ─── SIN GRUPO TABLE ─── */
+    .unassigned-section {
+      margin-bottom: 3rem;
+    }
+
+    .unassigned-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--danger-border);
+      border-radius: 6px;
+      overflow: hidden;
+      animation: fadeUp 0.6s ease forwards;
+      animation-delay: 0.2s;
+      opacity: 0;
+    }
+
+    .unassigned-table thead th {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-align: left;
+      padding: 0.8rem 1.2rem;
+      background: var(--surface-raised);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .unassigned-table tbody tr {
+      transition: background 0.2s ease;
+    }
+
+    .unassigned-table tbody tr:hover {
+      background: rgba(224, 85, 85, 0.04);
+    }
+
+    .unassigned-table tbody td {
+      padding: 0.55rem 1.2rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .unassigned-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .unassigned-table .row-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      width: 40px;
+    }
+
+    .unassigned-table .student-name {
+      color: var(--text-primary);
+    }
+
+    .unassigned-table .last-access {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--danger);
+      white-space: nowrap;
+    }
+
+    /* ─── OBSERVATIONS ─── */
+    .observations {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.8rem 2rem;
+      animation: fadeUp 0.6s ease forwards;
+      animation-delay: 0.3s;
+      opacity: 0;
+    }
+
+    .observations h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+
+    .observations ul {
+      list-style: none;
+    }
+
+    .observations ul li {
+      position: relative;
+      padding: 0.4rem 0 0.4rem 1.4rem;
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+    }
+
+    .observations ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--text-muted);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.04em;
+      animation: fadeUp 0.6s ease forwards;
+      animation-delay: 0.4s;
+      opacity: 0;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 640px) {
+      .wrapper { padding: 2rem 1.2rem 3rem; }
+      .groups-grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .unassigned-table { font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header>
+    <div class="badge">Cohorte 2026</div>
+    <h1>Distribución de <em>Grupos</em></h1>
+    <p>Vista general de las asignaciones de grupo y estudiantes pendientes de asignación.</p>
+  </header>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-number">60</div>
+      <div class="stat-label">Estudiantes totales</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">37</div>
+      <div class="stat-label">Con grupo asignado</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">21</div>
+      <div class="stat-label">Grupos formados</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">23</div>
+      <div class="stat-label">Sin grupo asignado</div>
+    </div>
+  </div>
+
+  <!-- GRUPOS -->
+  <h2 class="section-title">Grupos asignados</h2>
+
+  <div class="groups-grid">
+
+    <!-- 26 A -->
+    <div class="group-card incomplete">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 A</span>
+        <span class="group-count">1 miembro</span>
+      </div>
+      <ul class="group-members">
+        <li>Julián Santino Ayala</li>
+      </ul>
+    </div>
+
+    <!-- 26 B -->
+    <div class="group-card">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 B</span>
+        <span class="group-count">2 miembros</span>
+      </div>
+      <ul class="group-members">
+        <li>Luis Recalde</li>
+        <li>Fernando Manuel Baez</li>
+      </ul>
+    </div>
+
+    <!-- 26 C -->
+    <div class="group-card">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 C</span>
+        <span class="group-count">2 miembros</span>
+      </div>
+      <ul class="group-members">
+        <li>Nicolás Silva</li>
+        <li>Celso Pastor</li>
+      </ul>
+    </div>
+
+    <!-- 26 D -->
+    <div class="group-card incomplete">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 D</span>
+        <span class="group-count">1 miembro</span>
+      </div>
+      <ul class="group-members">
+        <li>Nicole Vergara</li>
+      </ul>
+    </div>
+
+    <!-- 26 E -->
+    <div class="group-card incomplete">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 E</span>
+        <span class="group-count">1 miembro</span>
+      </div>
+      <ul class="group-members">
+        <li>Rodrigo Gamarra</li>
+      </ul>
+    </div>
+
+    <!-- 26 F -->
+    <div class="group-card">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 F</span>
+        <span class="group-count">2 miembros</span>
+      </div>
+      <ul class="group-members">
+        <li>Enzo Joaquin Riós</li>
+        <li>Nazareno Sosa</li>
+      </ul>
+    </div>
+
+    <!-- 26 G -->
+    <div class="group-card">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 G</span>
+        <span class="group-count">2 miembros</span>
+      </div>
+      <ul class="group-members">
+        <li>Gisel González</li>
+        <li>Maria Elvira Cabrera</li>
+      </ul>
+    </div>
+
+    <!-- 26 K -->
+    <div class="group-card">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 K</span>
+        <span class="group-count">2 miembros</span>
+      </div>
+      <ul class="group-members">
+        <li>Sebastián Guillermo Gomez Horvat</li>
+        <li>Gonzalo Galarza</li>
+      </ul>
+    </div>
+
+    <!-- 26 L -->
+    <div class="group-card incomplete">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 L</span>
+        <span class="group-count">1 miembro</span>
+      </div>
+      <ul class="group-members">
+        <li>Marisa Zacarias</li>
+      </ul>
+    </div>
+
+    <!-- 26 M -->
+    <div class="group-card">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 M</span>
+        <span class="group-count">2 miembros</span>
+      </div>
+      <ul class="group-members">
+        <li>Rosana Mabel Coronel</li>
+        <li>Nahuel Acosta</li>
+      </ul>
+    </div>
+
+    <!-- 26 N -->
+    <div class="group-card">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 N</span>
+        <span class="group-count">2 miembros</span>
+      </div>
+      <ul class="group-members">
+        <li>Máximo Sebastián Rodriguez</li>
+        <li>Sebastián Miguel Coronil</li>
+      </ul>
+    </div>
+
+    <!-- 26 O -->
+    <div class="group-card">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 O</span>
+        <span class="group-count">2 miembros</span>
+      </div>
+      <ul class="group-members">
+        <li>Facundo D'Onofrio</li>
+        <li>Ezequiel Mateo Wegner</li>
+      </ul>
+    </div>
+
+    <!-- 26 P -->
+    <div class="group-card incomplete">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 P</span>
+        <span class="group-count">1 miembro</span>
+      </div>
+      <ul class="group-members">
+        <li>Vanesa Irala</li>
+      </ul>
+    </div>
+
+    <!-- 26 Q -->
+    <div class="group-card">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 Q</span>
+        <span class="group-count">2 miembros</span>
+      </div>
+      <ul class="group-members">
+        <li>Alexander Matias Obregon</li>
+        <li>Victoria Villalba</li>
+      </ul>
+    </div>
+
+    <!-- 26 R -->
+    <div class="group-card">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 R</span>
+        <span class="group-count">2 miembros</span>
+      </div>
+      <ul class="group-members">
+        <li>Maria Caruso</li>
+        <li>Mylena Ramirez</li>
+      </ul>
+    </div>
+
+    <!-- 26 S -->
+    <div class="group-card">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 S</span>
+        <span class="group-count">2 miembros</span>
+      </div>
+      <ul class="group-members">
+        <li>Axel Estigarribia</li>
+        <li>Camila Anabel Insaurralde Schonwald</li>
+      </ul>
+    </div>
+
+    <!-- 26 T -->
+    <div class="group-card">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 T</span>
+        <span class="group-count">2 miembros</span>
+      </div>
+      <ul class="group-members">
+        <li>Agustin Sbardella</li>
+        <li>Keila Pereyra</li>
+      </ul>
+    </div>
+
+    <!-- 26 U -->
+    <div class="group-card">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 U</span>
+        <span class="group-count">2 miembros</span>
+      </div>
+      <ul class="group-members">
+        <li>Gustavo Godoy</li>
+        <li>Rodrigo Mutuberria</li>
+      </ul>
+    </div>
+
+    <!-- 26 X -->
+    <div class="group-card">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 X</span>
+        <span class="group-count">2 miembros</span>
+      </div>
+      <ul class="group-members">
+        <li>Yonathan Albino</li>
+        <li>Joaquin Casco</li>
+      </ul>
+    </div>
+
+    <!-- 26 Y -->
+    <div class="group-card">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 Y</span>
+        <span class="group-count">2 miembros</span>
+      </div>
+      <ul class="group-members">
+        <li>Carlos Ezequiel Medina</li>
+        <li>Luciano Cena</li>
+      </ul>
+    </div>
+
+    <!-- 26 Z -->
+    <div class="group-card">
+      <div class="group-header">
+        <span class="group-name">Grupo 26 Z</span>
+        <span class="group-count">2 miembros</span>
+      </div>
+      <ul class="group-members">
+        <li>Lucas Joaquin Eitner Garcia</li>
+        <li>Fernando Raul Gomez</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- SIN GRUPO -->
+  <div class="unassigned-section">
+    <h2 class="section-title">Estudiantes sin grupo asignado</h2>
+
+    <table class="unassigned-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Estudiante</th>
+          <th>Último acceso</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="row-num">1</td><td class="student-name">Daniel Ferraté</td><td class="last-access">1 h 7 min</td></tr>
+        <tr><td class="row-num">2</td><td class="student-name">Dario Gonzalez</td><td class="last-access">1 día 12 h</td></tr>
+        <tr><td class="row-num">3</td><td class="student-name">Flabio Federico Benitez</td><td class="last-access">1 día 20 h</td></tr>
+        <tr><td class="row-num">4</td><td class="student-name">Daniel Talabera</td><td class="last-access">2 días 1 h</td></tr>
+        <tr><td class="row-num">5</td><td class="student-name">Ivan Ezequiel Friaz</td><td class="last-access">7 días 11 h</td></tr>
+        <tr><td class="row-num">6</td><td class="student-name">Mateo Luna</td><td class="last-access">8 días 22 h</td></tr>
+        <tr><td class="row-num">7</td><td class="student-name">Enzo Baltasar Vera</td><td class="last-access">28 días 2 h</td></tr>
+        <tr><td class="row-num">8</td><td class="student-name">Willian Benitez</td><td class="last-access">29 días 1 h</td></tr>
+        <tr><td class="row-num">9</td><td class="student-name">Maximiliano Nahuel Gareca</td><td class="last-access">36 días 1 h</td></tr>
+        <tr><td class="row-num">10</td><td class="student-name">Ivan Perick</td><td class="last-access">41 días 10 h</td></tr>
+        <tr><td class="row-num">11</td><td class="student-name">Alejandro Dos Santos</td><td class="last-access">49 días 2 h</td></tr>
+        <tr><td class="row-num">12</td><td class="student-name">Santiago Luis Coronel</td><td class="last-access">56 días 2 h</td></tr>
+        <tr><td class="row-num">13</td><td class="student-name">Jorge Agustin Cabrera</td><td class="last-access">56 días 2 h</td></tr>
+        <tr><td class="row-num">14</td><td class="student-name">Pablo Baslini</td><td class="last-access">62 días 13 h</td></tr>
+        <tr><td class="row-num">15</td><td class="student-name">Gabriel Alejandro Quiñones</td><td class="last-access">63 días 6 h</td></tr>
+        <tr><td class="row-num">16</td><td class="student-name">Mateo Francisco De Carvalho Padilha</td><td class="last-access">64 días 1 h</td></tr>
+        <tr><td class="row-num">17</td><td class="student-name">Julieta Almenar</td><td class="last-access">71 días 23 h</td></tr>
+        <tr><td class="row-num">18</td><td class="student-name">Lucas Nahuel Baslini</td><td class="last-access">84 días 2 h</td></tr>
+        <tr><td class="row-num">19</td><td class="student-name">Priscila Machado</td><td class="last-access">84 días 2 h</td></tr>
+        <tr><td class="row-num">20</td><td class="student-name">Jose Luna</td><td class="last-access">85 días 1 h</td></tr>
+        <tr><td class="row-num">21</td><td class="student-name">Erik Mendoza</td><td class="last-access">98 días</td></tr>
+        <tr><td class="row-num">22</td><td class="student-name">Severiano Guillermo Davalos</td><td class="last-access">98 días 1 h</td></tr>
+        <tr><td class="row-num">23</td><td class="student-name">Santiago Santoro</td><td class="last-access">99 días 1 h</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- OBSERVACIONES -->
+  <div class="observations">
+    <h3>Observaciones</h3>
+    <ul>
+      <li><strong>37 estudiantes</strong> ya tienen grupo asignado, distribuidos en <strong>21 grupos</strong>.</li>
+      <li><strong>23 estudiantes</strong> aparecen solo con "Cohorte 2026" y no tienen grupo asignado.</li>
+      <li><strong>5 grupos</strong> (A, D, E, L, P) tienen solo <strong>1 integrante</strong>, lo que sugiere incompletos o pendientes.</li>
+      <li>La mayoría de los sin grupo llevan <strong>mucho tiempo sin acceder</strong> al curso (varios con más de 50–90 días), lo que podría explicar su situación.</li>
+    </ul>
+  </div>
+
+  <footer>Cohorte 2026 · Distribución de Grupos · Generado automáticamente</footer>
+
+</div>
+
+</body>
+</html>
