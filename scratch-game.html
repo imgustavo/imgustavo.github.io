@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Scratch Game — Proyecto interactivo por Gustavox" />
+    <meta name="theme-color" content="#0B0F19" />
+    <title>Scratch Game — Gustavox</title>
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230B0F19'/%3E%3Crect x='7' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='11' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='15' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='7' y='9' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='7' y='13' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='7' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='11' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='15' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='19' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='23' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='23' y='9' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='19' y='13' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='23' y='13' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='19' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='23' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3C/svg%3E"
+    />
+
+    <style>
+      /* ==========================================================
+           SCATCH GAME — Página de Proyecto
+           Misma paleta y lenguaje visual que Gustavox
+           ========================================================== */
+
+      :root {
+        --bg: #0b0f19;
+        --surface: #161b22;
+        --border: rgba(77, 163, 255, 0.08);
+        --border-hover: rgba(77, 163, 255, 0.25);
+        --blue: #4da3ff;
+        --cyan: #4fd1c5;
+        --blue-glow: rgba(77, 163, 255, 0.12);
+        --text: #e6edf3;
+        --text-sec: #8b949e;
+        --text-muted: #484f58;
+        --r-md: 12px;
+        --r-lg: 16px;
+        --ff: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        --fm: 'SF Mono', 'Cascadia Code', 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+      }
+
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: var(--ff);
+        color: var(--text);
+        background: var(--bg);
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
+      }
+
+      ::selection {
+        background: var(--blue);
+        color: var(--bg);
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--text-muted);
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--blue);
+      }
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--text-muted) var(--bg);
+      }
+
+      /* ---- Fondo ambiental ---- */
+      .bg {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+        overflow: hidden;
+      }
+
+      .bg__orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        will-change: transform;
+      }
+
+      .bg__orb--blue {
+        width: 600px;
+        height: 600px;
+        background: rgba(77, 163, 255, 0.06);
+        top: -20%;
+        right: -15%;
+        animation: orbDrift 22s ease-in-out infinite alternate;
+      }
+
+      .bg__orb--cyan {
+        width: 450px;
+        height: 450px;
+        background: rgba(79, 209, 197, 0.04);
+        bottom: -15%;
+        left: -10%;
+        animation: orbDrift 28s ease-in-out infinite alternate-reverse;
+      }
+
+      .bg__noise {
+        position: absolute;
+        inset: 0;
+        opacity: 0.025;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-size: 200px 200px;
+      }
+
+      /* ---- Layout ---- */
+      .page {
+        position: relative;
+        z-index: 1;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 3rem;
+      }
+
+      /* ---- Navegación superior ---- */
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 3rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border);
+        animation: fadeUp 0.6s ease forwards;
+      }
+
+      .topbar__back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-sec);
+        padding: 0.45rem 0.9rem;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: transparent;
+        transition:
+          color 0.2s ease,
+          border-color 0.2s ease,
+          background 0.2s ease;
+      }
+
+      .topbar__back:hover {
+        color: var(--blue);
+        border-color: rgba(77, 163, 255, 0.3);
+        background: rgba(77, 163, 255, 0.05);
+      }
+
+      .topbar__back svg {
+        width: 16px;
+        height: 16px;
+        transition: transform 0.2s ease;
+      }
+
+      .topbar__back:hover svg {
+        transform: translateX(-3px);
+      }
+
+      .topbar__logo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--text);
+        text-decoration: none;
+      }
+
+      .topbar__logo-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        font-family: var(--fm);
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: var(--blue);
+        background: rgba(77, 163, 255, 0.1);
+        border: 1px solid rgba(77, 163, 255, 0.2);
+        border-radius: 6px;
+      }
+
+      /* ---- Header del proyecto ---- */
+      .project-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+        animation: fadeUp 0.7s ease forwards;
+        animation-delay: 0.1s;
+        opacity: 0;
+      }
+
+      .project-badge {
+        display: inline-block;
+        font-family: var(--fm);
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--cyan);
+        background: rgba(79, 209, 197, 0.08);
+        border: 1px solid rgba(79, 209, 197, 0.18);
+        padding: 0.3em 0.9em;
+        border-radius: 100px;
+        margin-bottom: 1rem;
+      }
+
+      .project-title {
+        font-family: var(--fm);
+        font-size: clamp(1.5rem, 4vw, 2.2rem);
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 0.6rem;
+      }
+
+      .project-subtitle {
+        color: var(--text-sec);
+        font-size: 1rem;
+        max-width: 500px;
+        margin: 0 auto;
+        line-height: 1.6;
+      }
+
+      /* ---- Contenedor del juego ---- */
+      .game-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2.5rem;
+        animation: fadeUp 0.7s ease forwards;
+        animation-delay: 0.25s;
+        opacity: 0;
+      }
+
+      .game-frame {
+        position: relative;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r-lg);
+        overflow: hidden;
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.35),
+          0 0 40px rgba(77, 163, 255, 0.04);
+        transition:
+          box-shadow 0.4s ease,
+          border-color 0.4s ease;
+        max-width: 100%;
+      }
+
+      .game-frame:hover {
+        border-color: rgba(77, 163, 255, 0.2);
+        box-shadow:
+          0 25px 70px rgba(0, 0, 0, 0.4),
+          0 0 50px rgba(77, 163, 255, 0.08);
+      }
+
+      .game-frame iframe {
+        display: block;
+        width: 485px;
+        height: 402px;
+        max-width: 100%;
+        border: none;
+      }
+
+      /* Barra superior del frame */
+      .game-frame__bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.5rem 1rem;
+        background: rgba(22, 27, 34, 0.95);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .game-frame__dots {
+        display: flex;
+        gap: 6px;
+      }
+
+      .game-frame__dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+
+      .game-frame__dot--red {
+        background: #ff5f57;
+      }
+      .game-frame__dot--yellow {
+        background: #ffbd2e;
+      }
+      .game-frame__dot--green {
+        background: #28c840;
+      }
+
+      .game-frame__label {
+        font-family: var(--fm);
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        letter-spacing: 0.05em;
+      }
+
+      .game-frame__fullscreen {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        color: var(--text-muted);
+        background: transparent;
+        border: 1px solid transparent;
+        transition:
+          color 0.2s,
+          background 0.2s,
+          border-color 0.2s;
+        cursor: pointer;
+      }
+
+      .game-frame__fullscreen:hover {
+        color: var(--blue);
+        background: rgba(77, 163, 255, 0.08);
+        border-color: rgba(77, 163, 255, 0.2);
+      }
+
+      .game-frame__fullscreen svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      /* ---- Info del proyecto ---- */
+      .project-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+        animation: fadeUp 0.7s ease forwards;
+        animation-delay: 0.4s;
+        opacity: 0;
+      }
+
+      .info-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r-md);
+        padding: 1.2rem 1.4rem;
+      }
+
+      .info-card__label {
+        font-family: var(--fm);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 0.4rem;
+      }
+
+      .info-card__value {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .info-card__value a {
+        color: var(--blue);
+        transition: opacity 0.2s ease;
+      }
+
+      .info-card__value a:hover {
+        opacity: 0.75;
+      }
+
+      /* ---- Descripción ---- */
+      .project-desc {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r-md);
+        padding: 1.8rem 2rem;
+        margin-bottom: 2.5rem;
+        animation: fadeUp 0.7s ease forwards;
+        animation-delay: 0.5s;
+        opacity: 0;
+      }
+
+      .project-desc h3 {
+        font-family: var(--fm);
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--blue);
+        margin-bottom: 0.8rem;
+      }
+
+      .project-desc p {
+        color: var(--text-sec);
+        font-size: 0.92rem;
+        line-height: 1.7;
+        margin-bottom: 0.6rem;
+      }
+
+      .project-desc p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* ---- Botón acción ---- */
+      .actions {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        animation: fadeUp 0.7s ease forwards;
+        animation-delay: 0.6s;
+        opacity: 0;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.65rem 1.5rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border-radius: var(--r-md);
+        transition: all 0.25s ease;
+        text-decoration: none;
+      }
+
+      .btn svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      .btn--primary {
+        color: #0b0f19;
+        background: var(--blue);
+        border: 1px solid var(--blue);
+      }
+
+      .btn--primary:hover {
+        background: #6bb3ff;
+        border-color: #6bb3ff;
+        box-shadow: 0 4px 20px rgba(77, 163, 255, 0.3);
+        transform: translateY(-2px);
+      }
+
+      .btn--ghost {
+        color: var(--text-sec);
+        background: transparent;
+        border: 1px solid var(--border);
+      }
+
+      .btn--ghost:hover {
+        color: var(--text);
+        border-color: rgba(77, 163, 255, 0.25);
+        background: rgba(77, 163, 255, 0.04);
+        transform: translateY(-2px);
+      }
+
+      /* ---- Footer ---- */
+      .page-footer {
+        text-align: center;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+        animation: fadeUp 0.6s ease forwards;
+        animation-delay: 0.7s;
+        opacity: 0;
+      }
+
+      .page-footer p {
+        font-family: var(--fm);
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        letter-spacing: 0.03em;
+      }
+
+      .page-footer a {
+        color: var(--text-sec);
+        transition: color 0.2s ease;
+      }
+
+      .page-footer a:hover {
+        color: var(--blue);
+      }
+
+      /* ---- Keyframes ---- */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes orbDrift {
+        0% {
+          transform: translate(0, 0) scale(1);
+        }
+        100% {
+          transform: translate(40px, 30px) scale(1.05);
+        }
+      }
+
+      /* ---- Responsive ---- */
+      @media (max-width: 540px) {
+        .page {
+          padding: 1.5rem 1rem 2.5rem;
+        }
+
+        .game-frame iframe {
+          width: 100%;
+          height: auto;
+          aspect-ratio: 485 / 402;
+        }
+
+        .topbar {
+          flex-direction: column;
+          gap: 1rem;
+          align-items: flex-start;
+        }
+
+        .actions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .btn {
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Fondo ambiental -->
+    <div class="bg" aria-hidden="true">
+      <div class="bg__orb bg__orb--blue"></div>
+      <div class="bg__orb bg__orb--cyan"></div>
+      <div class="bg__noise"></div>
+    </div>
+
+    <div class="page">
+      <!-- Barra superior -->
+      <nav class="topbar">
+        <a href="index.html" class="topbar__back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+          </svg>
+          <span>Volver</span>
+        </a>
+        <a href="index.html" class="topbar__logo">
+          <span class="topbar__logo-icon">G</span>
+          <span>Gustavox</span>
+        </a>
+      </nav>
+
+      <!-- Header -->
+      <header class="project-header">
+        <div class="project-badge">Juego Interactivo</div>
+        <h1 class="project-title">Scratch Game</h1>
+        <p class="project-subtitle">Proyecto interactivo desarrollado con Scratch — programación visual por bloques.</p>
+      </header>
+
+      <!-- Juego embebido -->
+      <div class="game-wrapper">
+        <div class="game-frame">
+          <div class="game-frame__bar">
+            <div class="game-frame__dots">
+              <span class="game-frame__dot game-frame__dot--red"></span>
+              <span class="game-frame__dot game-frame__dot--yellow"></span>
+              <span class="game-frame__dot game-frame__dot--green"></span>
+            </div>
+            <span class="game-frame__label">scratch-game</span>
+            <button class="game-frame__fullscreen" id="fullscreenBtn" title="Pantalla completa" aria-label="Pantalla completa">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 3 21 3 21 9" />
+                <polyline points="9 21 3 21 3 15" />
+                <line x1="21" y1="3" x2="14" y2="10" />
+                <line x1="3" y1="21" x2="10" y2="14" />
+              </svg>
+            </button>
+          </div>
+          <iframe
+            src="https://scratch.mit.edu/projects/1362686620/embed"
+            allowtransparency="true"
+            allowfullscreen
+            scrolling="no"
+            title="Scratch Game"
+          >
+          </iframe>
+        </div>
+      </div>
+
+      <!-- Info del proyecto -->
+      <div class="project-info">
+        <div class="info-card">
+          <div class="info-card__label">Plataforma</div>
+          <div class="info-card__value">Scratch (MIT)</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card__label">Tipo</div>
+          <div class="info-card__value">Juego interactivo</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card__label">Autores</div>
+          <div class="info-card__value">Gustavo G, Rodrigo M</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card__label">Enlace directo</div>
+          <div class="info-card__value">
+            <a href="https://scratch.mit.edu/projects/1362686620/" target="_blank" rel="noopener">Ver en Scratch →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Descripción -->
+      <div class="project-desc">
+        <h3>Sobre el proyecto</h3>
+        <p>
+          Juego interactivo creado con la plataforma Scratch del MIT, utilizando programación visual basada en bloques. El proyecto explora
+          conceptos de lógica, animación y control de flujo de una forma visual e intuitiva.
+        </p>
+        <p>
+          Scratch es un entorno de desarrollo educativo que permite crear historias interactivas, juegos y animaciones, fomentando el
+          pensamiento computacional desde edades tempranas.
+        </p>
+      </div>
+
+      <!-- Acciones -->
+      <div class="actions">
+        <a href="https://scratch.mit.edu/projects/1362686620/" target="_blank" rel="noopener" class="btn btn--primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+            <polyline points="15 3 21 3 21 9" />
+            <line x1="10" y1="14" x2="21" y2="3" />
+          </svg>
+          Abrir en Scratch
+        </a>
+        <a href="index.html" class="btn btn--ghost">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+          </svg>
+          Volver al inicio
+        </a>
+      </div>
+
+      <!-- Footer -->
+      <footer class="page-footer">
+        <p>
+          &copy;
+          <script>
+            document.write(new Date().getFullYear());
+          </script>
+          Gustavox · <a href="index.html">gustavox.dev</a>
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      // Pantalla completa para el iframe
+      document.getElementById('fullscreenBtn').addEventListener('click', function () {
+        var iframe = document.querySelector('.game-frame iframe');
+        if (iframe.requestFullscreen) {
+          iframe.requestFullscreen();
+        } else if (iframe.webkitRequestFullscreen) {
+          iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) {
+          iframe.msRequestFullscreen();
+        }
+      });
+    </script>
+  </body>
+</html>

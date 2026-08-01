@@ -3,81 +3,649 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Intro Gustavo</title>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-03FENSJJNJ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
+    <meta name="description" content="Gustavox — Colección de proyectos, herramientas y sitios personales." />
+    <meta name="theme-color" content="#0B0F19" />
+    <title>Gustavox — Proyectos</title>
 
-      gtag('config', 'G-03FENSJJNJ');
-    </script>
-    <style>
-      @font-face {
-        font-family: 'gustavo_font';
-        src: url('gustavo_font.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-      }
-      @keyframes fadeInBlur {
-        0% {
-          opacity: 0;
-          transform: scale(0.8);
-          filter: blur(20px);
-          text-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
-        }
-        50% {
-          opacity: 0.7;
-          transform: scale(1.1);
-          filter: blur(5px);
-          text-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-        }
-        100% {
-          opacity: 1;
-          transform: scale(1);
-          filter: blur(0);
-          text-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
-        }
-      }
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230B0F19'/%3E%3Crect x='7' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='11' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='15' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='7' y='9' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='7' y='13' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='7' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='11' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='15' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='19' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='23' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='23' y='9' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='19' y='13' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='23' y='13' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='19' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='23' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3C/svg%3E"
+    />
 
-      @keyframes pulse {
-        0% {
-          text-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
-        }
-        50% {
-          text-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
-        }
-        100% {
-          text-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
-        }
-      }
-
-      body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background: linear-gradient(45deg, #111, #222, #000);
-        margin: 0;
-        overflow: hidden;
-      }
-
-      h1 {
-        font-size: 10rem;
-        font-family: 'gustavo_font', sans-serif;
-        font-weight: bold;
-        /*        text-transform: uppercase; */
-        color: #111;
-        animation:
-          fadeInBlur 3s ease-in-out forwards,
-          pulse 2s infinite ease-in-out;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Gustavo</h1>
+    <!-- Fondo ambiental -->
+    <div class="bg" aria-hidden="true">
+      <div class="bg__orb bg__orb--blue"></div>
+      <div class="bg__orb bg__orb--cyan"></div>
+      <div class="bg__grid"></div>
+      <div class="bg__noise"></div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Navegación principal">
+      <div class="container navbar__inner">
+        <a href="#hero" class="navbar__brand" aria-label="Gustavox — Inicio">
+          <span class="navbar__logo">G</span>
+        </a>
+        <ul class="navbar__links" id="navLinks">
+          <li><a href="#hero" class="navbar__link active" data-i18n="nav-home">Inicio</a></li>
+          <li><a href="#proyectos" class="navbar__link" data-i18n="nav-projects">Proyectos</a></li>
+          <li><a href="#about" class="navbar__link" data-i18n="nav-about">Acerca de</a></li>
+        </ul>
+        <button class="navbar__toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+          <span class="navbar__bar"></span>
+          <span class="navbar__bar"></span>
+          <span class="navbar__bar"></span>
+        </button>
+      </div>
+    </nav>
+    <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+
+    <main>
+      <!-- Hero -->
+      <section id="hero" class="hero" aria-label="Introducción">
+        <div class="hero__content">
+          <div class="hero__pixel-wrap" role="img" aria-label="Gustavox">
+            <div class="hero__pixel" id="pixelTitle"></div>
+          </div>
+          <h1 class="sr-only">Gustavox</h1>
+          <p class="hero__subtitle" data-i18n="hero-subtitle">Mi colección de proyectos, herramientas y sitios personales.</p>
+          <div class="hero__badge">
+            <span class="hero__badge-dot"></span>
+            <span data-i18n="hero-badge">Disponible para colaborar</span>
+          </div>
+        </div>
+        <div class="hero__scroll" aria-hidden="true">
+          <div class="hero__mouse"><div class="hero__wheel"></div></div>
+        </div>
+      </section>
+
+      <!-- Proyectos -->
+      <section id="proyectos" class="projects" aria-label="Proyectos">
+        <div class="container">
+          <header class="section-header">
+            <h2 class="section-title reveal" data-i18n="sec-title">Proyectos</h2>
+            <p class="section-desc reveal" data-i18n="sec-desc">Explora mis últimos trabajos y experimentos</p>
+          </header>
+
+          <!-- Filtros -->
+          <div class="filters reveal" role="tablist" aria-label="Filtrar proyectos">
+            <button class="filters__btn active" data-filter="all" data-i18n="f-all" role="tab" aria-selected="true">Todos</button>
+            <button class="filters__btn" data-filter="web" data-i18n="f-web" role="tab" aria-selected="false">Web</button>
+            <button class="filters__btn" data-filter="herramienta" data-i18n="f-tools" role="tab" aria-selected="false">
+              Herramientas
+            </button>
+            <button class="filters__btn" data-filter="app" data-i18n="f-apps" role="tab" aria-selected="false">Apps</button>
+            <button class="filters__btn" data-filter="juego" data-i18n="f-games" role="tab" aria-selected="false">Juegos</button>
+          </div>
+
+          <p class="projects__count reveal" id="projectsCount" aria-live="polite"></p>
+
+          <div class="projects__grid" id="projectsGrid">
+            <!-- Card 1 — Portfolio Web -->
+            <article class="card reveal" data-category="web">
+              <div class="card__glow"></div>
+              <div class="card__head">
+                <div class="card__icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="2" y1="12" x2="22" y2="12" />
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                  </svg>
+                </div>
+                <span class="card__badge card__badge--new" data-i18n="b-new">Nuevo</span>
+              </div>
+              <h3 class="card__title" data-i18n="c1-title">Portfolio Web</h3>
+              <p class="card__desc" data-i18n="c1-desc">
+                Sitio web personal con proyectos, artículos técnicos y documentación de herramientas de desarrollo.
+              </p>
+              <a href="#" class="card__link" data-i18n-aria="c1-aria" aria-label="Abrir Portfolio Web">
+                <span data-i18n="open">Abrir</span>
+                <svg
+                  class="card__arrow"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </article>
+
+            <!-- Card — Cohorte 2026 -->
+            <article class="card reveal" data-category="web herramienta">
+              <div class="card__glow"></div>
+              <div class="card__head">
+                <div class="card__icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </div>
+                <span class="card__badge card__badge--new" data-i18n="b-new">Nuevo</span>
+              </div>
+              <h3 class="card__title" data-i18n="c10-title">Cohorte 2026</h3>
+              <p class="card__desc" data-i18n="c10-desc">
+                Dashboard de distribución de grupos: 60 estudiantes, 21 grupos formados, asignaciones pendientes y métricas de actividad.
+              </p>
+              <a href="https://gustavox.com/grupos.html" class="card__link" data-i18n-aria="c10-aria" aria-label="Abrir Cohorte 2026">
+                <span data-i18n="open">Abrir</span>
+                <svg
+                  class="card__arrow"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </article>
+
+            <!-- Card — Scratch Game -->
+            <article class="card reveal" data-category="juego">
+              <div class="card__glow"></div>
+              <div class="card__head">
+                <div class="card__icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polygon points="5 3 19 12 5 21 5 3" />
+                  </svg>
+                </div>
+                <span class="card__badge card__badge--new" data-i18n="b-new">Nuevo</span>
+              </div>
+              <h3 class="card__title" data-i18n="c11-title">Scratch Game</h3>
+              <p class="card__desc" data-i18n="c11-desc">
+                Juego interactivo desarrollado en Scratch con lógica de programación por bloques, ideal para aprender y experimentar.
+              </p>
+              <a href="scratch-game.html" class="card__link" data-i18n-aria="c11-aria" aria-label="Abrir Scratch Game">
+                <span data-i18n="open">Abrir</span>
+                <svg
+                  class="card__arrow"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </article>
+
+            <!-- Card 2 — TaskFlow -->
+            <article class="card reveal" data-category="herramienta">
+              <div class="card__glow"></div>
+              <div class="card__head">
+                <div class="card__icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                </div>
+                <span class="card__badge card__badge--dev" data-i18n="b-dev">En desarrollo</span>
+              </div>
+              <h3 class="card__title" data-i18n="c2-title">TaskFlow</h3>
+              <p class="card__desc" data-i18n="c2-desc">
+                Aplicación de gestión de tareas con tableros Kanban, etiquetas inteligentes y seguimiento de productividad.
+              </p>
+              <a href="#" class="card__link" data-i18n-aria="c2-aria" aria-label="Abrir TaskFlow">
+                <span data-i18n="open">Abrir</span>
+                <svg
+                  class="card__arrow"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </article>
+
+            <!-- Card 3 — CodeSnippets -->
+            <article class="card reveal" data-category="herramienta">
+              <div class="card__glow"></div>
+              <div class="card__head">
+                <div class="card__icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="16 18 22 12 16 6" />
+                    <polyline points="8 6 2 12 8 18" />
+                  </svg>
+                </div>
+                <span class="card__badge card__badge--updated" data-i18n="b-updated">Actualizado</span>
+              </div>
+              <h3 class="card__title" data-i18n="c3-title">CodeSnippets</h3>
+              <p class="card__desc" data-i18n="c3-desc">
+                Biblioteca personal de fragmentos de código organizados por lenguaje, framework y categoría.
+              </p>
+              <a href="#" class="card__link" data-i18n-aria="c3-aria" aria-label="Abrir CodeSnippets">
+                <span data-i18n="open">Abrir</span>
+                <svg
+                  class="card__arrow"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </article>
+
+            <!-- Card 4 — PixelLab -->
+            <article class="card reveal" data-category="app">
+              <div class="card__glow"></div>
+              <div class="card__head">
+                <div class="card__icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="3" y="3" width="7" height="7" />
+                    <rect x="14" y="3" width="7" height="7" />
+                    <rect x="14" y="14" width="7" height="7" />
+                    <rect x="3" y="14" width="7" height="7" />
+                  </svg>
+                </div>
+                <span class="card__badge card__badge--beta" data-i18n="b-beta">Beta</span>
+              </div>
+              <h3 class="card__title" data-i18n="c4-title">PixelLab</h3>
+              <p class="card__desc" data-i18n="c4-desc">
+                Editor y generador de pixel art en el navegador con herramientas de dibujo, paletas y exportación.
+              </p>
+              <a href="#" class="card__link" data-i18n-aria="c4-aria" aria-label="Abrir PixelLab">
+                <span data-i18n="open">Abrir</span>
+                <svg
+                  class="card__arrow"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </article>
+
+            <!-- Card 5 — DevMetrics -->
+            <article class="card reveal" data-category="herramienta web">
+              <div class="card__glow"></div>
+              <div class="card__head">
+                <div class="card__icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="18" y1="20" x2="18" y2="10" />
+                    <line x1="12" y1="20" x2="12" y2="4" />
+                    <line x1="6" y1="20" x2="6" y2="14" />
+                  </svg>
+                </div>
+                <span class="card__badge card__badge--stable" data-i18n="b-stable">Estable</span>
+              </div>
+              <h3 class="card__title" data-i18n="c5-title">DevMetrics</h3>
+              <p class="card__desc" data-i18n="c5-desc">
+                Dashboard interactivo de métricas para desarrolladores con estadísticas de código y rendimiento.
+              </p>
+              <a href="#" class="card__link" data-i18n-aria="c5-aria" aria-label="Abrir DevMetrics">
+                <span data-i18n="open">Abrir</span>
+                <svg
+                  class="card__arrow"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </article>
+
+            <!-- Card 6 — CloudSync -->
+            <article class="card reveal" data-category="web herramienta">
+              <div class="card__glow"></div>
+              <div class="card__head">
+                <div class="card__icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+                  </svg>
+                </div>
+                <span class="card__badge card__badge--new" data-i18n="b-new">Nuevo</span>
+              </div>
+              <h3 class="card__title" data-i18n="c6-title">CloudSync</h3>
+              <p class="card__desc" data-i18n="c6-desc">
+                Herramienta de sincronización y respaldo automático en la nube para proyectos de desarrollo.
+              </p>
+              <a href="#" class="card__link" data-i18n-aria="c6-aria" aria-label="Abrir CloudSync">
+                <span data-i18n="open">Abrir</span>
+                <svg
+                  class="card__arrow"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </article>
+
+            <!-- Card 7 — RetroPong -->
+            <article class="card reveal" data-category="juego">
+              <div class="card__glow"></div>
+              <div class="card__head">
+                <div class="card__icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="2" y="6" width="20" height="12" rx="2" />
+                    <circle cx="8" cy="12" r="2" />
+                    <circle cx="16" cy="12" r="2" />
+                    <line x1="12" y1="8" x2="12" y2="10" />
+                  </svg>
+                </div>
+                <span class="card__badge card__badge--new" data-i18n="b-new">Nuevo</span>
+              </div>
+              <h3 class="card__title" data-i18n="c7-title">RetroPong</h3>
+              <p class="card__desc" data-i18n="c7-desc">
+                Clon del clásico Pong con estética retro, partículas y efectos de sonido generados proceduralmente.
+              </p>
+              <a href="#" class="card__link" data-i18n-aria="c7-aria" aria-label="Abrir RetroPong">
+                <span data-i18n="open">Abrir</span>
+                <svg
+                  class="card__arrow"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </article>
+
+            <!-- Card 8 — Toolbox -->
+            <article class="card reveal" data-category="app web">
+              <div class="card__glow"></div>
+              <div class="card__head">
+                <div class="card__icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"
+                    />
+                  </svg>
+                </div>
+                <span class="card__badge card__badge--dev" data-i18n="b-dev">En desarrollo</span>
+              </div>
+              <h3 class="card__title" data-i18n="c8-title">Toolbox</h3>
+              <p class="card__desc" data-i18n="c8-desc">
+                Suite de utilidades para desarrolladores: formateadores, conversores, generadores y calculadoras.
+              </p>
+              <a href="#" class="card__link" data-i18n-aria="c8-aria" aria-label="Abrir Toolbox">
+                <span data-i18n="open">Abrir</span>
+                <svg
+                  class="card__arrow"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </article>
+
+            <!-- Card 9 — Blog Técnico -->
+            <article class="card reveal" data-category="web">
+              <div class="card__glow"></div>
+              <div class="card__head">
+                <div class="card__icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M12 20h9" />
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                  </svg>
+                </div>
+                <span class="card__badge card__badge--updated" data-i18n="b-updated">Actualizado</span>
+              </div>
+              <h3 class="card__title" data-i18n="c9-title">Blog Técnico</h3>
+              <p class="card__desc" data-i18n="c9-desc">
+                Blog personal con artículos sobre desarrollo web, arquitectura de software y mejores prácticas.
+              </p>
+              <a href="#" class="card__link" data-i18n-aria="c9-aria" aria-label="Abrir Blog Técnico">
+                <span data-i18n="open">Abrir</span>
+                <svg
+                  class="card__arrow"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </article>
+          </div>
+
+          <!-- Ver más -->
+          <div class="projects__more reveal" id="loadMoreWrap">
+            <button class="btn-more" id="loadMoreBtn" type="button">
+              <span data-i18n="load-more">Ver más proyectos</span>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="projects__empty" id="projectsEmpty" hidden>
+            <p data-i18n="empty-msg">No hay proyectos en esta categoría aún.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Acerca de -->
+      <section id="about" class="about" aria-label="Acerca de">
+        <div class="container">
+          <h2 class="section-title reveal" data-i18n="about-title">Acerca de</h2>
+          <div class="about__content reveal">
+            <p data-i18n="about-p1">
+              Desarrollador apasionado por crear herramientas útiles y experiencias digitales memorables. Este sitio funciona como el índice
+              central de todos mis proyectos personales, experimentos y recursos de desarrollo.
+            </p>
+            <p data-i18n="about-p2">Cada proyecto refleja una idea explorada, un problema resuelto o una tecnología aprendida.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container footer__inner">
+        <div class="footer__brand">
+          <span class="footer__logo">G</span>
+          <span>Gustavox</span>
+        </div>
+        <p class="footer__copy">&copy; <span id="currentYear"></span> Gustavox</p>
+      </div>
+    </footer>
+
+    <!-- Volver arriba -->
+    <button class="backtop" id="backToTop" aria-label="Volver arriba" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="18 15 12 9 6 15" />
+      </svg>
+    </button>
+
+    <!-- ==============================================
+         LANGUAGE SWITCHER — Esquina inferior izquierda
+         ============================================== -->
+    <div class="lang-switcher" id="langSwitcher" role="group" aria-label="Selector de idioma">
+      <!-- Español (Argentina) -->
+      <button class="lang-btn active" id="langES" data-lang="es" title="Español" aria-label="Español">
+        <svg class="lang-flag" viewBox="0 0 20 14" xmlns="http://www.w3.org/2000/svg">
+          <rect width="20" height="4.67" fill="#74ACDF" />
+          <rect y="4.67" width="20" height="4.67" fill="#FFF" />
+          <rect y="9.33" width="20" height="4.67" fill="#74ACDF" />
+          <circle cx="10" cy="7" r="1.5" fill="#F6B40E" />
+          <path d="M8.8 6.6l.5.4-.2-.5.5-.4h-.6l-.2-.5-.2.5h-.6l.5.4-.2.5z" fill="#F6B40E" />
+        </svg>
+        <span class="lang-label">ES</span>
+      </button>
+
+      <span class="lang-sep" aria-hidden="true"></span>
+
+      <!-- English (UK) -->
+      <button class="lang-btn" id="langEN" data-lang="en" title="English" aria-label="English">
+        <svg class="lang-flag" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+          <rect width="60" height="40" fill="#012169" />
+          <path d="M0 0L60 40M60 0L0 40" stroke="#FFF" stroke-width="8" />
+          <path d="M0 0L60 40M60 0L0 40" stroke="#C8102E" stroke-width="4" />
+          <rect x="25" width="10" height="40" fill="#FFF" />
+          <rect y="15" width="60" height="10" fill="#FFF" />
+          <rect x="27" width="6" height="40" fill="#C8102E" />
+          <rect y="17" width="60" height="6" fill="#C8102E" />
+        </svg>
+        <span class="lang-label">EN</span>
+      </button>
+    </div>
+
+    <script src="script.js"></script>
   </body>
 </html>
