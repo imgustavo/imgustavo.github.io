@@ -1,0 +1,848 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Palas y Pelotas — Juego Pong interactivo por Gustavox" />
+    <meta name="theme-color" content="#0B0F19" />
+    <title>Palas y Pelotas — Gustavox</title>
+
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230B0F19'/%3E%3Crect x='7' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='11' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='15' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='7' y='9' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='7' y='13' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='7' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='11' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='15' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='19' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='23' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='23' y='9' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='19' y='13' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='23' y='13' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='19' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='23' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3C/svg%3E"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+
+    <style>
+      :root {
+        --bg: #0b0f19;
+        --surface: #161b22;
+        --border: rgba(77, 163, 255, 0.08);
+        --blue: #4da3ff;
+        --cyan: #4fd1c5;
+        --text: #e6edf3;
+        --text-sec: #8b949e;
+        --text-muted: #484f58;
+        --r-md: 12px;
+        --r-lg: 16px;
+        --ff: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        --fm: 'SF Mono', 'Cascadia Code', 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+        --fp: 'Press Start 2P', cursive;
+      }
+
+      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: var(--ff);
+        color: var(--text);
+        background: var(--bg);
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      ::selection { background: var(--blue); color: var(--bg); }
+
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: var(--bg); }
+      ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+      * { scrollbar-width: thin; scrollbar-color: var(--text-muted) var(--bg); }
+
+      /* ---- Fondo ambiental ---- */
+      .bg { position: fixed; inset: 0; pointer-events: none; z-index: -1; overflow: hidden; }
+      .bg__orb { position: absolute; border-radius: 50%; filter: blur(120px); will-change: transform; }
+      .bg__orb--blue {
+        width: 600px; height: 600px;
+        background: rgba(77, 163, 255, 0.06);
+        top: -20%; right: -15%;
+        animation: orbDrift 22s ease-in-out infinite alternate;
+      }
+      .bg__orb--cyan {
+        width: 450px; height: 450px;
+        background: rgba(79, 209, 197, 0.04);
+        bottom: -15%; left: -10%;
+        animation: orbDrift 28s ease-in-out infinite alternate-reverse;
+      }
+      .bg__noise {
+        position: absolute; inset: 0; opacity: 0.025;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-size: 200px 200px;
+      }
+
+      /* ---- Layout ---- */
+      .page { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+
+      /* ---- Topbar ---- */
+      .topbar {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-bottom: 3rem; padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border);
+        animation: fadeUp 0.6s ease forwards;
+      }
+      .topbar__back {
+        display: inline-flex; align-items: center; gap: 0.5rem;
+        font-size: 0.85rem; font-weight: 600; color: var(--text-sec);
+        padding: 0.45rem 0.9rem; border-radius: 8px;
+        border: 1px solid var(--border); background: transparent;
+        text-decoration: none;
+        transition: color 0.2s, border-color 0.2s, background 0.2s;
+      }
+      .topbar__back:hover { color: var(--blue); border-color: rgba(77,163,255,0.3); background: rgba(77,163,255,0.05); }
+      .topbar__back svg { width: 16px; height: 16px; transition: transform 0.2s; }
+      .topbar__back:hover svg { transform: translateX(-3px); }
+      .topbar__logo {
+        display: flex; align-items: center; gap: 0.5rem;
+        font-weight: 600; font-size: 0.9rem; color: var(--text); text-decoration: none;
+      }
+      .topbar__logo-icon {
+        display: flex; align-items: center; justify-content: center;
+        width: 30px; height: 30px;
+        font-family: var(--fm); font-weight: 700; font-size: 0.85rem;
+        color: var(--blue); background: rgba(77,163,255,0.1);
+        border: 1px solid rgba(77,163,255,0.2); border-radius: 6px;
+      }
+
+      /* ---- Project header ---- */
+      .project-header {
+        text-align: center; margin-bottom: 2.5rem;
+        animation: fadeUp 0.7s ease forwards; animation-delay: 0.1s; opacity: 0;
+      }
+      .project-badge {
+        display: inline-block; font-family: var(--fm); font-size: 0.68rem;
+        font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+        color: var(--cyan); background: rgba(79,209,197,0.08);
+        border: 1px solid rgba(79,209,197,0.18);
+        padding: 0.3em 0.9em; border-radius: 100px; margin-bottom: 1rem;
+      }
+      .project-title {
+        font-family: var(--fm); font-size: clamp(1.5rem, 4vw, 2.2rem);
+        font-weight: 700; color: var(--text); margin-bottom: 0.6rem;
+      }
+      .project-subtitle {
+        color: var(--text-sec); font-size: 1rem;
+        max-width: 500px; margin: 0 auto; line-height: 1.6;
+      }
+
+      /* ---- Game frame ---- */
+      .game-wrapper {
+        display: flex; justify-content: center; margin-bottom: 2.5rem;
+        animation: fadeUp 0.7s ease forwards; animation-delay: 0.25s; opacity: 0;
+      }
+      .game-frame {
+        position: relative; background: var(--surface);
+        border: 1px solid var(--border); border-radius: var(--r-lg);
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.35), 0 0 40px rgba(77,163,255,0.04);
+        transition: box-shadow 0.4s, border-color 0.4s;
+        max-width: 100%;
+      }
+      .game-frame:hover {
+        border-color: rgba(77,163,255,0.2);
+        box-shadow: 0 25px 70px rgba(0,0,0,0.4), 0 0 50px rgba(77,163,255,0.08);
+      }
+      .game-frame__bar {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0.5rem 1rem; background: rgba(22,27,34,0.95);
+        border-bottom: 1px solid var(--border);
+      }
+      .game-frame__dots { display: flex; gap: 6px; }
+      .game-frame__dot { width: 10px; height: 10px; border-radius: 50%; }
+      .game-frame__dot--red { background: #ff5f57; }
+      .game-frame__dot--yellow { background: #ffbd2e; }
+      .game-frame__dot--green { background: #28c840; }
+      .game-frame__label {
+        font-family: var(--fm); font-size: 0.7rem;
+        color: var(--text-muted); letter-spacing: 0.05em;
+      }
+      .game-frame__fullscreen {
+        display: flex; align-items: center; justify-content: center;
+        width: 28px; height: 28px; border-radius: 6px;
+        color: var(--text-muted); background: transparent;
+        border: 1px solid transparent; cursor: pointer;
+        transition: color 0.2s, background 0.2s, border-color 0.2s;
+      }
+      .game-frame__fullscreen:hover {
+        color: var(--blue); background: rgba(77,163,255,0.08);
+        border-color: rgba(77,163,255,0.2);
+      }
+      .game-frame__fullscreen svg { width: 14px; height: 14px; }
+
+      #gameCanvas {
+        display: block;
+        width: 485px;
+        height: 402px;
+        max-width: 100%;
+        background: #0a0a12;
+      }
+
+      /* ---- FULLSCREEN: sin barra, canvas ocupa todo ---- */
+      .game-frame:fullscreen,
+      .game-frame:-webkit-full-screen {
+        display: flex;
+        flex-direction: column;
+        background: #0a0a12;
+        border: none;
+        border-radius: 0;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      .game-frame:fullscreen .game-frame__bar,
+      .game-frame:-webkit-full-screen .game-frame__bar {
+        display: none !important;
+      }
+
+      .game-frame:fullscreen #gameCanvas,
+      .game-frame:-webkit-full-screen #gameCanvas {
+        width: 100%;
+        height: 100%;
+        max-width: none;
+      }
+
+      /* ---- Info cards ---- */
+      .project-info {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem; margin-bottom: 2.5rem;
+        animation: fadeUp 0.7s ease forwards; animation-delay: 0.4s; opacity: 0;
+      }
+      .info-card {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: var(--r-md); padding: 1.2rem 1.4rem;
+      }
+      .info-card__label {
+        font-family: var(--fm); font-size: 0.7rem; font-weight: 600;
+        letter-spacing: 0.08em; text-transform: uppercase;
+        color: var(--text-muted); margin-bottom: 0.4rem;
+      }
+      .info-card__value { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+
+      /* ---- Description ---- */
+      .project-desc {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: var(--r-md); padding: 1.8rem 2rem; margin-bottom: 2.5rem;
+        animation: fadeUp 0.7s ease forwards; animation-delay: 0.5s; opacity: 0;
+      }
+      .project-desc h3 {
+        font-family: var(--fm); font-size: 0.8rem; font-weight: 600;
+        letter-spacing: 0.08em; text-transform: uppercase;
+        color: var(--blue); margin-bottom: 0.8rem;
+      }
+      .project-desc p {
+        color: var(--text-sec); font-size: 0.92rem;
+        line-height: 1.7; margin-bottom: 0.6rem;
+      }
+      .project-desc p:last-child { margin-bottom: 0; }
+      .project-desc ul { list-style: none; padding: 0; margin-top: 0.6rem; }
+      .project-desc ul li {
+        color: var(--text-sec); font-size: 0.92rem; line-height: 1.7;
+        padding-left: 1.2rem; position: relative; margin-bottom: 0.3rem;
+      }
+      .project-desc ul li::before {
+        content: ''; position: absolute; left: 0; top: 0.55em;
+        width: 5px; height: 5px; border-radius: 50%; background: var(--cyan);
+      }
+
+      /* ---- Actions ---- */
+      .actions {
+        display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem;
+        animation: fadeUp 0.7s ease forwards; animation-delay: 0.6s; opacity: 0;
+      }
+      .btn {
+        display: inline-flex; align-items: center; gap: 0.5rem;
+        padding: 0.65rem 1.5rem; font-size: 0.85rem; font-weight: 600;
+        border-radius: var(--r-md); transition: all 0.25s; text-decoration: none;
+      }
+      .btn svg { width: 16px; height: 16px; }
+      .btn--primary {
+        color: #0b0f19; background: var(--blue); border: 1px solid var(--blue);
+      }
+      .btn--primary:hover {
+        background: #6bb3ff; border-color: #6bb3ff;
+        box-shadow: 0 4px 20px rgba(77,163,255,0.3); transform: translateY(-2px);
+      }
+      .btn--ghost {
+        color: var(--text-sec); background: transparent; border: 1px solid var(--border);
+      }
+      .btn--ghost:hover {
+        color: var(--text); border-color: rgba(77,163,255,0.25);
+        background: rgba(77,163,255,0.04); transform: translateY(-2px);
+      }
+
+      /* ---- Footer ---- */
+      .page-footer {
+        text-align: center; padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+        animation: fadeUp 0.6s ease forwards; animation-delay: 0.7s; opacity: 0;
+      }
+      .page-footer p {
+        font-family: var(--fm); font-size: 0.75rem;
+        color: var(--text-muted); letter-spacing: 0.03em;
+      }
+      .page-footer a { color: var(--text-sec); transition: color 0.2s; }
+      .page-footer a:hover { color: var(--blue); }
+
+      /* ---- Keyframes ---- */
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(18px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes orbDrift {
+        0% { transform: translate(0, 0) scale(1); }
+        100% { transform: translate(40px, 30px) scale(1.05); }
+      }
+
+      /* ---- Responsive ---- */
+      @media (max-width: 540px) {
+        .page { padding: 1.5rem 1rem 2.5rem; }
+        #gameCanvas { width: 100%; height: auto; aspect-ratio: 640 / 480; }
+        .topbar { flex-direction: column; gap: 1rem; align-items: flex-start; }
+        .actions { flex-direction: column; align-items: stretch; }
+        .btn { justify-content: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg" aria-hidden="true">
+      <div class="bg__orb bg__orb--blue"></div>
+      <div class="bg__orb bg__orb--cyan"></div>
+      <div class="bg__noise"></div>
+    </div>
+
+    <div class="page">
+      <!-- ==================== HEADER ==================== -->
+      <nav class="topbar">
+        <a href="index.html" class="topbar__back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
+          </svg>
+          <span>Volver</span>
+        </a>
+        <a href="index.html" class="topbar__logo">
+          <span class="topbar__logo-icon">G</span>
+          <span>Gustavox</span>
+        </a>
+      </nav>
+
+      <header class="project-header">
+        <div class="project-badge">Juego Interactivo</div>
+        <h1 class="project-title">Palas y Pelotas</h1>
+        <p class="project-subtitle">Juego Pong con gestión administrativa — 5 objetos, 10 niveles, 5 vidas y sistema de registro.</p>
+      </header>
+
+      <!-- ==================== JUEGO EMBEBIDO ==================== -->
+      <div class="game-wrapper">
+        <div class="game-frame" id="gameFrame">
+          <div class="game-frame__bar">
+            <div class="game-frame__dots">
+              <span class="game-frame__dot game-frame__dot--red"></span>
+              <span class="game-frame__dot game-frame__dot--yellow"></span>
+              <span class="game-frame__dot game-frame__dot--green"></span>
+            </div>
+            <span class="game-frame__label">palas-y-pelotas</span>
+            <button class="game-frame__fullscreen" id="fullscreenBtn" title="Pantalla completa" aria-label="Pantalla completa">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 3 21 3 21 9" />
+                <polyline points="9 21 3 21 3 15" />
+                <line x1="21" y1="3" x2="14" y2="10" />
+                <line x1="3" y1="21" x2="10" y2="14" />
+              </svg>
+            </button>
+          </div>
+          <canvas id="gameCanvas" width="640" height="480"></canvas>
+        </div>
+      </div>
+
+      <!-- Info del proyecto -->
+      <div class="project-info">
+        <div class="info-card">
+          <div class="info-card__label">Tipo</div>
+          <div class="info-card__value">Juego interactivo</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card__label">Autores</div>
+          <div class="info-card__value">Gustavo Godoy, Rodrigo Mutuberria</div>
+        </div>
+      </div>
+
+      <div class="project-desc">
+        <h3>Sobre el proyecto</h3>
+        <p>
+          Juego tipo Pong desarrollado como trabajo práctico de Programación 1, con gestión administrativa completa.
+          El jugador controla una pala para devolver tres pelotas simultáneas mientras enfrenta a una IA con dificultad
+          progresiva a lo largo de 10 niveles.
+        </p>
+        <p>Características principales:</p>
+        <ul>
+          <li>5 objetos en pantalla: 2 palas (jugador y CPU) + 3 pelotas con distintas velocidades y colores</li>
+          <li>10 niveles con incremento progresivo de velocidad</li>
+          <li>5 vidas por bando con indicadores visuales</li>
+          <li>Sistema de registro de usuarios e inicio de sesión</li>
+          <li>Grabación de colisiones mediante método de puntero (lista enlazada en archivo binario)</li>
+          <li>Sistema de informes: movimientos por partida, ranking por usuario y matriz de colisiones</li>
+        </ul>
+      </div>
+
+      <div class="actions">
+        <a href="https://github.com/" target="_blank" rel="noopener" class="btn btn--primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+            <polyline points="15 3 21 3 21 9" />
+            <line x1="10" y1="14" x2="21" y2="3" />
+          </svg>
+          Abrir en Github
+        </a>
+        <a href="index.html" class="btn btn--ghost">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
+          </svg>
+          Volver al inicio
+        </a>
+      </div>
+
+      <!-- ==================== FOOTER ==================== -->
+      <footer class="page-footer">
+        <p>&copy; <script>document.write(new Date().getFullYear())</script> Gustavox · <a href="index.html">gustavox.dev</a></p>
+      </footer>
+    </div>
+
+    <script>
+    (function () {
+      'use strict';
+
+      var ANCHO = 640, ALTO = 480;
+      var MAX_NIVEL = 10;
+      var VIDAS_INICIALES = 5;
+      var VELOCIDAD_BASE = 3;
+
+      var COL = {
+        BLANCO:   '#ffffff',
+        NEGRO:    '#0a0a12',
+        ROJO:     '#ff2d7b',
+        AZUL:     '#4da3ff',
+        VERDE:    '#00e676',
+        AMARILLO: '#ffab00',
+        GRIS:     '#3a3a4a',
+        NARANJA:  '#ff6d00'
+      };
+
+      var canvas    = document.getElementById('gameCanvas');
+      var ctx       = canvas.getContext('2d');
+      var gameFrame = document.getElementById('gameFrame');
+
+      /* ==========================================================
+       *  FULLSCREEN
+       * ========================================================== */
+      var isFullscreen = false;
+      var fsScale = 1;
+      var fsOffX = 0, fsOffY = 0;
+
+      function recalcularFullscreen() {
+        if (!isFullscreen) return;
+        var cw = window.innerWidth;
+        var ch = window.innerHeight;
+        canvas.width  = cw;
+        canvas.height = ch;
+        fsScale = Math.min(cw / ANCHO, ch / ALTO);
+        fsOffX  = (cw - ANCHO * fsScale) / 2;
+        fsOffY  = (ch - ALTO * fsScale) / 2;
+      }
+
+      function onFullscreenChange() {
+        isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
+        if (isFullscreen) {
+          recalcularFullscreen();
+        } else {
+          canvas.width  = 640;
+          canvas.height = 480;
+          canvas.style.width  = '';
+          canvas.style.height = '';
+          fsScale = 1;
+          fsOffX  = 0;
+          fsOffY  = 0;
+        }
+      }
+
+      document.addEventListener('fullscreenchange', onFullscreenChange);
+      document.addEventListener('webkitfullscreenchange', onFullscreenChange);
+      window.addEventListener('resize', recalcularFullscreen);
+
+      document.getElementById('fullscreenBtn').addEventListener('click', function () {
+        if (gameFrame.requestFullscreen) gameFrame.requestFullscreen();
+        else if (gameFrame.webkitRequestFullscreen) gameFrame.webkitRequestFullscreen();
+        else if (gameFrame.msRequestFullscreen) gameFrame.msRequestFullscreen();
+      });
+
+      /* ==========================================================
+       *  CLASE Pala
+       * ========================================================== */
+      function Pala(x, color) {
+        this.w = 14; this.h = 80;
+        this.x = x - this.w / 2;
+        this.y = ALTO / 2 - this.h / 2;
+        this.color = color;
+        this.velocidad = 5;
+      }
+
+      Pala.prototype.moverJugador = function (keys) {
+        if (this.y > 0 && (keys.ArrowUp || keys.w)) this.y -= this.velocidad;
+        if (this.y + this.h < ALTO && (keys.ArrowDown || keys.s)) this.y += this.velocidad;
+        this.y = Math.max(0, Math.min(ALTO - this.h, this.y));
+      };
+
+      Pala.prototype.moverCPU = function (pelota, factor) {
+        var cy = this.y + this.h / 2;
+        if (pelota.vx > 0) {
+          if (cy < pelota.y) this.y += this.velocidad * factor;
+          else if (cy > pelota.y) this.y -= this.velocidad * factor;
+        }
+        this.y = Math.max(0, Math.min(ALTO - this.h, this.y));
+      };
+
+      /* ==========================================================
+       *  CLASE Pelota
+       * ========================================================== */
+      function Pelota(vx, vy, color, radio) {
+        this.radio = radio; this.color = color;
+        this.x = ANCHO / 2; this.y = ALTO / 2;
+        this.vx = vx; this.vy = vy;
+      }
+
+      Pelota.prototype.actualizar = function (pala1, pala2) {
+        var colision = null, vidaPerdida = null;
+        this.x += this.vx; this.y += this.vy;
+
+        if (this.y - this.radio <= 0)     { this.y = this.radio;        this.vy = Math.abs(this.vy); }
+        if (this.y + this.radio >= ALTO)   { this.y = ALTO - this.radio; this.vy = -Math.abs(this.vy); }
+
+        if (this.vx < 0 &&
+            this.x - this.radio <= pala1.x + pala1.w && this.x + this.radio >= pala1.x &&
+            this.y + this.radio >= pala1.y && this.y - this.radio <= pala1.y + pala1.h) {
+          this.vx = Math.abs(this.vx);
+          this.x = pala1.x + pala1.w + this.radio;
+          colision = { o: 'Pala1', cx: this.x, cy: this.y };
+        }
+
+        if (this.vx > 0 &&
+            this.x + this.radio >= pala2.x && this.x - this.radio <= pala2.x + pala2.w &&
+            this.y + this.radio >= pala2.y && this.y - this.radio <= pala2.y + pala2.h) {
+          this.vx = -Math.abs(this.vx);
+          this.x = pala2.x - this.radio;
+          colision = { o: 'Pala2', cx: this.x, cy: this.y };
+        }
+
+        if (this.x + this.radio < 0)     { vidaPerdida = 'jugador'; this.reiniciar(1); }
+        if (this.x - this.radio > ANCHO)  { vidaPerdida = 'cpu';     this.reiniciar(-1); }
+
+        return { colision: colision, vidaPerdida: vidaPerdida };
+      };
+
+      Pelota.prototype.reiniciar = function (dir) {
+        this.x = ANCHO / 2; this.y = ALTO / 2;
+        var v = Math.max(Math.abs(this.vx), VELOCIDAD_BASE);
+        var vy = v * (0.4 + Math.random() * 0.6);
+        if (Math.random() > 0.5) vy = -vy;
+        this.vx = dir * v; this.vy = vy;
+      };
+
+      function crearPelotas(nivel) {
+        var f = 1 + (nivel - 1) * 0.25;
+        var v = VELOCIDAD_BASE * f;
+        return [
+          new Pelota( v,       v * 0.6,  COL.BLANCO,   10),
+          new Pelota(-v * 0.7, v * 0.8,  COL.AMARILLO,  8),
+          new Pelota( v * 0.5,-v * 0.9,  COL.AZUL,     11)
+        ];
+      }
+
+      /* ==========================================================
+       *  ESTADO DEL JUEGO
+       * ========================================================== */
+      var G = {
+        estado: 'menu',
+        nivel: 1,
+        vidasJugador: VIDAS_INICIALES,
+        vidasCPU: VIDAS_INICIALES,
+        puntajeA: 0, puntajeB: 0,
+        pala1: null, pala2: null,
+        pelotas: [],
+        timerTransicion: 0,
+        timerFlash: 0,
+        flashMsg: '', flashColor: COL.NARANJA,
+        keys: {},
+        colisiones: []
+      };
+
+      function iniciarJuego() {
+        G.nivel = 1; G.vidasJugador = VIDAS_INICIALES; G.vidasCPU = VIDAS_INICIALES;
+        G.puntajeA = 0; G.puntajeB = 0;
+        G.pala1 = new Pala(30, COL.VERDE);
+        G.pala2 = new Pala(ANCHO - 30, COL.ROJO);
+        G.pelotas = crearPelotas(1);
+        G.timerFlash = 0; G.colisiones = [];
+        G.estado = 'jugando';
+      }
+
+      /* ==========================================================
+       *  UPDATE
+       * ========================================================== */
+      function update(dt) {
+        if (G.estado === 'transicion') {
+          G.timerTransicion -= dt;
+          if (G.timerTransicion <= 0) {
+            G.estado = 'jugando';
+            G.pala1.y = ALTO / 2 - G.pala1.h / 2;
+            G.pala2.y = ALTO / 2 - G.pala2.h / 2;
+            G.pelotas = crearPelotas(G.nivel);
+          }
+          return;
+        }
+        if (G.estado !== 'jugando') return;
+        if (G.timerFlash > 0) G.timerFlash -= dt;
+
+        G.pala1.moverJugador(G.keys);
+
+        var amenazas = G.pelotas.filter(function (p) { return p.vx > 0; });
+        var objetivo = amenazas.length
+          ? amenazas.reduce(function (a, b) { return a.x > b.x ? a : b; })
+          : G.pelotas[0];
+        G.pala2.moverCPU(objetivo, Math.min(0.6 + G.nivel * 0.04, 1.0));
+
+        for (var i = 0; i < G.pelotas.length; i++) {
+          var r = G.pelotas[i].actualizar(G.pala1, G.pala2);
+          if (r.colision) {
+            G.colisiones.push(r.colision);
+            if (r.colision.o === 'Pala1') G.puntajeA++; else G.puntajeB++;
+          }
+          if (r.vidaPerdida === 'jugador') {
+            G.vidasJugador = Math.max(0, G.vidasJugador - 1);
+            G.puntajeA = Math.max(0, G.puntajeA - 1);
+            G.flashMsg = '-1 VIDA'; G.flashColor = COL.ROJO; G.timerFlash = 1200;
+          } else if (r.vidaPerdida === 'cpu') {
+            G.vidasCPU = Math.max(0, G.vidasCPU - 1);
+            G.puntajeB = Math.max(0, G.puntajeB - 1);
+            G.flashMsg = 'CPU -1 VIDA'; G.flashColor = COL.VERDE; G.timerFlash = 1200;
+          }
+        }
+
+        for (var a = 0; a < G.pelotas.length; a++) {
+          for (var b = a + 1; b < G.pelotas.length; b++) {
+            var pa = G.pelotas[a], pb = G.pelotas[b];
+            var dx = pa.x - pb.x, dy = pa.y - pb.y;
+            var dist = Math.sqrt(dx * dx + dy * dy);
+            var minD = pa.radio + pb.radio;
+            if (dist < minD && dist > 0) {
+              var tvx = pa.vx, tvy = pa.vy;
+              pa.vx = pb.vx; pa.vy = pb.vy;
+              pb.vx = tvx;   pb.vy = tvy;
+              var nx = dx / dist, ny = dy / dist, ov = (minD - dist) / 2;
+              pa.x += nx * ov; pa.y += ny * ov;
+              pb.x -= nx * ov; pb.y -= ny * ov;
+            }
+          }
+        }
+
+        if (G.vidasJugador <= 0) { G.estado = 'game_over'; }
+        else if (G.vidasCPU <= 0) {
+          if (G.nivel >= MAX_NIVEL) { G.estado = 'victoria'; }
+          else { G.nivel++; G.vidasCPU = VIDAS_INICIALES; G.estado = 'transicion'; G.timerTransicion = 2000; }
+        }
+      }
+
+      /* ==========================================================
+       *  RENDERER
+       * ========================================================== */
+      function render() {
+        ctx.fillStyle = COL.NEGRO;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.save();
+
+        if (isFullscreen) {
+          ctx.translate(fsOffX, fsOffY);
+          ctx.scale(fsScale, fsScale);
+        }
+
+        ctx.fillStyle = COL.NEGRO;
+        ctx.fillRect(0, 0, ANCHO, ALTO);
+
+        ctx.strokeStyle = COL.GRIS;
+        ctx.setLineDash([10, 10]);
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(ANCHO / 2, 0);
+        ctx.lineTo(ANCHO / 2, ALTO);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        var palas = [G.pala1, G.pala2];
+        for (var i = 0; i < palas.length; i++) {
+          var p = palas[i];
+          if (!p) continue;
+          ctx.shadowColor = p.color; ctx.shadowBlur = 12;
+          ctx.fillStyle = p.color;
+          ctx.fillRect(p.x, p.y, p.w, p.h);
+          ctx.shadowBlur = 0;
+        }
+
+        for (var j = 0; j < G.pelotas.length; j++) {
+          var bl = G.pelotas[j];
+          ctx.shadowColor = bl.color; ctx.shadowBlur = 15;
+          ctx.fillStyle = bl.color;
+          ctx.beginPath();
+          ctx.arc(bl.x, bl.y, bl.radio, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+
+        var fv = 1 + (G.nivel - 1) * 0.25;
+
+        ctx.font = '10px "Press Start 2P"';
+        ctx.textAlign = 'left';
+        ctx.fillStyle = COL.VERDE;
+        ctx.fillText('JUGADOR', 16, 16);
+        dibujarVidas(16, 28, G.vidasJugador, VIDAS_INICIALES, COL.VERDE, 'l');
+
+        ctx.textAlign = 'right';
+        ctx.fillStyle = COL.ROJO;
+        ctx.fillText('CPU', ANCHO - 16, 16);
+        dibujarVidas(ANCHO - 16, 28, G.vidasCPU, VIDAS_INICIALES, COL.ROJO, 'r');
+
+        ctx.textAlign = 'center';
+        ctx.fillStyle = COL.BLANCO;
+        ctx.font = '12px "Press Start 2P"';
+        ctx.fillText('NIVEL ' + G.nivel + '/' + MAX_NIVEL + '  (vel x' + fv.toFixed(1) + ')', ANCHO / 2, 20);
+
+        ctx.font = '10px "Press Start 2P"';
+        ctx.textAlign = 'left';
+        ctx.fillStyle = COL.AMARILLO;
+        ctx.fillText('Pts: ' + G.puntajeA, 16, 56);
+        ctx.textAlign = 'right';
+        ctx.fillText('Pts: ' + G.puntajeB, ANCHO - 16, 56);
+
+        if (G.timerFlash > 0) {
+          ctx.font = '24px "Press Start 2P"';
+          ctx.textAlign = 'center';
+          ctx.fillStyle = G.flashColor;
+          ctx.shadowColor = G.flashColor; ctx.shadowBlur = 20;
+          ctx.fillText(G.flashMsg, ANCHO / 2, ALTO / 2 - 80);
+          ctx.shadowBlur = 0;
+        }
+
+        if (G.estado === 'transicion') {
+          overlay(0.6);
+          ctx.font = '40px "Press Start 2P"'; ctx.textAlign = 'center';
+          ctx.fillStyle = COL.AMARILLO;
+          ctx.shadowColor = COL.AMARILLO; ctx.shadowBlur = 20;
+          ctx.fillText('NIVEL ' + G.nivel, ANCHO / 2, ALTO / 2 - 30);
+          ctx.shadowBlur = 0;
+          ctx.font = '14px "Press Start 2P"'; ctx.fillStyle = COL.BLANCO;
+          ctx.fillText('Preparate!', ANCHO / 2, ALTO / 2 + 20);
+          ctx.font = '10px "Press Start 2P"'; ctx.fillStyle = COL.GRIS;
+          ctx.fillText('Velocidad x' + fv.toFixed(1), ANCHO / 2, ALTO / 2 + 50);
+        }
+
+        if (G.estado === 'game_over') {
+          overlay(0.75);
+          ctx.font = '40px "Press Start 2P"'; ctx.textAlign = 'center';
+          ctx.fillStyle = COL.ROJO;
+          ctx.shadowColor = COL.ROJO; ctx.shadowBlur = 25;
+          ctx.fillText('GAME OVER', ANCHO / 2, ALTO / 2 - 50);
+          ctx.shadowBlur = 0;
+          ctx.font = '14px "Press Start 2P"'; ctx.fillStyle = COL.BLANCO;
+          ctx.fillText('Nivel alcanzado: ' + G.nivel, ANCHO / 2, ALTO / 2);
+          ctx.font = '10px "Press Start 2P"';
+          ctx.fillText('Puntaje A: ' + G.puntajeA + '  |  Puntaje B: ' + G.puntajeB, ANCHO / 2, ALTO / 2 + 30);
+          ctx.fillStyle = COL.GRIS;
+          ctx.fillText('Presiona ENTER para reiniciar', ANCHO / 2, ALTO / 2 + 70);
+        }
+
+        if (G.estado === 'victoria') {
+          overlay(0.75);
+          var t = Date.now(), pulse = Math.abs((t % 1000) - 500) / 500;
+          var cr = Math.floor(240 + 15 * pulse), cg = Math.floor(220 * pulse);
+          ctx.font = '36px "Press Start 2P"'; ctx.textAlign = 'center';
+          ctx.fillStyle = 'rgb(' + cr + ',' + cg + ',40)';
+          ctx.shadowColor = ctx.fillStyle; ctx.shadowBlur = 25;
+          ctx.fillText('FELICIDADES!', ANCHO / 2, ALTO / 2 - 70);
+          ctx.shadowBlur = 0;
+          ctx.font = '24px "Press Start 2P"'; ctx.fillStyle = COL.VERDE;
+          ctx.fillText('GANASTE!', ANCHO / 2, ALTO / 2 - 20);
+          ctx.font = '10px "Press Start 2P"'; ctx.fillStyle = COL.BLANCO;
+          ctx.fillText('Completaste los ' + MAX_NIVEL + ' niveles!', ANCHO / 2, ALTO / 2 + 15);
+          ctx.fillText('Puntaje A: ' + G.puntajeA + '  |  Puntaje B: ' + G.puntajeB, ANCHO / 2, ALTO / 2 + 40);
+          ctx.fillStyle = COL.AMARILLO;
+          ctx.fillText('Vidas restantes: ' + G.vidasJugador, ANCHO / 2, ALTO / 2 + 65);
+          ctx.fillStyle = COL.GRIS;
+          ctx.fillText('Presiona ENTER para reiniciar', ANCHO / 2, ALTO / 2 + 100);
+        }
+
+        if (G.estado === 'menu') {
+          overlay(0.8);
+          ctx.font = '32px "Press Start 2P"'; ctx.textAlign = 'center';
+          ctx.fillStyle = COL.AZUL;
+          ctx.shadowColor = COL.AZUL; ctx.shadowBlur = 20;
+          ctx.fillText('PALAS Y', ANCHO / 2, ALTO / 2 - 60);
+          ctx.fillText('PELOTAS', ANCHO / 2, ALTO / 2 - 15);
+          ctx.shadowBlur = 0;
+          ctx.font = '10px "Press Start 2P"'; ctx.fillStyle = COL.GRIS;
+          ctx.fillText('Flechas / WASD para mover', ANCHO / 2, ALTO / 2 + 35);
+          ctx.fillStyle = COL.BLANCO;
+          if (Math.floor(Date.now() / 500) % 2)
+            ctx.fillText('Presiona ENTER para jugar', ANCHO / 2, ALTO / 2 + 65);
+        }
+
+        ctx.restore();
+      }
+
+      function overlay(a) {
+        ctx.fillStyle = 'rgba(0,0,0,' + a + ')';
+        ctx.fillRect(0, 0, ANCHO, ALTO);
+      }
+
+      function dibujarVidas(x, y, cur, max, color, align) {
+        for (var i = 0; i < max; i++) {
+          var cx = align === 'l' ? x + i * 22 : x - i * 22;
+          ctx.beginPath(); ctx.arc(cx, y, 8, 0, Math.PI * 2);
+          ctx.fillStyle = i < cur ? color : COL.GRIS; ctx.fill();
+          ctx.strokeStyle = COL.BLANCO; ctx.lineWidth = 1; ctx.stroke();
+        }
+      }
+
+      /* ==========================================================
+       *  INPUT
+       * ========================================================== */
+      document.addEventListener('keydown', function (e) {
+        G.keys[e.key] = true;
+        if (G.estado === 'menu' && e.key === 'Enter') iniciarJuego();
+        if ((G.estado === 'game_over' || G.estado === 'victoria') && e.key === 'Enter') G.estado = 'menu';
+        if (G.estado === 'jugando' && e.key === 'Escape') G.estado = 'menu';
+        if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].indexOf(e.key) !== -1) e.preventDefault();
+      });
+
+      document.addEventListener('keyup', function (e) { G.keys[e.key] = false; });
+
+      /* ==========================================================
+       *  GAME LOOP
+       * ========================================================== */
+      var lastTime = 0;
+      function loop(ts) {
+        var dt = Math.min(ts - lastTime, 50);
+        lastTime = ts;
+        update(dt);
+        render();
+        requestAnimationFrame(loop);
+      }
+
+      G.estado = 'menu';
+      requestAnimationFrame(loop);
+
+    })();
+    </script>
+  </body>
+</html>
