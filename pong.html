@@ -6,6 +6,29 @@
     <meta name="description" content="Palas y Pelotas — Juego Pong interactivo por Gustavox" />
     <meta name="theme-color" content="#0B0F19" />
     <title>Palas y Pelotas — Gustavox</title>
+    <!-- Open Graph (Facebook, WhatsApp, Telegram) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Gustavox" />
+    <meta property="og:title" content="Palas y Pelotas — Juego Pong Interactivo" />
+    <meta
+      property="og:description"
+      content="Juego tipo Pong con gestión administrativa: 5 objetos, 10 niveles, 5 vidas, sistema de registro de usuarios, grabación de colisiones con método de puntero y sistema de informes. Desarrollado por Gustavo Godoy y Rodrigo Mutuberria."
+    />
+    <meta property="og:image" content="https://TU-USUARIO.github.io/TU-REPOSITORIO/preview.png" />
+    <meta property="og:url" content="https://TU-USUARIO.github.io/TU-REPOSITORIO/" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Palas y Pelotas - Juego Pong Interactivo" />
+    <meta property="og:locale" content="es_ES" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Palas y Pelotas — Juego Pong Interactivo" />
+    <meta
+      name="twitter:description"
+      content="Juego tipo Pong con gestión administrativa: 5 objetos, 10 niveles, 5 vidas y sistema de informes."
+    />
+    <meta name="twitter:image" content="https://TU-USUARIO.github.io/TU-REPOSITORIO/preview.png" />
 
     <link
       rel="icon"
@@ -15,7 +38,10 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
       :root {
@@ -39,8 +65,16 @@
         --fp: 'Press Start 2P', cursive;
       }
 
-      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-      html { scroll-behavior: smooth; }
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
 
       body {
         font-family: var(--ff);
@@ -51,213 +85,426 @@
         overflow-x: hidden;
       }
 
-      ::selection { background: var(--blue); color: var(--bg); }
-      ::-webkit-scrollbar { width: 6px; }
-      ::-webkit-scrollbar-track { background: var(--bg); }
-      ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
-      ::-webkit-scrollbar-thumb:hover { background: var(--blue); }
-      * { scrollbar-width: thin; scrollbar-color: var(--text-muted) var(--bg); }
+      ::selection {
+        background: var(--blue);
+        color: var(--bg);
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--text-muted);
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--blue);
+      }
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--text-muted) var(--bg);
+      }
 
-      .bg { position: fixed; inset: 0; pointer-events: none; z-index: -1; overflow: hidden; }
-      .bg__orb { position: absolute; border-radius: 50%; filter: blur(120px); will-change: transform; }
+      .bg {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+        overflow: hidden;
+      }
+      .bg__orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        will-change: transform;
+      }
       .bg__orb--blue {
-        width: 600px; height: 600px;
+        width: 600px;
+        height: 600px;
         background: rgba(77, 163, 255, 0.06);
-        top: -20%; right: -15%;
+        top: -20%;
+        right: -15%;
         animation: orbDrift 22s ease-in-out infinite alternate;
       }
       .bg__orb--cyan {
-        width: 450px; height: 450px;
+        width: 450px;
+        height: 450px;
         background: rgba(79, 209, 197, 0.04);
-        bottom: -15%; left: -10%;
+        bottom: -15%;
+        left: -10%;
         animation: orbDrift 28s ease-in-out infinite alternate-reverse;
       }
       .bg__noise {
-        position: absolute; inset: 0; opacity: 0.025;
+        position: absolute;
+        inset: 0;
+        opacity: 0.025;
         background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         background-size: 200px 200px;
       }
 
-      .page { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+      .page {
+        position: relative;
+        z-index: 1;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 3rem;
+      }
 
       .topbar {
-        display: flex; align-items: center; justify-content: space-between;
-        margin-bottom: 2rem; padding-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
         border-bottom: 1px solid var(--border);
         animation: fadeUp 0.6s ease forwards;
       }
       .topbar__back {
-        display: inline-flex; align-items: center; gap: 0.5rem;
-        font-size: 0.85rem; font-weight: 600; color: var(--text-sec);
-        padding: 0.45rem 0.9rem; border-radius: 8px;
-        border: 1px solid var(--border); background: transparent;
-        text-decoration: none; cursor: pointer;
-        transition: color 0.2s, border-color 0.2s, background 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-sec);
+        padding: 0.45rem 0.9rem;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: transparent;
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
       }
-      .topbar__back:hover { color: var(--blue); border-color: rgba(77,163,255,0.3); background: rgba(77,163,255,0.05); }
-      .topbar__back svg { width: 16px; height: 16px; transition: transform 0.2s; }
-      .topbar__back:hover svg { transform: translateX(-3px); }
+      .topbar__back:hover {
+        color: var(--blue);
+        border-color: rgba(77, 163, 255, 0.3);
+        background: rgba(77, 163, 255, 0.05);
+      }
+      .topbar__back svg {
+        width: 16px;
+        height: 16px;
+        transition: transform 0.2s;
+      }
+      .topbar__back:hover svg {
+        transform: translateX(-3px);
+      }
       .topbar__logo {
-        display: flex; align-items: center; gap: 0.5rem;
-        font-weight: 600; font-size: 0.9rem; color: var(--text); text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--text);
+        text-decoration: none;
       }
       .topbar__logo-icon {
-        display: flex; align-items: center; justify-content: center;
-        width: 30px; height: 30px;
-        font-family: var(--fm); font-weight: 700; font-size: 0.85rem;
-        color: var(--blue); background: rgba(77,163,255,0.1);
-        border: 1px solid rgba(77,163,255,0.2); border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        font-family: var(--fm);
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: var(--blue);
+        background: rgba(77, 163, 255, 0.1);
+        border: 1px solid rgba(77, 163, 255, 0.2);
+        border-radius: 6px;
       }
 
-      .screen { display: none; animation: fadeUp 0.5s ease forwards; }
-      .screen.active { display: block; }
+      .screen {
+        display: none;
+        animation: fadeUp 0.5s ease forwards;
+      }
+      .screen.active {
+        display: block;
+      }
 
       .project-header {
-        text-align: center; margin-bottom: 2rem;
-        animation: fadeUp 0.7s ease forwards; animation-delay: 0.1s; opacity: 0;
+        text-align: center;
+        margin-bottom: 2rem;
+        animation: fadeUp 0.7s ease forwards;
+        animation-delay: 0.1s;
+        opacity: 0;
       }
       .project-badge {
-        display: inline-block; font-family: var(--fm); font-size: 0.65rem;
-        font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-        color: var(--cyan); background: rgba(79,209,197,0.08);
-        border: 1px solid rgba(79,209,197,0.18);
-        padding: 0.3em 0.9em; border-radius: 100px; margin-bottom: 1rem;
+        display: inline-block;
+        font-family: var(--fm);
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--cyan);
+        background: rgba(79, 209, 197, 0.08);
+        border: 1px solid rgba(79, 209, 197, 0.18);
+        padding: 0.3em 0.9em;
+        border-radius: 100px;
+        margin-bottom: 1rem;
       }
       .project-title {
-        font-family: var(--fm); font-size: clamp(1.5rem, 4vw, 2.2rem);
-        font-weight: 700; color: var(--text); margin-bottom: 0.6rem;
+        font-family: var(--fm);
+        font-size: clamp(1.5rem, 4vw, 2.2rem);
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 0.6rem;
       }
       .project-subtitle {
-        color: var(--text-sec); font-size: 1rem;
-        max-width: 500px; margin: 0 auto; line-height: 1.6;
+        color: var(--text-sec);
+        font-size: 1rem;
+        max-width: 500px;
+        margin: 0 auto;
+        line-height: 1.6;
       }
 
       .project-info {
-        display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem; margin-bottom: 2rem;
-        animation: fadeUp 0.7s ease forwards; animation-delay: 0.2s; opacity: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+        animation: fadeUp 0.7s ease forwards;
+        animation-delay: 0.2s;
+        opacity: 0;
       }
       .info-card {
-        background: var(--surface); border: 1px solid var(--border);
-        border-radius: var(--r-md); padding: 1.2rem 1.4rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r-md);
+        padding: 1.2rem 1.4rem;
       }
       .info-card__label {
-        font-family: var(--fm); font-size: 0.7rem; font-weight: 600;
-        letter-spacing: 0.08em; text-transform: uppercase;
-        color: var(--text-muted); margin-bottom: 0.4rem;
+        font-family: var(--fm);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 0.4rem;
       }
-      .info-card__value { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+      .info-card__value {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--text);
+      }
 
       .project-desc {
-        background: var(--surface); border: 1px solid var(--border);
-        border-radius: var(--r-md); padding: 1.8rem 2rem; margin-bottom: 2rem;
-        animation: fadeUp 0.7s ease forwards; animation-delay: 0.3s; opacity: 0;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r-md);
+        padding: 1.8rem 2rem;
+        margin-bottom: 2rem;
+        animation: fadeUp 0.7s ease forwards;
+        animation-delay: 0.3s;
+        opacity: 0;
       }
       .project-desc h3 {
-        font-family: var(--fm); font-size: 0.8rem; font-weight: 600;
-        letter-spacing: 0.08em; text-transform: uppercase;
-        color: var(--blue); margin-bottom: 0.8rem;
+        font-family: var(--fm);
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--blue);
+        margin-bottom: 0.8rem;
       }
       .project-desc p {
-        color: var(--text-sec); font-size: 0.92rem;
-        line-height: 1.7; margin-bottom: 0.6rem;
+        color: var(--text-sec);
+        font-size: 0.92rem;
+        line-height: 1.7;
+        margin-bottom: 0.6rem;
       }
-      .project-desc p:last-child { margin-bottom: 0; }
-      .project-desc ul { list-style: none; padding: 0; margin-top: 0.6rem; }
+      .project-desc p:last-child {
+        margin-bottom: 0;
+      }
+      .project-desc ul {
+        list-style: none;
+        padding: 0;
+        margin-top: 0.6rem;
+      }
       .project-desc ul li {
-        color: var(--text-sec); font-size: 0.92rem; line-height: 1.7;
-        padding-left: 1.2rem; position: relative; margin-bottom: 0.3rem;
+        color: var(--text-sec);
+        font-size: 0.92rem;
+        line-height: 1.7;
+        padding-left: 1.2rem;
+        position: relative;
+        margin-bottom: 0.3rem;
       }
       .project-desc ul li::before {
-        content: ''; position: absolute; left: 0; top: 0.55em;
-        width: 5px; height: 5px; border-radius: 50%; background: var(--cyan);
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0.55em;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--cyan);
       }
 
       .auth-panel {
-        max-width: 400px; margin: 0 auto 2rem;
-        background: var(--surface); border: 1px solid var(--border);
-        border-radius: var(--r-lg); padding: 2rem;
-        animation: fadeUp 0.6s ease forwards; animation-delay: 0.15s; opacity: 0;
+        max-width: 400px;
+        margin: 0 auto 2rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r-lg);
+        padding: 2rem;
+        animation: fadeUp 0.6s ease forwards;
+        animation-delay: 0.15s;
+        opacity: 0;
       }
       .auth-panel__title {
-        font-family: var(--fm); font-size: 0.75rem; font-weight: 600;
-        letter-spacing: 0.08em; text-transform: uppercase;
-        color: var(--blue); text-align: center; margin-bottom: 1.5rem;
+        font-family: var(--fm);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--blue);
+        text-align: center;
+        margin-bottom: 1.5rem;
       }
       .tabs {
-        display: flex; margin-bottom: 1.5rem;
+        display: flex;
+        margin-bottom: 1.5rem;
         border-bottom: 1px solid var(--border);
       }
       .tab {
-        flex: 1; padding: 0.6rem; text-align: center;
-        font-family: var(--fm); font-size: 0.65rem; font-weight: 600;
-        letter-spacing: 0.08em; text-transform: uppercase;
-        cursor: pointer; color: var(--text-muted);
+        flex: 1;
+        padding: 0.6rem;
+        text-align: center;
+        font-family: var(--fm);
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+        color: var(--text-muted);
         border-bottom: 2px solid transparent;
-        transition: color 0.2s, border-color 0.2s;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
       }
-      .tab.active { color: var(--cyan); border-bottom-color: var(--cyan); }
-      .tab:hover { color: var(--text-sec); }
-      .tab-content { display: none; }
-      .tab-content.active { display: block; }
+      .tab.active {
+        color: var(--cyan);
+        border-bottom-color: var(--cyan);
+      }
+      .tab:hover {
+        color: var(--text-sec);
+      }
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+      }
 
-      .form-group { margin-bottom: 1rem; }
+      .form-group {
+        margin-bottom: 1rem;
+      }
       .form-group label {
-        display: block; font-size: 0.7rem; font-weight: 600;
-        color: var(--text-muted); margin-bottom: 0.35rem;
-        text-transform: uppercase; letter-spacing: 0.06em;
+        display: block;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        margin-bottom: 0.35rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
         font-family: var(--fm);
       }
       .form-group input {
-        width: 100%; padding: 0.65rem 0.85rem;
-        background: var(--bg); border: 1px solid var(--border);
-        border-radius: 8px; color: var(--text);
-        font-family: var(--fm); font-size: 0.85rem;
-        outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+        width: 100%;
+        padding: 0.65rem 0.85rem;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text);
+        font-family: var(--fm);
+        font-size: 0.85rem;
+        outline: none;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
       }
       .form-group input:focus {
         border-color: var(--blue);
-        box-shadow: 0 0 0 3px rgba(77,163,255,0.1);
+        box-shadow: 0 0 0 3px rgba(77, 163, 255, 0.1);
       }
 
       .btn {
-        display: inline-flex; align-items: center; justify-content: center;
-        gap: 0.5rem; padding: 0.65rem 1.5rem;
-        font-size: 0.85rem; font-weight: 600;
-        border-radius: var(--r-md); transition: all 0.25s;
-        text-decoration: none; cursor: pointer; border: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.65rem 1.5rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border-radius: var(--r-md);
+        transition: all 0.25s;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
         font-family: var(--ff);
       }
-      .btn svg { width: 16px; height: 16px; }
+      .btn svg {
+        width: 16px;
+        height: 16px;
+      }
       .btn--primary {
-        color: #0b0f19; background: var(--blue); border: 1px solid var(--blue);
+        color: #0b0f19;
+        background: var(--blue);
+        border: 1px solid var(--blue);
       }
       .btn--primary:hover {
-        background: #6bb3ff; border-color: #6bb3ff;
-        box-shadow: 0 4px 20px rgba(77,163,255,0.3); transform: translateY(-2px);
+        background: #6bb3ff;
+        border-color: #6bb3ff;
+        box-shadow: 0 4px 20px rgba(77, 163, 255, 0.3);
+        transform: translateY(-2px);
       }
       .btn--ghost {
-        color: var(--text-sec); background: transparent; border: 1px solid var(--border);
+        color: var(--text-sec);
+        background: transparent;
+        border: 1px solid var(--border);
       }
       .btn--ghost:hover {
-        color: var(--text); border-color: rgba(77,163,255,0.25);
-        background: rgba(77,163,255,0.04); transform: translateY(-2px);
+        color: var(--text);
+        border-color: rgba(77, 163, 255, 0.25);
+        background: rgba(77, 163, 255, 0.04);
+        transform: translateY(-2px);
       }
-      .btn--block { width: 100%; }
+      .btn--block {
+        width: 100%;
+      }
 
       .actions {
-        display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem;
-        animation: fadeUp 0.7s ease forwards; animation-delay: 0.4s; opacity: 0;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        animation: fadeUp 0.7s ease forwards;
+        animation-delay: 0.4s;
+        opacity: 0;
       }
 
-      .menu-list { display: flex; flex-direction: column; gap: 0.6rem; }
+      .menu-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+      }
       .menu-item {
-        display: flex; align-items: center; gap: 1rem;
-        width: 100%; padding: 1rem 1.2rem;
-        background: var(--surface); border: 1px solid var(--border);
-        border-radius: var(--r-md); color: var(--text);
-        font-size: 0.9rem; font-weight: 600; cursor: pointer;
-        text-align: left; transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+        padding: 1rem 1.2rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r-md);
+        color: var(--text);
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-align: left;
+        transition: all 0.2s;
       }
       .menu-item:hover {
         border-color: var(--border-hover);
@@ -265,79 +512,140 @@
         padding-left: 1.6rem;
       }
       .menu-item__num {
-        font-family: var(--fm); font-size: 0.7rem;
-        color: var(--cyan); min-width: 1.5rem;
+        font-family: var(--fm);
+        font-size: 0.7rem;
+        color: var(--cyan);
+        min-width: 1.5rem;
       }
-      .menu-item--danger { border-color: rgba(255,45,123,0.15); }
-      .menu-item--danger:hover { border-color: rgba(255,45,123,0.35); }
+      .menu-item--danger {
+        border-color: rgba(255, 45, 123, 0.15);
+      }
+      .menu-item--danger:hover {
+        border-color: rgba(255, 45, 123, 0.35);
+      }
 
       .msg {
-        padding: 0.65rem 0.85rem; border-radius: 8px;
-        font-size: 0.8rem; margin-bottom: 1rem; display: none;
+        padding: 0.65rem 0.85rem;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+        display: none;
         font-family: var(--fm);
       }
-      .msg.show { display: block; }
+      .msg.show {
+        display: block;
+      }
       .msg--error {
-        background: rgba(255,45,123,0.08); border: 1px solid rgba(255,45,123,0.2);
+        background: rgba(255, 45, 123, 0.08);
+        border: 1px solid rgba(255, 45, 123, 0.2);
         color: var(--red);
       }
       .msg--success {
-        background: rgba(0,230,118,0.08); border: 1px solid rgba(0,230,118,0.2);
+        background: rgba(0, 230, 118, 0.08);
+        border: 1px solid rgba(0, 230, 118, 0.2);
         color: var(--green);
       }
 
       .game-wrapper {
-        display: flex; justify-content: center; margin-bottom: 2.5rem;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2.5rem;
       }
       .game-frame {
-        position: relative; background: var(--surface);
-        border: 1px solid var(--border); border-radius: var(--r-lg);
+        position: relative;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r-lg);
         overflow: hidden;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.35), 0 0 40px rgba(77,163,255,0.04);
-        transition: box-shadow 0.4s, border-color 0.4s;
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.35),
+          0 0 40px rgba(77, 163, 255, 0.04);
+        transition:
+          box-shadow 0.4s,
+          border-color 0.4s;
         max-width: 100%;
       }
       .game-frame:hover {
-        border-color: rgba(77,163,255,0.2);
-        box-shadow: 0 25px 70px rgba(0,0,0,0.4), 0 0 50px rgba(77,163,255,0.08);
+        border-color: rgba(77, 163, 255, 0.2);
+        box-shadow:
+          0 25px 70px rgba(0, 0, 0, 0.4),
+          0 0 50px rgba(77, 163, 255, 0.08);
       }
       .game-frame__bar {
-        display: flex; align-items: center; justify-content: space-between;
-        padding: 0.5rem 1rem; background: rgba(22,27,34,0.95);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.5rem 1rem;
+        background: rgba(22, 27, 34, 0.95);
         border-bottom: 1px solid var(--border);
       }
-      .game-frame__dots { display: flex; gap: 6px; }
-      .game-frame__dot { width: 10px; height: 10px; border-radius: 50%; }
-      .game-frame__dot--red { background: #ff5f57; }
-      .game-frame__dot--yellow { background: #ffbd2e; }
-      .game-frame__dot--green { background: #28c840; }
+      .game-frame__dots {
+        display: flex;
+        gap: 6px;
+      }
+      .game-frame__dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+      .game-frame__dot--red {
+        background: #ff5f57;
+      }
+      .game-frame__dot--yellow {
+        background: #ffbd2e;
+      }
+      .game-frame__dot--green {
+        background: #28c840;
+      }
       .game-frame__label {
-        font-family: var(--fm); font-size: 0.7rem;
-        color: var(--text-muted); letter-spacing: 0.05em;
+        font-family: var(--fm);
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        letter-spacing: 0.05em;
       }
       .game-frame__fullscreen {
-        display: flex; align-items: center; justify-content: center;
-        width: 28px; height: 28px; border-radius: 6px;
-        color: var(--text-muted); background: transparent;
-        border: 1px solid transparent; cursor: pointer;
-        transition: color 0.2s, background 0.2s, border-color 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        color: var(--text-muted);
+        background: transparent;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition:
+          color 0.2s,
+          background 0.2s,
+          border-color 0.2s;
       }
       .game-frame__fullscreen:hover {
-        color: var(--blue); background: rgba(77,163,255,0.08);
-        border-color: rgba(77,163,255,0.2);
+        color: var(--blue);
+        background: rgba(77, 163, 255, 0.08);
+        border-color: rgba(77, 163, 255, 0.2);
       }
-      .game-frame__fullscreen svg { width: 14px; height: 14px; }
+      .game-frame__fullscreen svg {
+        width: 14px;
+        height: 14px;
+      }
 
       #gameCanvas {
-        display: block; width: 485px; height: 402px;
-        max-width: 100%; background: #0a0a12;
+        display: block;
+        width: 485px;
+        height: 402px;
+        max-width: 100%;
+        background: #0a0a12;
       }
 
       .game-frame:fullscreen,
       .game-frame:-webkit-full-screen {
-        display: flex; flex-direction: column;
-        background: #0a0a12; border: none; border-radius: 0;
-        width: 100vw; height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: #0a0a12;
+        border: none;
+        border-radius: 0;
+        width: 100vw;
+        height: 100vh;
       }
       .game-frame:fullscreen .game-frame__bar,
       .game-frame:-webkit-full-screen .game-frame__bar {
@@ -345,93 +653,184 @@
       }
       .game-frame:fullscreen #gameCanvas,
       .game-frame:-webkit-full-screen #gameCanvas {
-        width: 100vw; height: 100vh; max-width: none;
+        width: 100vw;
+        height: 100vh;
+        max-width: none;
       }
 
       .report-panel {
-        background: var(--surface); border: 1px solid var(--border);
-        border-radius: var(--r-md); padding: 1.5rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r-md);
+        padding: 1.5rem;
         margin-bottom: 1.5rem;
       }
       .report-panel__title {
-        font-family: var(--fm); font-size: 0.7rem; font-weight: 600;
-        letter-spacing: 0.08em; text-transform: uppercase;
-        color: var(--blue); margin-bottom: 1rem;
+        font-family: var(--fm);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--blue);
+        margin-bottom: 1rem;
       }
       .report-panel__header {
-        font-size: 0.85rem; color: var(--gold);
-        margin-bottom: 0.8rem; font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--gold);
+        margin-bottom: 0.8rem;
+        font-weight: 600;
       }
       .report-table {
-        width: 100%; border-collapse: collapse; font-size: 0.8rem;
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.8rem;
       }
       .report-table th {
-        background: var(--surface-2); color: var(--cyan);
-        font-family: var(--fm); font-size: 0.6rem; font-weight: 600;
-        padding: 0.6rem 0.5rem; text-align: left;
+        background: var(--surface-2);
+        color: var(--cyan);
+        font-family: var(--fm);
+        font-size: 0.6rem;
+        font-weight: 600;
+        padding: 0.6rem 0.5rem;
+        text-align: left;
         border-bottom: 1px solid var(--border);
-        letter-spacing: 0.06em; text-transform: uppercase;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
       }
       .report-table td {
-        padding: 0.5rem; border-bottom: 1px solid rgba(42,42,64,0.4);
+        padding: 0.5rem;
+        border-bottom: 1px solid rgba(42, 42, 64, 0.4);
         color: var(--text-sec);
       }
-      .report-table tr:hover td { color: var(--text); background: rgba(77,163,255,0.02); }
-      .report-table .highlight { color: var(--green); font-weight: 600; }
+      .report-table tr:hover td {
+        color: var(--text);
+        background: rgba(77, 163, 255, 0.02);
+      }
+      .report-table .highlight {
+        color: var(--green);
+        font-weight: 600;
+      }
       .report-table .total-row td {
-        border-top: 1px solid var(--border); font-weight: 600; color: var(--text);
+        border-top: 1px solid var(--border);
+        font-weight: 600;
+        color: var(--text);
       }
       .report-empty {
-        color: var(--text-muted); font-size: 0.85rem;
-        text-align: center; padding: 2rem 0;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        text-align: center;
+        padding: 2rem 0;
       }
-      .report-select { margin-bottom: 1rem; }
+      .report-select {
+        margin-bottom: 1rem;
+      }
       .report-select label {
-        display: block; font-family: var(--fm); font-size: 0.65rem;
-        color: var(--text-muted); margin-bottom: 0.3rem;
-        text-transform: uppercase; letter-spacing: 0.06em;
+        display: block;
+        font-family: var(--fm);
+        font-size: 0.65rem;
+        color: var(--text-muted);
+        margin-bottom: 0.3rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
       }
       .report-select select {
-        padding: 0.5rem 0.75rem; background: var(--bg);
-        border: 1px solid var(--border); border-radius: 8px;
-        color: var(--text); font-family: var(--fm); font-size: 0.8rem;
-        outline: none; cursor: pointer;
+        padding: 0.5rem 0.75rem;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text);
+        font-family: var(--fm);
+        font-size: 0.8rem;
+        outline: none;
+        cursor: pointer;
       }
-      .report-select select:focus { border-color: var(--blue); }
-      .scroll-box { max-height: 400px; overflow-y: auto; }
-      .scroll-box::-webkit-scrollbar { width: 4px; }
-      .scroll-box::-webkit-scrollbar-track { background: var(--bg); }
-      .scroll-box::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+      .report-select select:focus {
+        border-color: var(--blue);
+      }
+      .scroll-box {
+        max-height: 400px;
+        overflow-y: auto;
+      }
+      .scroll-box::-webkit-scrollbar {
+        width: 4px;
+      }
+      .scroll-box::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      .scroll-box::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 2px;
+      }
 
       .page-footer {
-        text-align: center; padding-top: 1.5rem;
+        text-align: center;
+        padding-top: 1.5rem;
         border-top: 1px solid var(--border);
-        animation: fadeUp 0.6s ease forwards; animation-delay: 0.5s; opacity: 0;
+        animation: fadeUp 0.6s ease forwards;
+        animation-delay: 0.5s;
+        opacity: 0;
       }
       .page-footer p {
-        font-family: var(--fm); font-size: 0.75rem;
-        color: var(--text-muted); letter-spacing: 0.03em;
+        font-family: var(--fm);
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        letter-spacing: 0.03em;
       }
-      .page-footer a { color: var(--text-sec); transition: color 0.2s; }
-      .page-footer a:hover { color: var(--blue); }
+      .page-footer a {
+        color: var(--text-sec);
+        transition: color 0.2s;
+      }
+      .page-footer a:hover {
+        color: var(--blue);
+      }
 
       @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(18px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
       @keyframes orbDrift {
-        0% { transform: translate(0, 0) scale(1); }
-        100% { transform: translate(40px, 30px) scale(1.05); }
+        0% {
+          transform: translate(0, 0) scale(1);
+        }
+        100% {
+          transform: translate(40px, 30px) scale(1.05);
+        }
       }
 
       @media (max-width: 540px) {
-        .page { padding: 1.5rem 1rem 2.5rem; }
-        #gameCanvas { width: 100%; height: auto; aspect-ratio: 640 / 480; }
-        .topbar { flex-direction: column; gap: 1rem; align-items: flex-start; }
-        .actions { flex-direction: column; align-items: stretch; }
-        .btn { justify-content: center; }
-        .report-table { font-size: 0.7rem; }
-        .report-table th, .report-table td { padding: 0.4rem 0.3rem; }
+        .page {
+          padding: 1.5rem 1rem 2.5rem;
+        }
+        #gameCanvas {
+          width: 100%;
+          height: auto;
+          aspect-ratio: 640 / 480;
+        }
+        .topbar {
+          flex-direction: column;
+          gap: 1rem;
+          align-items: flex-start;
+        }
+        .actions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .btn {
+          justify-content: center;
+        }
+        .report-table {
+          font-size: 0.7rem;
+        }
+        .report-table th,
+        .report-table td {
+          padding: 0.4rem 0.3rem;
+        }
       }
     </style>
   </head>
@@ -446,7 +845,8 @@
       <nav class="topbar">
         <a href="index.html" class="topbar__back">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
           </svg>
           <span>Volver</span>
         </a>
@@ -490,9 +890,9 @@
         <header class="project-header">
           <div class="project-badge">Menu Principal</div>
           <h1 class="project-title">Palas y Pelotas</h1>
-          <p class="project-subtitle">Hola, <span id="menu-username" style="color:var(--cyan)"></span></p>
+          <p class="project-subtitle">Hola, <span id="menu-username" style="color: var(--cyan)"></span></p>
         </header>
-        <div style="max-width:400px;margin:0 auto 2rem;">
+        <div style="max-width: 400px; margin: 0 auto 2rem">
           <div class="menu-list">
             <button class="menu-item" id="menu-play"><span class="menu-item__num">1.</span>Jugar</button>
             <button class="menu-item" id="menu-reports"><span class="menu-item__num">2.</span>Consultar Informes</button>
@@ -503,17 +903,18 @@
 
       <!-- ==================== SCREEN: REPORTS ==================== -->
       <div id="screen-reports" class="screen">
-        <span class="topbar__back" id="back-menu" style="margin-bottom:1.5rem;display:inline-flex;">
+        <span class="topbar__back" id="back-menu" style="margin-bottom: 1.5rem; display: inline-flex">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
           </svg>
           <span>Volver al menu</span>
         </span>
         <header class="project-header">
           <div class="project-badge">Informes</div>
-          <h1 class="project-title" style="font-size:1.4rem;">Menu de Informes</h1>
+          <h1 class="project-title" style="font-size: 1.4rem">Menu de Informes</h1>
         </header>
-        <div style="max-width:400px;margin:0 auto 2rem;">
+        <div style="max-width: 400px; margin: 0 auto 2rem">
           <div class="menu-list">
             <button class="menu-item" id="rep-movements"><span class="menu-item__num">1.</span>Movimientos por Partida</button>
             <button class="menu-item" id="rep-ranking"><span class="menu-item__num">2.</span>Ranking por Usuario</button>
@@ -524,9 +925,10 @@
 
       <!-- ==================== SCREEN: REPORT DETAIL ==================== -->
       <div id="screen-report-detail" class="screen">
-        <span class="topbar__back" id="back-reports" style="margin-bottom:1.5rem;display:inline-flex;">
+        <span class="topbar__back" id="back-reports" style="margin-bottom: 1.5rem; display: inline-flex">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
           </svg>
           <span>Volver a informes</span>
         </span>
@@ -539,9 +941,10 @@
 
       <!-- ==================== SCREEN: GAME ==================== -->
       <div id="screen-game" class="screen">
-        <span class="topbar__back" id="back-menu-game" style="margin-bottom:1.5rem;display:inline-flex;">
+        <span class="topbar__back" id="back-menu-game" style="margin-bottom: 1.5rem; display: inline-flex">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
           </svg>
           <span>Volver al menu</span>
         </span>
@@ -556,8 +959,10 @@
               <span class="game-frame__label">palas-y-pelotas</span>
               <button class="game-frame__fullscreen" id="fullscreenBtn" title="Pantalla completa">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="15 3 21 3 21 9" /><polyline points="9 21 3 21 3 15" />
-                  <line x1="21" y1="3" x2="14" y2="10" /><line x1="3" y1="21" x2="10" y2="14" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <polyline points="9 21 3 21 3 15" />
+                  <line x1="21" y1="3" x2="14" y2="10" />
+                  <line x1="3" y1="21" x2="10" y2="14" />
                 </svg>
               </button>
             </div>
@@ -581,9 +986,8 @@
       <div class="project-desc">
         <h3>Sobre el proyecto</h3>
         <p>
-          Juego tipo Pong desarrollado como trabajo práctico de Programación 1, con gestión administrativa completa.
-          El jugador controla una pala para devolver tres pelotas simultáneas mientras enfrenta a una IA con dificultad
-          progresiva a lo largo de 10 niveles.
+          Juego tipo Pong desarrollado como trabajo práctico de Programación 1, con gestión administrativa completa. El jugador controla una
+          pala para devolver tres pelotas simultáneas mientras enfrenta a una IA con dificultad progresiva a lo largo de 10 niveles.
         </p>
         <p>Características principales:</p>
         <ul>
@@ -607,539 +1011,987 @@
         </a>
         <a href="index.html" class="btn btn--ghost">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
           </svg>
           Volver al inicio
         </a>
       </div>
 
       <footer class="page-footer">
-        <p>&copy; <script>document.write(new Date().getFullYear())</script> Gustavox · <a href="index.html">gustavox.dev</a></p>
+        <p>
+          &copy;
+          <script>
+            document.write(new Date().getFullYear());
+          </script>
+          Gustavox · <a href="index.html">gustavox.dev</a>
+        </p>
       </footer>
     </div>
 
     <script>
-    (function () {
-      'use strict';
+      (function () {
+        'use strict';
 
-      var ANCHO = 640, ALTO = 480;
-      var MAX_NIVEL = 10;
-      var VIDAS_INICIALES = 5;
-      var VELOCIDAD_BASE = 3;
+        var ANCHO = 640,
+          ALTO = 480;
+        var MAX_NIVEL = 10;
+        var VIDAS_INICIALES = 5;
+        var VELOCIDAD_BASE = 3;
 
-      var COL = {
-        BLANCO: '#ffffff', NEGRO: '#0a0a12', ROJO: '#ff2d7b',
-        AZUL: '#4da3ff', VERDE: '#00e676', AMARILLO: '#ffab00',
-        GRIS: '#3a3a4a', NARANJA: '#ff6d00'
-      };
+        var COL = {
+          BLANCO: '#ffffff',
+          NEGRO: '#0a0a12',
+          ROJO: '#ff2d7b',
+          AZUL: '#4da3ff',
+          VERDE: '#00e676',
+          AMARILLO: '#ffab00',
+          GRIS: '#3a3a4a',
+          NARANJA: '#ff6d00',
+        };
 
-      var canvas = document.getElementById('gameCanvas');
-      var ctx = canvas.getContext('2d');
-      var gameFrame = document.getElementById('gameFrame');
+        var canvas = document.getElementById('gameCanvas');
+        var ctx = canvas.getContext('2d');
+        var gameFrame = document.getElementById('gameFrame');
 
-      /* ==========================================================
-       *  BASE DE DATOS (localStorage)
-       * ========================================================== */
-      var DB = {
-        _get: function (k, d) {
-          try { var v = localStorage.getItem('pp_' + k); return v ? JSON.parse(v) : d; }
-          catch (e) { return d; }
-        },
-        _set: function (k, v) { localStorage.setItem('pp_' + k, JSON.stringify(v)); },
-        getUsers: function () { return this._get('users', []); },
-        saveUsers: function (u) { this._set('users', u); },
-        nextCod: function () {
-          var u = this.getUsers();
-          return u.length ? Math.max.apply(null, u.map(function (x) { return x.cod; })) + 1 : 1;
-        },
-        getCounter: function () { return this._get('counter', 0); },
-        incCounter: function () { var c = this.getCounter() + 1; this._set('counter', c); return c; },
-        getGames: function () { return this._get('games', []); },
-        addGame: function (g) { var gs = this.getGames(); gs.push(g); this._set('games', gs); },
-        getCollisions: function () { return this._get('cols', []); },
-        addCollision: function (r) {
-          var cs = this.getCollisions(); r.id = cs.length + 1; cs.push(r); this._set('cols', cs); return r.id;
-        },
-        updateCollision: function (id, fields) {
-          var cs = this.getCollisions();
-          for (var i = 0; i < cs.length; i++) {
-            if (cs[i].id === id) { for (var k in fields) { if (fields.hasOwnProperty(k)) cs[i][k] = fields[k]; } break; }
+        /* ==========================================================
+         *  BASE DE DATOS (localStorage)
+         * ========================================================== */
+        var DB = {
+          _get: function (k, d) {
+            try {
+              var v = localStorage.getItem('pp_' + k);
+              return v ? JSON.parse(v) : d;
+            } catch (e) {
+              return d;
+            }
+          },
+          _set: function (k, v) {
+            localStorage.setItem('pp_' + k, JSON.stringify(v));
+          },
+          getUsers: function () {
+            return this._get('users', []);
+          },
+          saveUsers: function (u) {
+            this._set('users', u);
+          },
+          nextCod: function () {
+            var u = this.getUsers();
+            return u.length
+              ? Math.max.apply(
+                  null,
+                  u.map(function (x) {
+                    return x.cod;
+                  }),
+                ) + 1
+              : 1;
+          },
+          getCounter: function () {
+            return this._get('counter', 0);
+          },
+          incCounter: function () {
+            var c = this.getCounter() + 1;
+            this._set('counter', c);
+            return c;
+          },
+          getGames: function () {
+            return this._get('games', []);
+          },
+          addGame: function (g) {
+            var gs = this.getGames();
+            gs.push(g);
+            this._set('games', gs);
+          },
+          getCollisions: function () {
+            return this._get('cols', []);
+          },
+          addCollision: function (r) {
+            var cs = this.getCollisions();
+            r.id = cs.length + 1;
+            cs.push(r);
+            this._set('cols', cs);
+            return r.id;
+          },
+          updateCollision: function (id, fields) {
+            var cs = this.getCollisions();
+            for (var i = 0; i < cs.length; i++) {
+              if (cs[i].id === id) {
+                for (var k in fields) {
+                  if (fields.hasOwnProperty(k)) cs[i][k] = fields[k];
+                }
+                break;
+              }
+            }
+            this._set('cols', cs);
+          },
+          getPointers: function (cod) {
+            var p = this._get('ptrs', {});
+            return p[cod] || { ini: 0, fin: 0 };
+          },
+          savePointers: function (cod, ini, fin) {
+            var p = this._get('ptrs', {});
+            p[cod] = { ini: ini, fin: fin };
+            this._set('ptrs', p);
+          },
+        };
+
+        /* ==========================================================
+         *  AUTENTICACION
+         * ========================================================== */
+        var currentUser = null;
+
+        function registrarUsuario(nombre, usuario, clave) {
+          if (!nombre || !usuario || !clave) return 'Todos los campos son obligatorios.';
+          var users = DB.getUsers();
+          for (var i = 0; i < users.length; i++) {
+            if (users[i].usuario === usuario) return 'El nombre de usuario ya existe.';
           }
-          this._set('cols', cs);
-        },
-        getPointers: function (cod) { var p = this._get('ptrs', {}); return p[cod] || { ini: 0, fin: 0 }; },
-        savePointers: function (cod, ini, fin) { var p = this._get('ptrs', {}); p[cod] = { ini: ini, fin: fin }; this._set('ptrs', p); }
-      };
-
-      /* ==========================================================
-       *  AUTENTICACION
-       * ========================================================== */
-      var currentUser = null;
-
-      function registrarUsuario(nombre, usuario, clave) {
-        if (!nombre || !usuario || !clave) return 'Todos los campos son obligatorios.';
-        var users = DB.getUsers();
-        for (var i = 0; i < users.length; i++) { if (users[i].usuario === usuario) return 'El nombre de usuario ya existe.'; }
-        var cod = DB.nextCod();
-        users.push({ cod: cod, nombre: nombre, usuario: usuario, clave: clave });
-        DB.saveUsers(users);
-        return { cod: cod, nombre: nombre };
-      }
-
-      function loginUsuario(usuario, clave) {
-        var users = DB.getUsers();
-        for (var i = 0; i < users.length; i++) {
-          if (users[i].usuario === usuario && users[i].clave === clave)
-            return { cod: users[i].cod, nombre: users[i].nombre, usuario: users[i].usuario };
+          var cod = DB.nextCod();
+          users.push({ cod: cod, nombre: nombre, usuario: usuario, clave: clave });
+          DB.saveUsers(users);
+          return { cod: cod, nombre: nombre };
         }
-        return 'Usuario o clave incorrectos.';
-      }
 
-      function siguienteNumPartida(cod) {
-        var max = 0;
-        DB.getGames().forEach(function (g) { if (g.cod === cod && g.num > max) max = g.num; });
-        return max + 1;
-      }
-
-      /* ==========================================================
-       *  GRABACION DE PARTIDAS Y COLISIONES
-       * ========================================================== */
-      function guardarPartida(cod, num, pa, pb, nivel) {
-        DB.addGame({ cod: cod, num: num, pA: pa, pB: pb, fecha: new Date().toISOString().replace('T', ' ').slice(0, 19), nivel: nivel });
-        DB.incCounter();
-      }
-
-      function guardarColision(codUsuario, numPartida, x, y, observacion) {
-        var fecha = new Date().toISOString().replace('T', ' ').slice(0, 19);
-        var coord = '(' + Math.round(x) + ',' + Math.round(y) + ')';
-        var ptr = DB.getPointers(codUsuario);
-        var id = DB.addCollision({ cod: codUsuario, partida: numPartida, fecha: fecha, coord: coord, obs: observacion, prev: ptr.fin, next: 0 });
-        if (ptr.fin > 0) DB.updateCollision(ptr.fin, { next: id });
-        DB.savePointers(codUsuario, ptr.ini || id, id);
-      }
-
-      /* ==========================================================
-       *  INFORMES
-       * ========================================================== */
-      function getMovements(cod, partida) {
-        var ptr = DB.getPointers(cod), cols = DB.getCollisions(), res = [];
-        if (!ptr.ini) return res;
-        var pos = ptr.ini;
-        while (pos) {
-          var r = null;
-          for (var i = 0; i < cols.length; i++) { if (cols[i].id === pos) { r = cols[i]; break; } }
-          if (!r) break;
-          if (r.partida === partida) res.push(r);
-          pos = r.next;
+        function loginUsuario(usuario, clave) {
+          var users = DB.getUsers();
+          for (var i = 0; i < users.length; i++) {
+            if (users[i].usuario === usuario && users[i].clave === clave)
+              return { cod: users[i].cod, nombre: users[i].nombre, usuario: users[i].usuario };
+          }
+          return 'Usuario o clave incorrectos.';
         }
-        return res;
-      }
 
-      function getUserGames(cod) { return DB.getGames().filter(function (g) { return g.cod === cod; }); }
-
-      function getMatrix(cod, partida) {
-        var movs = getMovements(cod, partida), m = {};
-        ['Pala1', 'Pala2'].forEach(function (p) { m[p] = {}; for (var i = 1; i <= 3; i++) m[p]['Pelota' + i] = 0; });
-        movs.forEach(function (r) {
-          var o = r.obs || '';
-          ['Pala1', 'Pala2'].forEach(function (p) {
-            for (var i = 1; i <= 3; i++) { if (o.indexOf(p) !== -1 && o.indexOf('Pelota' + i) !== -1) m[p]['Pelota' + i]++; }
+        function siguienteNumPartida(cod) {
+          var max = 0;
+          DB.getGames().forEach(function (g) {
+            if (g.cod === cod && g.num > max) max = g.num;
           });
-        });
-        return m;
-      }
-
-      /* ==========================================================
-       *  PANTALLAS
-       * ========================================================== */
-      var allScreens = ['screen-auth', 'screen-menu', 'screen-reports', 'screen-report-detail', 'screen-game'];
-
-      function showScreen(id) {
-        allScreens.forEach(function (s) { document.getElementById(s).classList.remove('active'); });
-        document.getElementById(id).classList.add('active');
-        if (id === 'screen-game') { if (!G.running) { iniciarJuego(); G.running = true; } }
-        else { if (G.running) { G.running = false; G.estado = 'idle'; } }
-      }
-
-      function showMsg(elId, text, type) {
-        var el = document.getElementById(elId);
-        el.textContent = text;
-        el.className = 'msg show msg--' + type;
-      }
-
-      /* ==========================================================
-       *  RENDERIZADO DE INFORMES
-       * ========================================================== */
-      function renderMovements() {
-        var games = getUserGames(currentUser.cod);
-        if (!games.length) {
-          document.getElementById('report-title').textContent = 'Movimientos por Partida';
-          document.getElementById('report-controls').innerHTML = '';
-          document.getElementById('report-content').innerHTML = '<div class="report-empty">No hay partidas registradas.</div>';
-          showScreen('screen-report-detail'); return;
+          return max + 1;
         }
-        var html = '<div class="report-select"><label>Seleccionar Partida</label><select id="sel-game-mov">';
-        games.forEach(function (g) { html += '<option value="' + g.num + '">Partida #' + g.num + ' (' + g.fecha + ')</option>'; });
-        html += '</select></div>';
-        document.getElementById('report-title').textContent = 'Movimientos por Partida';
-        document.getElementById('report-controls').innerHTML = html;
-        updateMovementsView(games[games.length - 1].num);
-        showScreen('screen-report-detail');
-        document.getElementById('sel-game-mov').addEventListener('change', function (e) { updateMovementsView(parseInt(e.target.value)); });
-      }
 
-      function updateMovementsView(partida) {
-        var movs = getMovements(currentUser.cod, partida);
-        var html = '<div class="report-panel__header">Usuario: ' + currentUser.cod + ' | ' + currentUser.nombre + ' | Partida: ' + partida + '</div>';
-        html += '<table class="report-table"><thead><tr><th>Fecha</th><th>Coord</th><th>Observacion</th></tr></thead><tbody>';
-        movs.forEach(function (m) { html += '<tr><td>' + m.fecha + '</td><td>' + m.coord + '</td><td>' + m.obs + '</td></tr>'; });
-        html += '</tbody></table>';
-        html += '<div class="report-panel__header" style="margin-top:0.8rem;">Total Colisiones: ' + movs.length + '</div>';
-        document.getElementById('report-content').innerHTML = html;
-      }
-
-      function renderRanking() {
-        var games = getUserGames(currentUser.cod);
-        var html = '<div class="report-panel__header">Usuario: ' + currentUser.cod + ' | ' + currentUser.nombre + '</div>';
-        html += '<table class="report-table"><thead><tr><th>Part.</th><th>Pts A</th><th>Pts B</th><th>Total</th><th>Nivel</th><th>Fecha</th></tr></thead><tbody>';
-        var tA = 0, tB = 0, tT = 0;
-        games.forEach(function (g) { var t = g.pA + g.pB; tA += g.pA; tB += g.pB; tT += t; html += '<tr><td>' + g.num + '</td><td>' + g.pA + '</td><td>' + g.pB + '</td><td>' + t + '</td><td>' + g.nivel + '</td><td>' + g.fecha + '</td></tr>'; });
-        html += '<tr class="total-row"><td>TOTAL</td><td>' + tA + '</td><td>' + tB + '</td><td>' + tT + '</td><td></td><td></td></tr></tbody></table>';
-        if (games.length) {
-          var best = games.reduce(function (a, b) { return (a.pA + a.pB) > (b.pA + b.pB) ? a : b; });
-          var worst = games.reduce(function (a, b) { return (a.pA + a.pB) < (b.pA + b.pB) ? a : b; });
-          html += '<div class="report-panel__header" style="margin-top:0.8rem;">Mejor Partida: #' + best.num + ' (' + (best.pA + best.pB) + ' pts)</div>';
-          html += '<div class="report-panel__header">Peor Partida: #' + worst.num + ' (' + (worst.pA + worst.pB) + ' pts)</div>';
+        /* ==========================================================
+         *  GRABACION DE PARTIDAS Y COLISIONES
+         * ========================================================== */
+        function guardarPartida(cod, num, pa, pb, nivel) {
+          DB.addGame({ cod: cod, num: num, pA: pa, pB: pb, fecha: new Date().toISOString().replace('T', ' ').slice(0, 19), nivel: nivel });
+          DB.incCounter();
         }
-        document.getElementById('report-title').textContent = 'Ranking por Usuario';
-        document.getElementById('report-controls').innerHTML = '';
-        document.getElementById('report-content').innerHTML = html;
-        showScreen('screen-report-detail');
-      }
 
-      function renderMatrix() {
-        var games = getUserGames(currentUser.cod);
-        if (!games.length) {
-          document.getElementById('report-title').textContent = 'Matriz de Colisiones';
-          document.getElementById('report-controls').innerHTML = '';
-          document.getElementById('report-content').innerHTML = '<div class="report-empty">No hay datos.</div>';
-          showScreen('screen-report-detail'); return;
+        function guardarColision(codUsuario, numPartida, x, y, observacion) {
+          var fecha = new Date().toISOString().replace('T', ' ').slice(0, 19);
+          var coord = '(' + Math.round(x) + ',' + Math.round(y) + ')';
+          var ptr = DB.getPointers(codUsuario);
+          var id = DB.addCollision({
+            cod: codUsuario,
+            partida: numPartida,
+            fecha: fecha,
+            coord: coord,
+            obs: observacion,
+            prev: ptr.fin,
+            next: 0,
+          });
+          if (ptr.fin > 0) DB.updateCollision(ptr.fin, { next: id });
+          DB.savePointers(codUsuario, ptr.ini || id, id);
         }
-        var html = '<div class="report-select"><label>Seleccionar Partida</label><select id="sel-game-mat">';
-        games.forEach(function (g) { html += '<option value="' + g.num + '">Partida #' + g.num + ' (' + g.fecha + ')</option>'; });
-        html += '</select></div>';
-        document.getElementById('report-title').textContent = 'Matriz de Colisiones';
-        document.getElementById('report-controls').innerHTML = html;
-        updateMatrixView(games[games.length - 1].num);
-        showScreen('screen-report-detail');
-        document.getElementById('sel-game-mat').addEventListener('change', function (e) { updateMatrixView(parseInt(e.target.value)); });
-      }
 
-      function updateMatrixView(partida) {
-        var matrix = getMatrix(currentUser.cod, partida);
-        var html = '<div class="report-panel__header">Usuario: ' + currentUser.cod + ' | ' + currentUser.nombre + ' | Partida: ' + partida + '</div>';
-        html += '<table class="report-table"><thead><tr><th>Objeto</th><th>Pelota 1</th><th>Pelota 2</th><th>Pelota 3</th><th>Total</th></tr></thead><tbody>';
-        var total = 0;
-        ['Pala1', 'Pala2'].forEach(function (p) {
-          var v = [1, 2, 3].map(function (i) { return matrix[p]['Pelota' + i]; });
-          var t = v[0] + v[1] + v[2]; total += t;
-          html += '<tr><td>' + p + '</td><td>' + v[0] + '</td><td>' + v[1] + '</td><td>' + v[2] + '</td><td class="highlight">' + t + '</td></tr>';
-        });
-        html += '<tr class="total-row"><td>TOTAL Gral.</td><td></td><td></td><td></td><td class="highlight">' + total + '</td></tr></tbody></table>';
-        document.getElementById('report-content').innerHTML = html;
-      }
-
-      /* ==========================================================
-       *  FULLSCREEN
-       * ========================================================== */
-      var isFullscreen = false, fsScaleX = 1, fsScaleY = 1;
-
-      function recalcularFullscreen() {
-        if (!isFullscreen) return;
-        var cw = window.innerWidth, ch = window.innerHeight;
-        canvas.width = cw; canvas.height = ch;
-        fsScaleX = cw / ANCHO; fsScaleY = ch / ALTO;
-      }
-
-      function onFullscreenChange() {
-        isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
-        if (isFullscreen) { recalcularFullscreen(); }
-        else { canvas.width = 640; canvas.height = 480; canvas.style.width = ''; canvas.style.height = ''; fsScaleX = 1; fsScaleY = 1; }
-      }
-
-      document.addEventListener('fullscreenchange', onFullscreenChange);
-      document.addEventListener('webkitfullscreenchange', onFullscreenChange);
-      window.addEventListener('resize', recalcularFullscreen);
-
-      document.getElementById('fullscreenBtn').addEventListener('click', function () {
-        if (gameFrame.requestFullscreen) gameFrame.requestFullscreen();
-        else if (gameFrame.webkitRequestFullscreen) gameFrame.webkitRequestFullscreen();
-        else if (gameFrame.msRequestFullscreen) gameFrame.msRequestFullscreen();
-      });
-
-      /* ==========================================================
-       *  CLASES DEL JUEGO
-       * ========================================================== */
-      function Pala(x, color) { this.w = 14; this.h = 80; this.x = x - this.w / 2; this.y = ALTO / 2 - this.h / 2; this.color = color; this.velocidad = 5; }
-      Pala.prototype.moverJugador = function (keys) {
-        if (this.y > 0 && (keys.ArrowUp || keys.w)) this.y -= this.velocidad;
-        if (this.y + this.h < ALTO && (keys.ArrowDown || keys.s)) this.y += this.velocidad;
-        this.y = Math.max(0, Math.min(ALTO - this.h, this.y));
-      };
-      Pala.prototype.moverCPU = function (pelota, factor) {
-        var cy = this.y + this.h / 2;
-        if (pelota.vx > 0) { if (cy < pelota.y) this.y += this.velocidad * factor; else if (cy > pelota.y) this.y -= this.velocidad * factor; }
-        this.y = Math.max(0, Math.min(ALTO - this.h, this.y));
-      };
-
-      function Pelota(vx, vy, color, radio) { this.radio = radio; this.color = color; this.x = ANCHO / 2; this.y = ALTO / 2; this.vx = vx; this.vy = vy; }
-      Pelota.prototype.actualizar = function (pala1, pala2) {
-        var colision = null, vidaPerdida = null;
-        this.x += this.vx; this.y += this.vy;
-        if (this.y - this.radio <= 0) { this.y = this.radio; this.vy = Math.abs(this.vy); }
-        if (this.y + this.radio >= ALTO) { this.y = ALTO - this.radio; this.vy = -Math.abs(this.vy); }
-        if (this.vx < 0 && this.x - this.radio <= pala1.x + pala1.w && this.x + this.radio >= pala1.x && this.y + this.radio >= pala1.y && this.y - this.radio <= pala1.y + pala1.h) {
-          this.vx = Math.abs(this.vx); this.x = pala1.x + pala1.w + this.radio; colision = { o: 'Pala1', cx: this.x, cy: this.y };
-        }
-        if (this.vx > 0 && this.x + this.radio >= pala2.x && this.x - this.radio <= pala2.x + pala2.w && this.y + this.radio >= pala2.y && this.y - this.radio <= pala2.y + pala2.h) {
-          this.vx = -Math.abs(this.vx); this.x = pala2.x - this.radio; colision = { o: 'Pala2', cx: this.x, cy: this.y };
-        }
-        if (this.x + this.radio < 0) { vidaPerdida = 'jugador'; this.reiniciar(1); }
-        if (this.x - this.radio > ANCHO) { vidaPerdida = 'cpu'; this.reiniciar(-1); }
-        return { colision: colision, vidaPerdida: vidaPerdida };
-      };
-      Pelota.prototype.reiniciar = function (dir) {
-        this.x = ANCHO / 2; this.y = ALTO / 2;
-        var v = Math.max(Math.abs(this.vx), VELOCIDAD_BASE);
-        var vy = v * (0.4 + Math.random() * 0.6); if (Math.random() > 0.5) vy = -vy;
-        this.vx = dir * v; this.vy = vy;
-      };
-
-      function crearPelotas(nivel) {
-        var f = 1 + (nivel - 1) * 0.25, v = VELOCIDAD_BASE * f;
-        return [new Pelota(v, v * 0.6, COL.BLANCO, 10), new Pelota(-v * 0.7, v * 0.8, COL.AMARILLO, 8), new Pelota(v * 0.5, -v * 0.9, COL.AZUL, 11)];
-      }
-
-      /* ==========================================================
-       *  ESTADO DEL JUEGO
-       * ========================================================== */
-      var G = {
-        estado: 'idle', running: false,
-        nivel: 1, vidasJugador: VIDAS_INICIALES, vidasCPU: VIDAS_INICIALES,
-        puntajeA: 0, puntajeB: 0,
-        pala1: null, pala2: null, pelotas: [],
-        numPartida: 0, partidaGuardada: false,
-        timerTransicion: 0, timerFlash: 0,
-        flashMsg: '', flashColor: COL.NARANJA,
-        keys: {}
-      };
-
-      function iniciarJuego() {
-        G.nivel = 1; G.vidasJugador = VIDAS_INICIALES; G.vidasCPU = VIDAS_INICIALES;
-        G.puntajeA = 0; G.puntajeB = 0;
-        G.pala1 = new Pala(30, COL.VERDE); G.pala2 = new Pala(ANCHO - 30, COL.ROJO);
-        G.pelotas = crearPelotas(1);
-        G.numPartida = siguienteNumPartida(currentUser.cod); DB.incCounter();
-        G.partidaGuardada = false; G.timerFlash = 0; G.estado = 'jugando';
-      }
-
-      function guardarSiNoGuardada() {
-        if (!G.partidaGuardada) { guardarPartida(currentUser.cod, G.numPartida, G.puntajeA, G.puntajeB, G.nivel); G.partidaGuardada = true; }
-      }
-
-      /* ==========================================================
-       *  UPDATE
-       * ========================================================== */
-      function update(dt) {
-        if (G.estado === 'transicion') {
-          G.timerTransicion -= dt;
-          if (G.timerTransicion <= 0) { G.estado = 'jugando'; G.pala1.y = ALTO / 2 - G.pala1.h / 2; G.pala2.y = ALTO / 2 - G.pala2.h / 2; G.pelotas = crearPelotas(G.nivel); }
-          return;
-        }
-        if (G.estado !== 'jugando') return;
-        if (G.timerFlash > 0) G.timerFlash -= dt;
-
-        G.pala1.moverJugador(G.keys);
-        var amenazas = G.pelotas.filter(function (p) { return p.vx > 0; });
-        var objetivo = amenazas.length ? amenazas.reduce(function (a, b) { return a.x > b.x ? a : b; }) : G.pelotas[0];
-        G.pala2.moverCPU(objetivo, Math.min(0.6 + G.nivel * 0.04, 1.0));
-
-        for (var i = 0; i < G.pelotas.length; i++) {
-          var r = G.pelotas[i].actualizar(G.pala1, G.pala2);
-          if (r.colision) { guardarColision(currentUser.cod, G.numPartida, r.colision.cx, r.colision.cy, 'Colision ' + r.colision.o); if (r.colision.o === 'Pala1') G.puntajeA++; else G.puntajeB++; }
-          if (r.vidaPerdida === 'jugador') {
-            G.vidasJugador = Math.max(0, G.vidasJugador - 1); G.puntajeA = Math.max(0, G.puntajeA - 1);
-            guardarColision(currentUser.cod, G.numPartida, 0, G.pelotas[i].y, 'Pelota perdida izquierda (Vida -1)');
-            G.flashMsg = '-1 VIDA'; G.flashColor = COL.ROJO; G.timerFlash = 1200;
-          } else if (r.vidaPerdida === 'cpu') {
-            G.vidasCPU = Math.max(0, G.vidasCPU - 1); G.puntajeB = Math.max(0, G.puntajeB - 1);
-            guardarColision(currentUser.cod, G.numPartida, ANCHO, G.pelotas[i].y, 'Pelota pasada derecha (CPU Vida -1)');
-            G.flashMsg = 'CPU -1 VIDA'; G.flashColor = COL.VERDE; G.timerFlash = 1200;
+        /* ==========================================================
+         *  INFORMES
+         * ========================================================== */
+        function getMovements(cod, partida) {
+          var ptr = DB.getPointers(cod),
+            cols = DB.getCollisions(),
+            res = [];
+          if (!ptr.ini) return res;
+          var pos = ptr.ini;
+          while (pos) {
+            var r = null;
+            for (var i = 0; i < cols.length; i++) {
+              if (cols[i].id === pos) {
+                r = cols[i];
+                break;
+              }
+            }
+            if (!r) break;
+            if (r.partida === partida) res.push(r);
+            pos = r.next;
           }
+          return res;
         }
 
-        for (var a = 0; a < G.pelotas.length; a++) {
-          for (var b = a + 1; b < G.pelotas.length; b++) {
-            var pa = G.pelotas[a], pb = G.pelotas[b];
-            var dx = pa.x - pb.x, dy = pa.y - pb.y, dist = Math.sqrt(dx * dx + dy * dy), minD = pa.radio + pb.radio;
-            if (dist < minD && dist > 0) {
-              var tvx = pa.vx, tvy = pa.vy; pa.vx = pb.vx; pa.vy = pb.vy; pb.vx = tvx; pb.vy = tvy;
-              var nx = dx / dist, ny = dy / dist, ov = (minD - dist) / 2;
-              pa.x += nx * ov; pa.y += ny * ov; pb.x -= nx * ov; pb.y -= ny * ov;
+        function getUserGames(cod) {
+          return DB.getGames().filter(function (g) {
+            return g.cod === cod;
+          });
+        }
+
+        function getMatrix(cod, partida) {
+          var movs = getMovements(cod, partida),
+            m = {};
+          ['Pala1', 'Pala2'].forEach(function (p) {
+            m[p] = {};
+            for (var i = 1; i <= 3; i++) m[p]['Pelota' + i] = 0;
+          });
+          movs.forEach(function (r) {
+            var o = r.obs || '';
+            ['Pala1', 'Pala2'].forEach(function (p) {
+              for (var i = 1; i <= 3; i++) {
+                if (o.indexOf(p) !== -1 && o.indexOf('Pelota' + i) !== -1) m[p]['Pelota' + i]++;
+              }
+            });
+          });
+          return m;
+        }
+
+        /* ==========================================================
+         *  PANTALLAS
+         * ========================================================== */
+        var allScreens = ['screen-auth', 'screen-menu', 'screen-reports', 'screen-report-detail', 'screen-game'];
+
+        function showScreen(id) {
+          allScreens.forEach(function (s) {
+            document.getElementById(s).classList.remove('active');
+          });
+          document.getElementById(id).classList.add('active');
+          if (id === 'screen-game') {
+            if (!G.running) {
+              iniciarJuego();
+              G.running = true;
+            }
+          } else {
+            if (G.running) {
+              G.running = false;
+              G.estado = 'idle';
             }
           }
         }
 
-        if (G.vidasJugador <= 0) { G.estado = 'game_over'; guardarSiNoGuardada(); }
-        else if (G.vidasCPU <= 0) {
-          if (G.nivel >= MAX_NIVEL) { G.estado = 'victoria'; guardarSiNoGuardada(); }
-          else {
-            G.nivel++;
-            G.vidasJugador = VIDAS_INICIALES;
-            G.vidasCPU = VIDAS_INICIALES;
-            G.estado = 'transicion';
-            G.timerTransicion = 2000;
+        function showMsg(elId, text, type) {
+          var el = document.getElementById(elId);
+          el.textContent = text;
+          el.className = 'msg show msg--' + type;
+        }
+
+        /* ==========================================================
+         *  RENDERIZADO DE INFORMES
+         * ========================================================== */
+        function renderMovements() {
+          var games = getUserGames(currentUser.cod);
+          if (!games.length) {
+            document.getElementById('report-title').textContent = 'Movimientos por Partida';
+            document.getElementById('report-controls').innerHTML = '';
+            document.getElementById('report-content').innerHTML = '<div class="report-empty">No hay partidas registradas.</div>';
+            showScreen('screen-report-detail');
+            return;
+          }
+          var html = '<div class="report-select"><label>Seleccionar Partida</label><select id="sel-game-mov">';
+          games.forEach(function (g) {
+            html += '<option value="' + g.num + '">Partida #' + g.num + ' (' + g.fecha + ')</option>';
+          });
+          html += '</select></div>';
+          document.getElementById('report-title').textContent = 'Movimientos por Partida';
+          document.getElementById('report-controls').innerHTML = html;
+          updateMovementsView(games[games.length - 1].num);
+          showScreen('screen-report-detail');
+          document.getElementById('sel-game-mov').addEventListener('change', function (e) {
+            updateMovementsView(parseInt(e.target.value));
+          });
+        }
+
+        function updateMovementsView(partida) {
+          var movs = getMovements(currentUser.cod, partida);
+          var html =
+            '<div class="report-panel__header">Usuario: ' +
+            currentUser.cod +
+            ' | ' +
+            currentUser.nombre +
+            ' | Partida: ' +
+            partida +
+            '</div>';
+          html += '<table class="report-table"><thead><tr><th>Fecha</th><th>Coord</th><th>Observacion</th></tr></thead><tbody>';
+          movs.forEach(function (m) {
+            html += '<tr><td>' + m.fecha + '</td><td>' + m.coord + '</td><td>' + m.obs + '</td></tr>';
+          });
+          html += '</tbody></table>';
+          html += '<div class="report-panel__header" style="margin-top:0.8rem;">Total Colisiones: ' + movs.length + '</div>';
+          document.getElementById('report-content').innerHTML = html;
+        }
+
+        function renderRanking() {
+          var games = getUserGames(currentUser.cod);
+          var html = '<div class="report-panel__header">Usuario: ' + currentUser.cod + ' | ' + currentUser.nombre + '</div>';
+          html +=
+            '<table class="report-table"><thead><tr><th>Part.</th><th>Pts A</th><th>Pts B</th><th>Total</th><th>Nivel</th><th>Fecha</th></tr></thead><tbody>';
+          var tA = 0,
+            tB = 0,
+            tT = 0;
+          games.forEach(function (g) {
+            var t = g.pA + g.pB;
+            tA += g.pA;
+            tB += g.pB;
+            tT += t;
+            html +=
+              '<tr><td>' +
+              g.num +
+              '</td><td>' +
+              g.pA +
+              '</td><td>' +
+              g.pB +
+              '</td><td>' +
+              t +
+              '</td><td>' +
+              g.nivel +
+              '</td><td>' +
+              g.fecha +
+              '</td></tr>';
+          });
+          html +=
+            '<tr class="total-row"><td>TOTAL</td><td>' +
+            tA +
+            '</td><td>' +
+            tB +
+            '</td><td>' +
+            tT +
+            '</td><td></td><td></td></tr></tbody></table>';
+          if (games.length) {
+            var best = games.reduce(function (a, b) {
+              return a.pA + a.pB > b.pA + b.pB ? a : b;
+            });
+            var worst = games.reduce(function (a, b) {
+              return a.pA + a.pB < b.pA + b.pB ? a : b;
+            });
+            html +=
+              '<div class="report-panel__header" style="margin-top:0.8rem;">Mejor Partida: #' +
+              best.num +
+              ' (' +
+              (best.pA + best.pB) +
+              ' pts)</div>';
+            html += '<div class="report-panel__header">Peor Partida: #' + worst.num + ' (' + (worst.pA + worst.pB) + ' pts)</div>';
+          }
+          document.getElementById('report-title').textContent = 'Ranking por Usuario';
+          document.getElementById('report-controls').innerHTML = '';
+          document.getElementById('report-content').innerHTML = html;
+          showScreen('screen-report-detail');
+        }
+
+        function renderMatrix() {
+          var games = getUserGames(currentUser.cod);
+          if (!games.length) {
+            document.getElementById('report-title').textContent = 'Matriz de Colisiones';
+            document.getElementById('report-controls').innerHTML = '';
+            document.getElementById('report-content').innerHTML = '<div class="report-empty">No hay datos.</div>';
+            showScreen('screen-report-detail');
+            return;
+          }
+          var html = '<div class="report-select"><label>Seleccionar Partida</label><select id="sel-game-mat">';
+          games.forEach(function (g) {
+            html += '<option value="' + g.num + '">Partida #' + g.num + ' (' + g.fecha + ')</option>';
+          });
+          html += '</select></div>';
+          document.getElementById('report-title').textContent = 'Matriz de Colisiones';
+          document.getElementById('report-controls').innerHTML = html;
+          updateMatrixView(games[games.length - 1].num);
+          showScreen('screen-report-detail');
+          document.getElementById('sel-game-mat').addEventListener('change', function (e) {
+            updateMatrixView(parseInt(e.target.value));
+          });
+        }
+
+        function updateMatrixView(partida) {
+          var matrix = getMatrix(currentUser.cod, partida);
+          var html =
+            '<div class="report-panel__header">Usuario: ' +
+            currentUser.cod +
+            ' | ' +
+            currentUser.nombre +
+            ' | Partida: ' +
+            partida +
+            '</div>';
+          html +=
+            '<table class="report-table"><thead><tr><th>Objeto</th><th>Pelota 1</th><th>Pelota 2</th><th>Pelota 3</th><th>Total</th></tr></thead><tbody>';
+          var total = 0;
+          ['Pala1', 'Pala2'].forEach(function (p) {
+            var v = [1, 2, 3].map(function (i) {
+              return matrix[p]['Pelota' + i];
+            });
+            var t = v[0] + v[1] + v[2];
+            total += t;
+            html +=
+              '<tr><td>' +
+              p +
+              '</td><td>' +
+              v[0] +
+              '</td><td>' +
+              v[1] +
+              '</td><td>' +
+              v[2] +
+              '</td><td class="highlight">' +
+              t +
+              '</td></tr>';
+          });
+          html +=
+            '<tr class="total-row"><td>TOTAL Gral.</td><td></td><td></td><td></td><td class="highlight">' +
+            total +
+            '</td></tr></tbody></table>';
+          document.getElementById('report-content').innerHTML = html;
+        }
+
+        /* ==========================================================
+         *  FULLSCREEN
+         * ========================================================== */
+        var isFullscreen = false,
+          fsScaleX = 1,
+          fsScaleY = 1;
+
+        function recalcularFullscreen() {
+          if (!isFullscreen) return;
+          var cw = window.innerWidth,
+            ch = window.innerHeight;
+          canvas.width = cw;
+          canvas.height = ch;
+          fsScaleX = cw / ANCHO;
+          fsScaleY = ch / ALTO;
+        }
+
+        function onFullscreenChange() {
+          isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
+          if (isFullscreen) {
+            recalcularFullscreen();
+          } else {
+            canvas.width = 640;
+            canvas.height = 480;
+            canvas.style.width = '';
+            canvas.style.height = '';
+            fsScaleX = 1;
+            fsScaleY = 1;
           }
         }
-      }
 
-      /* ==========================================================
-       *  RENDERER
-       * ========================================================== */
-      function render() {
-        ctx.fillStyle = COL.NEGRO; ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.save();
-        if (isFullscreen) ctx.scale(fsScaleX, fsScaleY);
+        document.addEventListener('fullscreenchange', onFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', onFullscreenChange);
+        window.addEventListener('resize', recalcularFullscreen);
 
-        ctx.fillStyle = COL.NEGRO; ctx.fillRect(0, 0, ANCHO, ALTO);
-        ctx.strokeStyle = COL.GRIS; ctx.setLineDash([10, 10]); ctx.lineWidth = 2;
-        ctx.beginPath(); ctx.moveTo(ANCHO / 2, 0); ctx.lineTo(ANCHO / 2, ALTO); ctx.stroke(); ctx.setLineDash([]);
-
-        [G.pala1, G.pala2].forEach(function (p) { if (!p) return; ctx.shadowColor = p.color; ctx.shadowBlur = 12; ctx.fillStyle = p.color; ctx.fillRect(p.x, p.y, p.w, p.h); ctx.shadowBlur = 0; });
-        G.pelotas.forEach(function (bl) { ctx.shadowColor = bl.color; ctx.shadowBlur = 15; ctx.fillStyle = bl.color; ctx.beginPath(); ctx.arc(bl.x, bl.y, bl.radio, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0; });
-
-        var fv = 1 + (G.nivel - 1) * 0.25;
-        ctx.font = '10px "Press Start 2P"'; ctx.textAlign = 'left'; ctx.fillStyle = COL.VERDE; ctx.fillText('JUGADOR', 16, 16);
-        dibujarVidas(16, 28, G.vidasJugador, VIDAS_INICIALES, COL.VERDE, 'l');
-        ctx.textAlign = 'right'; ctx.fillStyle = COL.ROJO; ctx.fillText('CPU', ANCHO - 16, 16);
-        dibujarVidas(ANCHO - 16, 28, G.vidasCPU, VIDAS_INICIALES, COL.ROJO, 'r');
-        ctx.textAlign = 'center'; ctx.fillStyle = COL.BLANCO; ctx.font = '12px "Press Start 2P"';
-        ctx.fillText('NIVEL ' + G.nivel + '/' + MAX_NIVEL + '  (vel x' + fv.toFixed(1) + ')', ANCHO / 2, 20);
-        ctx.font = '10px "Press Start 2P"'; ctx.textAlign = 'left'; ctx.fillStyle = COL.AMARILLO; ctx.fillText('Pts: ' + G.puntajeA, 16, 56);
-        ctx.textAlign = 'right'; ctx.fillText('Pts: ' + G.puntajeB, ANCHO - 16, 56);
-
-        if (G.timerFlash > 0) { ctx.font = '24px "Press Start 2P"'; ctx.textAlign = 'center'; ctx.fillStyle = G.flashColor; ctx.shadowColor = G.flashColor; ctx.shadowBlur = 20; ctx.fillText(G.flashMsg, ANCHO / 2, ALTO / 2 - 80); ctx.shadowBlur = 0; }
-
-        if (G.estado === 'transicion') {
-          overlay(0.6); ctx.font = '40px "Press Start 2P"'; ctx.textAlign = 'center'; ctx.fillStyle = COL.AMARILLO; ctx.shadowColor = COL.AMARILLO; ctx.shadowBlur = 20;
-          ctx.fillText('NIVEL ' + G.nivel, ANCHO / 2, ALTO / 2 - 30); ctx.shadowBlur = 0;
-          ctx.font = '14px "Press Start 2P"'; ctx.fillStyle = COL.BLANCO; ctx.fillText('Preparate!', ANCHO / 2, ALTO / 2 + 20);
-          ctx.font = '10px "Press Start 2P"'; ctx.fillStyle = COL.GRIS; ctx.fillText('Velocidad x' + fv.toFixed(1), ANCHO / 2, ALTO / 2 + 50);
-        }
-        if (G.estado === 'game_over') {
-          overlay(0.75); ctx.font = '40px "Press Start 2P"'; ctx.textAlign = 'center'; ctx.fillStyle = COL.ROJO; ctx.shadowColor = COL.ROJO; ctx.shadowBlur = 25;
-          ctx.fillText('GAME OVER', ANCHO / 2, ALTO / 2 - 50); ctx.shadowBlur = 0;
-          ctx.font = '14px "Press Start 2P"'; ctx.fillStyle = COL.BLANCO; ctx.fillText('Nivel alcanzado: ' + G.nivel, ANCHO / 2, ALTO / 2);
-          ctx.font = '10px "Press Start 2P"'; ctx.fillText('Puntaje A: ' + G.puntajeA + '  |  Puntaje B: ' + G.puntajeB, ANCHO / 2, ALTO / 2 + 30);
-          ctx.fillStyle = COL.GRIS; ctx.fillText('Presiona ENTER para salir', ANCHO / 2, ALTO / 2 + 70);
-        }
-        if (G.estado === 'victoria') {
-          overlay(0.75); var t = Date.now(), pulse = Math.abs((t % 1000) - 500) / 500;
-          var cr = Math.floor(240 + 15 * pulse), cg = Math.floor(220 * pulse);
-          ctx.font = '36px "Press Start 2P"'; ctx.textAlign = 'center'; ctx.fillStyle = 'rgb(' + cr + ',' + cg + ',40)';
-          ctx.shadowColor = ctx.fillStyle; ctx.shadowBlur = 25; ctx.fillText('FELICIDADES!', ANCHO / 2, ALTO / 2 - 70); ctx.shadowBlur = 0;
-          ctx.font = '24px "Press Start 2P"'; ctx.fillStyle = COL.VERDE; ctx.fillText('GANASTE!', ANCHO / 2, ALTO / 2 - 20);
-          ctx.font = '10px "Press Start 2P"'; ctx.fillStyle = COL.BLANCO;
-          ctx.fillText('Completaste los ' + MAX_NIVEL + ' niveles!', ANCHO / 2, ALTO / 2 + 15);
-          ctx.fillText('Puntaje A: ' + G.puntajeA + '  |  Puntaje B: ' + G.puntajeB, ANCHO / 2, ALTO / 2 + 40);
-          ctx.fillStyle = COL.AMARILLO; ctx.fillText('Vidas restantes: ' + G.vidasJugador, ANCHO / 2, ALTO / 2 + 65);
-          ctx.fillStyle = COL.GRIS; ctx.fillText('Presiona ENTER para salir', ANCHO / 2, ALTO / 2 + 100);
-        }
-        if (G.estado === 'menu') {
-          overlay(0.8); ctx.font = '32px "Press Start 2P"'; ctx.textAlign = 'center';
-          ctx.fillStyle = COL.AZUL; ctx.shadowColor = COL.AZUL; ctx.shadowBlur = 20;
-          ctx.fillText('PALAS Y', ANCHO / 2, ALTO / 2 - 60); ctx.fillText('PELOTAS', ANCHO / 2, ALTO / 2 - 15); ctx.shadowBlur = 0;
-          ctx.font = '10px "Press Start 2P"'; ctx.fillStyle = COL.GRIS; ctx.fillText('Flechas / WASD para mover', ANCHO / 2, ALTO / 2 + 35);
-          ctx.fillStyle = COL.BLANCO; if (Math.floor(Date.now() / 500) % 2) ctx.fillText('Presiona ENTER para jugar', ANCHO / 2, ALTO / 2 + 65);
-        }
-
-        ctx.restore();
-      }
-
-      function overlay(a) { ctx.fillStyle = 'rgba(0,0,0,' + a + ')'; ctx.fillRect(0, 0, ANCHO, ALTO); }
-
-      function dibujarVidas(x, y, cur, max, color, align) {
-        for (var i = 0; i < max; i++) {
-          var cx = align === 'l' ? x + i * 22 : x - i * 22;
-          ctx.beginPath(); ctx.arc(cx, y, 8, 0, Math.PI * 2);
-          ctx.fillStyle = i < cur ? color : COL.GRIS; ctx.fill();
-          ctx.strokeStyle = COL.BLANCO; ctx.lineWidth = 1; ctx.stroke();
-        }
-      }
-
-      /* ==========================================================
-       *  EVENT HANDLERS
-       * ========================================================== */
-      document.querySelectorAll('.tab').forEach(function (tab) {
-        tab.addEventListener('click', function () {
-          document.querySelectorAll('.tab').forEach(function (t) { t.classList.remove('active'); });
-          document.querySelectorAll('.tab-content').forEach(function (t) { t.classList.remove('active'); });
-          tab.classList.add('active');
-          document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+        document.getElementById('fullscreenBtn').addEventListener('click', function () {
+          if (gameFrame.requestFullscreen) gameFrame.requestFullscreen();
+          else if (gameFrame.webkitRequestFullscreen) gameFrame.webkitRequestFullscreen();
+          else if (gameFrame.msRequestFullscreen) gameFrame.msRequestFullscreen();
         });
-      });
 
-      document.getElementById('btn-login').addEventListener('click', function () {
-        var r = loginUsuario(document.getElementById('login-user').value.trim(), document.getElementById('login-pass').value);
-        if (typeof r === 'string') { showMsg('login-msg', r, 'error'); }
-        else { currentUser = r; document.getElementById('menu-username').textContent = r.nombre; showScreen('screen-menu'); }
-      });
-      ['login-user', 'login-pass'].forEach(function (id) {
-        document.getElementById(id).addEventListener('keypress', function (e) { if (e.key === 'Enter') document.getElementById('btn-login').click(); });
-      });
+        /* ==========================================================
+         *  CLASES DEL JUEGO
+         * ========================================================== */
+        function Pala(x, color) {
+          this.w = 14;
+          this.h = 80;
+          this.x = x - this.w / 2;
+          this.y = ALTO / 2 - this.h / 2;
+          this.color = color;
+          this.velocidad = 5;
+        }
+        Pala.prototype.moverJugador = function (keys) {
+          if (this.y > 0 && (keys.ArrowUp || keys.w)) this.y -= this.velocidad;
+          if (this.y + this.h < ALTO && (keys.ArrowDown || keys.s)) this.y += this.velocidad;
+          this.y = Math.max(0, Math.min(ALTO - this.h, this.y));
+        };
+        Pala.prototype.moverCPU = function (pelota, factor) {
+          var cy = this.y + this.h / 2;
+          if (pelota.vx > 0) {
+            if (cy < pelota.y) this.y += this.velocidad * factor;
+            else if (cy > pelota.y) this.y -= this.velocidad * factor;
+          }
+          this.y = Math.max(0, Math.min(ALTO - this.h, this.y));
+        };
 
-      document.getElementById('btn-register').addEventListener('click', function () {
-        var r = registrarUsuario(document.getElementById('reg-name').value.trim(), document.getElementById('reg-user').value.trim(), document.getElementById('reg-pass').value);
-        if (typeof r === 'string') { showMsg('reg-msg', r, 'error'); }
-        else { showMsg('reg-msg', 'Registrado con exito. Codigo: ' + r.cod, 'success'); document.getElementById('reg-name').value = ''; document.getElementById('reg-user').value = ''; document.getElementById('reg-pass').value = ''; }
-      });
-      ['reg-name', 'reg-user', 'reg-pass'].forEach(function (id) {
-        document.getElementById(id).addEventListener('keypress', function (e) { if (e.key === 'Enter') document.getElementById('btn-register').click(); });
-      });
+        function Pelota(vx, vy, color, radio) {
+          this.radio = radio;
+          this.color = color;
+          this.x = ANCHO / 2;
+          this.y = ALTO / 2;
+          this.vx = vx;
+          this.vy = vy;
+        }
+        Pelota.prototype.actualizar = function (pala1, pala2) {
+          var colision = null,
+            vidaPerdida = null;
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.y - this.radio <= 0) {
+            this.y = this.radio;
+            this.vy = Math.abs(this.vy);
+          }
+          if (this.y + this.radio >= ALTO) {
+            this.y = ALTO - this.radio;
+            this.vy = -Math.abs(this.vy);
+          }
+          if (
+            this.vx < 0 &&
+            this.x - this.radio <= pala1.x + pala1.w &&
+            this.x + this.radio >= pala1.x &&
+            this.y + this.radio >= pala1.y &&
+            this.y - this.radio <= pala1.y + pala1.h
+          ) {
+            this.vx = Math.abs(this.vx);
+            this.x = pala1.x + pala1.w + this.radio;
+            colision = { o: 'Pala1', cx: this.x, cy: this.y };
+          }
+          if (
+            this.vx > 0 &&
+            this.x + this.radio >= pala2.x &&
+            this.x - this.radio <= pala2.x + pala2.w &&
+            this.y + this.radio >= pala2.y &&
+            this.y - this.radio <= pala2.y + pala2.h
+          ) {
+            this.vx = -Math.abs(this.vx);
+            this.x = pala2.x - this.radio;
+            colision = { o: 'Pala2', cx: this.x, cy: this.y };
+          }
+          if (this.x + this.radio < 0) {
+            vidaPerdida = 'jugador';
+            this.reiniciar(1);
+          }
+          if (this.x - this.radio > ANCHO) {
+            vidaPerdida = 'cpu';
+            this.reiniciar(-1);
+          }
+          return { colision: colision, vidaPerdida: vidaPerdida };
+        };
+        Pelota.prototype.reiniciar = function (dir) {
+          this.x = ANCHO / 2;
+          this.y = ALTO / 2;
+          var v = Math.max(Math.abs(this.vx), VELOCIDAD_BASE);
+          var vy = v * (0.4 + Math.random() * 0.6);
+          if (Math.random() > 0.5) vy = -vy;
+          this.vx = dir * v;
+          this.vy = vy;
+        };
 
-      document.getElementById('menu-play').addEventListener('click', function () { showScreen('screen-game'); });
-      document.getElementById('menu-reports').addEventListener('click', function () { showScreen('screen-reports'); });
-      document.getElementById('menu-logout').addEventListener('click', function () { currentUser = null; showScreen('screen-auth'); });
-      document.getElementById('back-menu').addEventListener('click', function () { showScreen('screen-menu'); });
-      document.getElementById('back-menu-game').addEventListener('click', function () { guardarSiNoGuardada(); showScreen('screen-menu'); });
-      document.getElementById('back-reports').addEventListener('click', function () { showScreen('screen-reports'); });
-      document.getElementById('rep-movements').addEventListener('click', renderMovements);
-      document.getElementById('rep-ranking').addEventListener('click', renderRanking);
-      document.getElementById('rep-matrix').addEventListener('click', renderMatrix);
+        function crearPelotas(nivel) {
+          var f = 1 + (nivel - 1) * 0.25,
+            v = VELOCIDAD_BASE * f;
+          return [
+            new Pelota(v, v * 0.6, COL.BLANCO, 10),
+            new Pelota(-v * 0.7, v * 0.8, COL.AMARILLO, 8),
+            new Pelota(v * 0.5, -v * 0.9, COL.AZUL, 11),
+          ];
+        }
 
-      document.addEventListener('keydown', function (e) {
-        G.keys[e.key] = true;
-        if (G.estado === 'jugando' && e.key === 'Escape') { guardarSiNoGuardada(); showScreen('screen-menu'); }
-        if ((G.estado === 'game_over' || G.estado === 'victoria') && e.key === 'Enter') { showScreen('screen-menu'); }
-        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].indexOf(e.key) !== -1) e.preventDefault();
-      });
-      document.addEventListener('keyup', function (e) { G.keys[e.key] = false; });
-      window.addEventListener('beforeunload', function () { if (G.estado === 'jugando') guardarSiNoGuardada(); });
+        /* ==========================================================
+         *  ESTADO DEL JUEGO
+         * ========================================================== */
+        var G = {
+          estado: 'idle',
+          running: false,
+          nivel: 1,
+          vidasJugador: VIDAS_INICIALES,
+          vidasCPU: VIDAS_INICIALES,
+          puntajeA: 0,
+          puntajeB: 0,
+          pala1: null,
+          pala2: null,
+          pelotas: [],
+          numPartida: 0,
+          partidaGuardada: false,
+          timerTransicion: 0,
+          timerFlash: 0,
+          flashMsg: '',
+          flashColor: COL.NARANJA,
+          keys: {},
+        };
 
-      /* ==========================================================
-       *  GAME LOOP
-       * ========================================================== */
-      var lastTime = 0;
-      function loop(ts) {
-        var dt = Math.min(ts - lastTime, 50); lastTime = ts;
-        if (G.running && G.estado !== 'idle') { update(dt); render(); }
+        function iniciarJuego() {
+          G.nivel = 1;
+          G.vidasJugador = VIDAS_INICIALES;
+          G.vidasCPU = VIDAS_INICIALES;
+          G.puntajeA = 0;
+          G.puntajeB = 0;
+          G.pala1 = new Pala(30, COL.VERDE);
+          G.pala2 = new Pala(ANCHO - 30, COL.ROJO);
+          G.pelotas = crearPelotas(1);
+          G.numPartida = siguienteNumPartida(currentUser.cod);
+          DB.incCounter();
+          G.partidaGuardada = false;
+          G.timerFlash = 0;
+          G.estado = 'jugando';
+        }
+
+        function guardarSiNoGuardada() {
+          if (!G.partidaGuardada) {
+            guardarPartida(currentUser.cod, G.numPartida, G.puntajeA, G.puntajeB, G.nivel);
+            G.partidaGuardada = true;
+          }
+        }
+
+        /* ==========================================================
+         *  UPDATE
+         * ========================================================== */
+        function update(dt) {
+          if (G.estado === 'transicion') {
+            G.timerTransicion -= dt;
+            if (G.timerTransicion <= 0) {
+              G.estado = 'jugando';
+              G.pala1.y = ALTO / 2 - G.pala1.h / 2;
+              G.pala2.y = ALTO / 2 - G.pala2.h / 2;
+              G.pelotas = crearPelotas(G.nivel);
+            }
+            return;
+          }
+          if (G.estado !== 'jugando') return;
+          if (G.timerFlash > 0) G.timerFlash -= dt;
+
+          G.pala1.moverJugador(G.keys);
+          var amenazas = G.pelotas.filter(function (p) {
+            return p.vx > 0;
+          });
+          var objetivo = amenazas.length
+            ? amenazas.reduce(function (a, b) {
+                return a.x > b.x ? a : b;
+              })
+            : G.pelotas[0];
+          G.pala2.moverCPU(objetivo, Math.min(0.6 + G.nivel * 0.04, 1.0));
+
+          for (var i = 0; i < G.pelotas.length; i++) {
+            var r = G.pelotas[i].actualizar(G.pala1, G.pala2);
+            if (r.colision) {
+              guardarColision(currentUser.cod, G.numPartida, r.colision.cx, r.colision.cy, 'Colision ' + r.colision.o);
+              if (r.colision.o === 'Pala1') G.puntajeA++;
+              else G.puntajeB++;
+            }
+            if (r.vidaPerdida === 'jugador') {
+              G.vidasJugador = Math.max(0, G.vidasJugador - 1);
+              G.puntajeA = Math.max(0, G.puntajeA - 1);
+              guardarColision(currentUser.cod, G.numPartida, 0, G.pelotas[i].y, 'Pelota perdida izquierda (Vida -1)');
+              G.flashMsg = '-1 VIDA';
+              G.flashColor = COL.ROJO;
+              G.timerFlash = 1200;
+            } else if (r.vidaPerdida === 'cpu') {
+              G.vidasCPU = Math.max(0, G.vidasCPU - 1);
+              G.puntajeB = Math.max(0, G.puntajeB - 1);
+              guardarColision(currentUser.cod, G.numPartida, ANCHO, G.pelotas[i].y, 'Pelota pasada derecha (CPU Vida -1)');
+              G.flashMsg = 'CPU -1 VIDA';
+              G.flashColor = COL.VERDE;
+              G.timerFlash = 1200;
+            }
+          }
+
+          for (var a = 0; a < G.pelotas.length; a++) {
+            for (var b = a + 1; b < G.pelotas.length; b++) {
+              var pa = G.pelotas[a],
+                pb = G.pelotas[b];
+              var dx = pa.x - pb.x,
+                dy = pa.y - pb.y,
+                dist = Math.sqrt(dx * dx + dy * dy),
+                minD = pa.radio + pb.radio;
+              if (dist < minD && dist > 0) {
+                var tvx = pa.vx,
+                  tvy = pa.vy;
+                pa.vx = pb.vx;
+                pa.vy = pb.vy;
+                pb.vx = tvx;
+                pb.vy = tvy;
+                var nx = dx / dist,
+                  ny = dy / dist,
+                  ov = (minD - dist) / 2;
+                pa.x += nx * ov;
+                pa.y += ny * ov;
+                pb.x -= nx * ov;
+                pb.y -= ny * ov;
+              }
+            }
+          }
+
+          if (G.vidasJugador <= 0) {
+            G.estado = 'game_over';
+            guardarSiNoGuardada();
+          } else if (G.vidasCPU <= 0) {
+            if (G.nivel >= MAX_NIVEL) {
+              G.estado = 'victoria';
+              guardarSiNoGuardada();
+            } else {
+              G.nivel++;
+              G.vidasJugador = VIDAS_INICIALES;
+              G.vidasCPU = VIDAS_INICIALES;
+              G.estado = 'transicion';
+              G.timerTransicion = 2000;
+            }
+          }
+        }
+
+        /* ==========================================================
+         *  RENDERER
+         * ========================================================== */
+        function render() {
+          ctx.fillStyle = COL.NEGRO;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.save();
+          if (isFullscreen) ctx.scale(fsScaleX, fsScaleY);
+
+          ctx.fillStyle = COL.NEGRO;
+          ctx.fillRect(0, 0, ANCHO, ALTO);
+          ctx.strokeStyle = COL.GRIS;
+          ctx.setLineDash([10, 10]);
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(ANCHO / 2, 0);
+          ctx.lineTo(ANCHO / 2, ALTO);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          [G.pala1, G.pala2].forEach(function (p) {
+            if (!p) return;
+            ctx.shadowColor = p.color;
+            ctx.shadowBlur = 12;
+            ctx.fillStyle = p.color;
+            ctx.fillRect(p.x, p.y, p.w, p.h);
+            ctx.shadowBlur = 0;
+          });
+          G.pelotas.forEach(function (bl) {
+            ctx.shadowColor = bl.color;
+            ctx.shadowBlur = 15;
+            ctx.fillStyle = bl.color;
+            ctx.beginPath();
+            ctx.arc(bl.x, bl.y, bl.radio, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+          });
+
+          var fv = 1 + (G.nivel - 1) * 0.25;
+          ctx.font = '10px "Press Start 2P"';
+          ctx.textAlign = 'left';
+          ctx.fillStyle = COL.VERDE;
+          ctx.fillText('JUGADOR', 16, 16);
+          dibujarVidas(16, 28, G.vidasJugador, VIDAS_INICIALES, COL.VERDE, 'l');
+          ctx.textAlign = 'right';
+          ctx.fillStyle = COL.ROJO;
+          ctx.fillText('CPU', ANCHO - 16, 16);
+          dibujarVidas(ANCHO - 16, 28, G.vidasCPU, VIDAS_INICIALES, COL.ROJO, 'r');
+          ctx.textAlign = 'center';
+          ctx.fillStyle = COL.BLANCO;
+          ctx.font = '12px "Press Start 2P"';
+          ctx.fillText('NIVEL ' + G.nivel + '/' + MAX_NIVEL + '  (vel x' + fv.toFixed(1) + ')', ANCHO / 2, 20);
+          ctx.font = '10px "Press Start 2P"';
+          ctx.textAlign = 'left';
+          ctx.fillStyle = COL.AMARILLO;
+          ctx.fillText('Pts: ' + G.puntajeA, 16, 56);
+          ctx.textAlign = 'right';
+          ctx.fillText('Pts: ' + G.puntajeB, ANCHO - 16, 56);
+
+          if (G.timerFlash > 0) {
+            ctx.font = '24px "Press Start 2P"';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = G.flashColor;
+            ctx.shadowColor = G.flashColor;
+            ctx.shadowBlur = 20;
+            ctx.fillText(G.flashMsg, ANCHO / 2, ALTO / 2 - 80);
+            ctx.shadowBlur = 0;
+          }
+
+          if (G.estado === 'transicion') {
+            overlay(0.6);
+            ctx.font = '40px "Press Start 2P"';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = COL.AMARILLO;
+            ctx.shadowColor = COL.AMARILLO;
+            ctx.shadowBlur = 20;
+            ctx.fillText('NIVEL ' + G.nivel, ANCHO / 2, ALTO / 2 - 30);
+            ctx.shadowBlur = 0;
+            ctx.font = '14px "Press Start 2P"';
+            ctx.fillStyle = COL.BLANCO;
+            ctx.fillText('Preparate!', ANCHO / 2, ALTO / 2 + 20);
+            ctx.font = '10px "Press Start 2P"';
+            ctx.fillStyle = COL.GRIS;
+            ctx.fillText('Velocidad x' + fv.toFixed(1), ANCHO / 2, ALTO / 2 + 50);
+          }
+          if (G.estado === 'game_over') {
+            overlay(0.75);
+            ctx.font = '40px "Press Start 2P"';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = COL.ROJO;
+            ctx.shadowColor = COL.ROJO;
+            ctx.shadowBlur = 25;
+            ctx.fillText('GAME OVER', ANCHO / 2, ALTO / 2 - 50);
+            ctx.shadowBlur = 0;
+            ctx.font = '14px "Press Start 2P"';
+            ctx.fillStyle = COL.BLANCO;
+            ctx.fillText('Nivel alcanzado: ' + G.nivel, ANCHO / 2, ALTO / 2);
+            ctx.font = '10px "Press Start 2P"';
+            ctx.fillText('Puntaje A: ' + G.puntajeA + '  |  Puntaje B: ' + G.puntajeB, ANCHO / 2, ALTO / 2 + 30);
+            ctx.fillStyle = COL.GRIS;
+            ctx.fillText('Presiona ENTER para salir', ANCHO / 2, ALTO / 2 + 70);
+          }
+          if (G.estado === 'victoria') {
+            overlay(0.75);
+            var t = Date.now(),
+              pulse = Math.abs((t % 1000) - 500) / 500;
+            var cr = Math.floor(240 + 15 * pulse),
+              cg = Math.floor(220 * pulse);
+            ctx.font = '36px "Press Start 2P"';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = 'rgb(' + cr + ',' + cg + ',40)';
+            ctx.shadowColor = ctx.fillStyle;
+            ctx.shadowBlur = 25;
+            ctx.fillText('FELICIDADES!', ANCHO / 2, ALTO / 2 - 70);
+            ctx.shadowBlur = 0;
+            ctx.font = '24px "Press Start 2P"';
+            ctx.fillStyle = COL.VERDE;
+            ctx.fillText('GANASTE!', ANCHO / 2, ALTO / 2 - 20);
+            ctx.font = '10px "Press Start 2P"';
+            ctx.fillStyle = COL.BLANCO;
+            ctx.fillText('Completaste los ' + MAX_NIVEL + ' niveles!', ANCHO / 2, ALTO / 2 + 15);
+            ctx.fillText('Puntaje A: ' + G.puntajeA + '  |  Puntaje B: ' + G.puntajeB, ANCHO / 2, ALTO / 2 + 40);
+            ctx.fillStyle = COL.AMARILLO;
+            ctx.fillText('Vidas restantes: ' + G.vidasJugador, ANCHO / 2, ALTO / 2 + 65);
+            ctx.fillStyle = COL.GRIS;
+            ctx.fillText('Presiona ENTER para salir', ANCHO / 2, ALTO / 2 + 100);
+          }
+          if (G.estado === 'menu') {
+            overlay(0.8);
+            ctx.font = '32px "Press Start 2P"';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = COL.AZUL;
+            ctx.shadowColor = COL.AZUL;
+            ctx.shadowBlur = 20;
+            ctx.fillText('PALAS Y', ANCHO / 2, ALTO / 2 - 60);
+            ctx.fillText('PELOTAS', ANCHO / 2, ALTO / 2 - 15);
+            ctx.shadowBlur = 0;
+            ctx.font = '10px "Press Start 2P"';
+            ctx.fillStyle = COL.GRIS;
+            ctx.fillText('Flechas / WASD para mover', ANCHO / 2, ALTO / 2 + 35);
+            ctx.fillStyle = COL.BLANCO;
+            if (Math.floor(Date.now() / 500) % 2) ctx.fillText('Presiona ENTER para jugar', ANCHO / 2, ALTO / 2 + 65);
+          }
+
+          ctx.restore();
+        }
+
+        function overlay(a) {
+          ctx.fillStyle = 'rgba(0,0,0,' + a + ')';
+          ctx.fillRect(0, 0, ANCHO, ALTO);
+        }
+
+        function dibujarVidas(x, y, cur, max, color, align) {
+          for (var i = 0; i < max; i++) {
+            var cx = align === 'l' ? x + i * 22 : x - i * 22;
+            ctx.beginPath();
+            ctx.arc(cx, y, 8, 0, Math.PI * 2);
+            ctx.fillStyle = i < cur ? color : COL.GRIS;
+            ctx.fill();
+            ctx.strokeStyle = COL.BLANCO;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+
+        /* ==========================================================
+         *  EVENT HANDLERS
+         * ========================================================== */
+        document.querySelectorAll('.tab').forEach(function (tab) {
+          tab.addEventListener('click', function () {
+            document.querySelectorAll('.tab').forEach(function (t) {
+              t.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(function (t) {
+              t.classList.remove('active');
+            });
+            tab.classList.add('active');
+            document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+          });
+        });
+
+        document.getElementById('btn-login').addEventListener('click', function () {
+          var r = loginUsuario(document.getElementById('login-user').value.trim(), document.getElementById('login-pass').value);
+          if (typeof r === 'string') {
+            showMsg('login-msg', r, 'error');
+          } else {
+            currentUser = r;
+            document.getElementById('menu-username').textContent = r.nombre;
+            showScreen('screen-menu');
+          }
+        });
+        ['login-user', 'login-pass'].forEach(function (id) {
+          document.getElementById(id).addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') document.getElementById('btn-login').click();
+          });
+        });
+
+        document.getElementById('btn-register').addEventListener('click', function () {
+          var r = registrarUsuario(
+            document.getElementById('reg-name').value.trim(),
+            document.getElementById('reg-user').value.trim(),
+            document.getElementById('reg-pass').value,
+          );
+          if (typeof r === 'string') {
+            showMsg('reg-msg', r, 'error');
+          } else {
+            showMsg('reg-msg', 'Registrado con exito. Codigo: ' + r.cod, 'success');
+            document.getElementById('reg-name').value = '';
+            document.getElementById('reg-user').value = '';
+            document.getElementById('reg-pass').value = '';
+          }
+        });
+        ['reg-name', 'reg-user', 'reg-pass'].forEach(function (id) {
+          document.getElementById(id).addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') document.getElementById('btn-register').click();
+          });
+        });
+
+        document.getElementById('menu-play').addEventListener('click', function () {
+          showScreen('screen-game');
+        });
+        document.getElementById('menu-reports').addEventListener('click', function () {
+          showScreen('screen-reports');
+        });
+        document.getElementById('menu-logout').addEventListener('click', function () {
+          currentUser = null;
+          showScreen('screen-auth');
+        });
+        document.getElementById('back-menu').addEventListener('click', function () {
+          showScreen('screen-menu');
+        });
+        document.getElementById('back-menu-game').addEventListener('click', function () {
+          guardarSiNoGuardada();
+          showScreen('screen-menu');
+        });
+        document.getElementById('back-reports').addEventListener('click', function () {
+          showScreen('screen-reports');
+        });
+        document.getElementById('rep-movements').addEventListener('click', renderMovements);
+        document.getElementById('rep-ranking').addEventListener('click', renderRanking);
+        document.getElementById('rep-matrix').addEventListener('click', renderMatrix);
+
+        document.addEventListener('keydown', function (e) {
+          G.keys[e.key] = true;
+          if (G.estado === 'jugando' && e.key === 'Escape') {
+            guardarSiNoGuardada();
+            showScreen('screen-menu');
+          }
+          if ((G.estado === 'game_over' || G.estado === 'victoria') && e.key === 'Enter') {
+            showScreen('screen-menu');
+          }
+          if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].indexOf(e.key) !== -1) e.preventDefault();
+        });
+        document.addEventListener('keyup', function (e) {
+          G.keys[e.key] = false;
+        });
+        window.addEventListener('beforeunload', function () {
+          if (G.estado === 'jugando') guardarSiNoGuardada();
+        });
+
+        /* ==========================================================
+         *  GAME LOOP
+         * ========================================================== */
+        var lastTime = 0;
+        function loop(ts) {
+          var dt = Math.min(ts - lastTime, 50);
+          lastTime = ts;
+          if (G.running && G.estado !== 'idle') {
+            update(dt);
+            render();
+          }
+          requestAnimationFrame(loop);
+        }
+
+        showScreen('screen-auth');
         requestAnimationFrame(loop);
-      }
-
-      showScreen('screen-auth');
-      requestAnimationFrame(loop);
-
-    })();
+      })();
     </script>
   </body>
 </html>
