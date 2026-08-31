@@ -97,6 +97,14 @@
     },
     'c11-aria': { es: 'Abrir Scratch Game', en: 'Open Scratch Game' },
 
+    /* --- Tarjeta 14: Barra de Progreso del Año --- */
+    'c14-title': { es: 'Barra de Progreso del Año', en: 'Year Progress Bar' },
+    'c14-desc': {
+      es: 'Visualización en tiempo real del avance del año: muestra en qué momento del año te encontrás, cuánto tiempo falta y el porcentaje completado.',
+      en: "Real-time visualization of the year's progress: shows where you are in the year, how much time is left, and the percentage completed.",
+    },
+    'c14-aria': { es: 'Abrir Barra de Progreso del Año', en: 'Open Year Progress Bar' },
+
     /* --- Tarjeta 2: TaskFlow --- */
     'c2-title': { es: 'TaskFlow', en: 'TaskFlow' },
     'c2-desc': {

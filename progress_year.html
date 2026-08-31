@@ -1,734 +1,692 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Year Progress — 2026</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #06060c;
-    --surface: #0e0e18;
-    --glass: rgba(14, 14, 24, 0.6);
-    --glass-border: rgba(255, 255, 255, 0.06);
-    --accent-cyan: #00e5ff;
-    --accent-violet: #8b5cf6;
-    --accent-rose: #f43f5e;
-    --accent-amber: #f59e0b;
-    --text-primary: #eae8e4;
-    --text-muted: #5c5a6b;
-    --text-dim: #3a3848;
-    --glow-cyan: rgba(0, 229, 255, 0.35);
-  }
-
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: 'DM Mono', monospace;
-    background: var(--bg);
-    color: var(--text-primary);
-    min-height: 100vh;
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0, 229, 255, 0.06) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 50% at 80% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
-      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(244, 63, 94, 0.03) 0%, transparent 40%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    opacity: 0.025;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  .container {
-    position: relative;
-    z-index: 2;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 3rem 1.5rem 4rem;
-  }
-
-  /* ── Language Button ── */
-  .lang-btn {
-    position: fixed;
-    top: 1.25rem;
-    right: 1.25rem;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.5rem 1rem 0.5rem 0.6rem;
-    background: var(--glass);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid var(--glass-border);
-    border-radius: 100px;
-    cursor: pointer;
-    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    color: var(--text-primary);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    outline: none;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .lang-btn:hover {
-    border-color: rgba(255, 255, 255, 0.14);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  }
-
-  .lang-btn:active { transform: scale(0.97); }
-
-  /* ── Flags via SVG data-URI ── */
-  .flag {
-    width: 28px;
-    height: 18px;
-    border-radius: 3px;
-    overflow: hidden;
-    flex-shrink: 0;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.5);
-    background-size: cover;
-    background-position: center;
-  }
-
-  .flag-ar {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3Crect width='60' height='10' fill='%2374ACDF'/%3E%3Crect y='10' width='60' height='10' fill='%23FFF'/%3E%3Crect y='20' width='60' height='10' fill='%2374ACDF'/%3E%3Ccircle cx='30' cy='15' r='3.2' fill='%23F6B40E'/%3E%3C/svg%3E");
-  }
-
-  .flag-uk {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3CclipPath id='c'%3E%3Cpath d='M0 0h60v30H0z'/%3E%3C/clipPath%3E%3Crect width='60' height='30' fill='%23012169'/%3E%3Cg clip-path='url(%23c)'%3E%3Cpath d='M0 0L60 30M60 0L0 30' stroke='%23FFF' stroke-width='6'/%3E%3Cpath d='M0 0L60 30M60 0L0 30' stroke='%23C8102E' stroke-width='2'/%3E%3Crect x='25' width='10' height='30' fill='%23FFF'/%3E%3Crect y='10' width='60' height='10' fill='%23FFF'/%3E%3Crect x='27' width='6' height='30' fill='%23C8102E'/%3E%3Crect y='12' width='60' height='6' fill='%23C8102E'/%3E%3C/g%3E%3C/svg%3E");
-  }
-
-  /* ── Header ── */
-  .header {
-    text-align: center;
-    margin-bottom: 3rem;
-    opacity: 0;
-    animation: fadeUp 0.8s ease forwards;
-  }
-
-  .header-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    font-weight: 300;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 0.75rem;
-  }
-
-  .header-year {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(3.5rem, 10vw, 7rem);
-    font-weight: 800;
-    line-height: 1;
-    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet), var(--accent-rose));
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: gradientShift 6s ease infinite;
-  }
-
-  .header-sub {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.8rem;
-    font-weight: 300;
-    color: var(--text-muted);
-    margin-top: 0.5rem;
-  }
-
-  @keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-
-  /* ── Percentage ── */
-  .percentage-section {
-    text-align: center;
-    margin-bottom: 2.5rem;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.15s forwards;
-  }
-
-  .percentage-value {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(3rem, 8vw, 5.5rem);
-    font-weight: 700;
-    color: var(--text-primary);
-    line-height: 1;
-    display: inline-block;
-  }
-
-  .percentage-value .decimal {
-    font-size: 0.5em;
-    color: var(--accent-cyan);
-    font-weight: 600;
-  }
-
-  .percentage-value .symbol {
-    font-size: 0.4em;
-    color: var(--text-muted);
-    font-weight: 400;
-    margin-left: 0.1em;
-    vertical-align: super;
-  }
-
-  .percentage-label {
-    font-size: 0.7rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin-top: 0.5rem;
-  }
-
-  /* ── Progress Bar ── */
-  .progress-section {
-    margin-bottom: 3rem;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.3s forwards;
-  }
-
-  .progress-track {
-    position: relative;
-    width: 100%;
-    height: 14px;
-    background: var(--surface);
-    border-radius: 100px;
-    overflow: hidden;
-    border: 1px solid var(--glass-border);
-  }
-
-  .progress-fill {
-    position: absolute;
-    top: 0; left: 0;
-    height: 100%;
-    border-radius: 100px;
-    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-violet), var(--accent-rose));
-    background-size: 200% 100%;
-    animation: barGradient 4s ease infinite;
-    transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
-    width: 0%;
-  }
-
-  .progress-fill::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
-    animation: shimmer 2.5s ease infinite;
-  }
-
-  .progress-glow {
-    position: absolute;
-    top: -8px;
-    height: 30px;
-    width: 80px;
-    border-radius: 50%;
-    background: var(--glow-cyan);
-    filter: blur(15px);
-    transition: left 1.5s cubic-bezier(0.22, 1, 0.36, 1);
-    pointer-events: none;
-    left: 0%;
-  }
-
-  .progress-spark {
-    position: absolute;
-    top: 50%;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #fff;
-    box-shadow: 0 0 8px 2px var(--accent-cyan), 0 0 20px 4px var(--glow-cyan);
-    transform: translate(-50%, -50%);
-    transition: left 1.5s cubic-bezier(0.22, 1, 0.36, 1);
-    left: 0%;
-    z-index: 2;
-  }
-
-  @keyframes barGradient {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-
-  @keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(200%); }
-  }
-
-  /* ── Month Markers ── */
-  .month-markers {
-    position: relative;
-    width: 100%;
-    height: 28px;
-    margin-top: 8px;
-  }
-
-  .month-marker {
-    position: absolute;
-    top: 0;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .month-marker .tick {
-    width: 1px;
-    height: 6px;
-    background: var(--text-dim);
-    transition: background 0.4s ease;
-  }
-
-  .month-marker .name {
-    font-size: 0.55rem;
-    letter-spacing: 0.1em;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    white-space: nowrap;
-    transition: color 0.4s ease;
-  }
-
-  .month-marker.active .tick { background: var(--accent-cyan); }
-  .month-marker.active .name { color: var(--accent-cyan); }
-
-  /* ── Stats Grid ── */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    margin-bottom: 2.5rem;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.45s forwards;
-  }
-
-  .stat-card {
-    background: var(--glass);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    padding: 1.25rem 1rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.3s ease, transform 0.3s ease;
-  }
-
-  .stat-card:hover {
-    border-color: rgba(255, 255, 255, 0.12);
-    transform: translateY(-2px);
-  }
-
-  .stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
-  }
-
-  .stat-number {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(1.5rem, 3.5vw, 2.2rem);
-    font-weight: 700;
-    color: var(--text-primary);
-    line-height: 1.1;
-  }
-
-  .stat-unit {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    font-weight: 300;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-top: 0.5rem;
-  }
-
-  .stat-card:nth-child(1) .stat-number { color: var(--accent-cyan); }
-  .stat-card:nth-child(2) .stat-number { color: var(--accent-violet); }
-  .stat-card:nth-child(3) .stat-number { color: var(--accent-rose); }
-  .stat-card:nth-child(4) .stat-number { color: var(--accent-amber); }
-
-  /* ── Live Clock ── */
-  .live-section {
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.6s forwards;
-  }
-
-  .live-label {
-    font-size: 0.65rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    text-align: center;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-  }
-
-  .live-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent-cyan);
-    animation: pulse 2s ease infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--glow-cyan); }
-    50% { opacity: 0.6; box-shadow: 0 0 0 6px transparent; }
-  }
-
-  .live-clock {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .clock-segment {
-    background: var(--glass);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    padding: 0.75rem 1rem;
-    min-width: 72px;
-    text-align: center;
-  }
-
-  .clock-value {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .clock-unit {
-    font-size: 0.55rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-top: 0.35rem;
-  }
-
-  .clock-separator {
-    display: flex;
-    align-items: center;
-    font-family: 'Syne', sans-serif;
-    font-size: 1.4rem;
-    color: var(--text-dim);
-    animation: blink 1s step-end infinite;
-    padding-bottom: 0.75rem;
-  }
-
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.2; }
-  }
-
-  /* ── Footer ── */
-  .footer {
-    text-align: center;
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255,255,255,0.03);
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.75s forwards;
-  }
-
-  .footer-text {
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    color: var(--text-dim);
-    text-transform: uppercase;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── Responsive ── */
-  @media (max-width: 640px) {
-    .container { padding: 2rem 1.25rem 3rem; }
-
-    .lang-btn {
-      top: 0.75rem;
-      right: 0.75rem;
-      padding: 0.4rem 0.8rem 0.4rem 0.5rem;
-      font-size: 0.6rem;
-    }
-
-    .flag { width: 24px; height: 15px; }
-
-    .stats-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.75rem;
-    }
-
-    .stat-card { padding: 1rem 0.75rem; }
-    .progress-track { height: 10px; }
-    .month-markers { height: 24px; }
-    .month-marker .name { font-size: 0.45rem; }
-
-    .clock-segment {
-      min-width: 60px;
-      padding: 0.6rem 0.65rem;
-    }
-
-    .clock-value { font-size: 1.3rem; }
-  }
-
-  @media (max-width: 380px) {
-    .stats-grid { gap: 0.5rem; }
-    .live-clock { gap: 0.35rem; }
-    .clock-segment { min-width: 54px; }
-    .clock-value { font-size: 1.1rem; }
-  }
-</style>
-</head>
-<body>
-
-<!-- Language Toggle -->
-<button class="lang-btn" id="langBtn" aria-label="Change language">
-  <div class="flag flag-ar" id="flagDisplay"></div>
-  <span id="langLabel">ES</span>
-</button>
-
-<div class="container">
-
-  <header class="header">
-    <div class="header-label" data-i18n="title">Progreso del año</div>
-    <div class="header-year">2026</div>
-    <div class="header-sub" id="currentDate"></div>
-  </header>
-
-  <section class="percentage-section">
-    <div class="percentage-value">
-      <span id="pctInteger">0</span><span class="decimal" id="pctDecimal">.0000</span><span class="symbol">%</span>
-    </div>
-    <div class="percentage-label" data-i18n="subtitle">del año completado</div>
-  </section>
-
-  <section class="progress-section">
-    <div class="progress-track">
-      <div class="progress-fill" id="progressFill"></div>
-      <div class="progress-glow" id="progressGlow"></div>
-      <div class="progress-spark" id="progressSpark"></div>
-    </div>
-    <div class="month-markers" id="monthMarkers"></div>
-  </section>
-
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-number" id="statDays">0</div>
-      <div class="stat-unit" data-i18n="days">Días</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number" id="statHours">0</div>
-      <div class="stat-unit" data-i18n="hours">Horas</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number" id="statMinutes">0</div>
-      <div class="stat-unit" data-i18n="minutes">Minutos</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number" id="statRemaining">0</div>
-      <div class="stat-unit" data-i18n="remaining">Restantes</div>
-    </div>
-  </div>
-
-  <section class="live-section">
-    <div class="live-label">
-      <span class="live-dot"></span>
-      <span data-i18n="liveLabel">Tiempo transcurrido en tiempo real</span>
-    </div>
-    <div class="live-clock">
-      <div class="clock-segment">
-        <div class="clock-value" id="clDays">000</div>
-        <div class="clock-unit" data-i18n="clDays">Días</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Year Progress — 2026 · Gustavox" />
+    <meta name="theme-color" content="#0B0F19" />
+    <title>Year Progress — 2026 · Gustavox</title>
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230B0F19'/%3E%3Crect x='7' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='11' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='15' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='7' y='9' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='7' y='13' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='7' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='11' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='15' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='19' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='23' y='5' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='23' y='9' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='19' y='13' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='23' y='13' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='19' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3Crect x='23' y='17' width='4' height='4' rx='1' fill='%234DA3FF'/%3E%3C/svg%3E"
+    />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+
+    <style>
+      /* ==========================================================
+         VARIABLES GLOBALES
+         ========================================================== */
+      :root {
+        --bg: #06060c;
+        --surface: #0e0e18;
+        --glass: rgba(14, 14, 24, 0.6);
+        --glass-border: rgba(255, 255, 255, 0.06);
+        --accent-cyan: #00e5ff;
+        --accent-violet: #8b5cf6;
+        --accent-rose: #f43f5e;
+        --accent-amber: #f59e0b;
+        --text-primary: #eae8e4;
+        --text-muted: #5c5a6b;
+        --text-dim: #3a3848;
+        --glow-cyan: rgba(0, 229, 255, 0.35);
+
+        /* Gustavox topbar/footer vars */
+        --border: rgba(77, 163, 255, 0.08);
+        --blue: #4da3ff;
+        --cyan: #4fd1c5;
+        --text-sec: #8b949e;
+        --r-md: 12px;
+        --ff: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        --fm: 'SF Mono', 'Cascadia Code', 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+      }
+
+      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: 'DM Mono', monospace;
+        background: var(--bg);
+        color: var(--text-primary);
+        min-height: 100vh;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        display: flex;
+        flex-direction: column;
+      }
+
+      ::selection { background: var(--blue); color: var(--bg); }
+
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: var(--bg); }
+      ::-webkit-scrollbar-thumb { background: var(--text-dim); border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+      * { scrollbar-width: thin; scrollbar-color: var(--text-dim) var(--bg); }
+
+      /* ---- Fondo ambiental (Year Progress original) ---- */
+      body::before {
+        content: '';
+        position: fixed; inset: 0;
+        background:
+          radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0, 229, 255, 0.06) 0%, transparent 60%),
+          radial-gradient(ellipse 60% 50% at 80% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+          radial-gradient(ellipse 40% 40% at 50% 50%, rgba(244, 63, 94, 0.03) 0%, transparent 40%);
+        pointer-events: none; z-index: 0;
+      }
+
+      body::after {
+        content: '';
+        position: fixed; inset: 0; opacity: 0.025;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        pointer-events: none; z-index: 1;
+      }
+
+      /* ==========================================================
+         TOPBAR — Copia exacta del Gustavox
+         ========================================================== */
+      .topbar {
+        position: relative; z-index: 10;
+        display: flex; align-items: center; justify-content: space-between;
+        max-width: 900px; width: 100%;
+        margin: 0 auto; padding: 2rem 1.5rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        animation: fadeUp 0.6s ease forwards;
+      }
+
+      .topbar__back {
+        display: inline-flex; align-items: center; gap: 0.5rem;
+        font-size: 0.85rem; font-weight: 600; color: var(--text-sec);
+        padding: 0.45rem 0.9rem; border-radius: 8px;
+        border: 1px solid var(--border); background: transparent;
+        text-decoration: none;
+        transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+      }
+      .topbar__back:hover {
+        color: var(--blue);
+        border-color: rgba(77, 163, 255, 0.3);
+        background: rgba(77, 163, 255, 0.05);
+      }
+      .topbar__back svg { width: 16px; height: 16px; transition: transform 0.2s ease; }
+      .topbar__back:hover svg { transform: translateX(-3px); }
+
+      .topbar__logo {
+        display: flex; align-items: center; gap: 0.5rem;
+        font-weight: 600; font-size: 0.9rem; color: var(--text-primary); text-decoration: none;
+      }
+      .topbar__logo-icon {
+        display: flex; align-items: center; justify-content: center;
+        width: 30px; height: 30px;
+        font-family: var(--fm); font-weight: 700; font-size: 0.85rem;
+        color: var(--blue); background: rgba(77, 163, 255, 0.1);
+        border: 1px solid rgba(77, 163, 255, 0.2); border-radius: 6px;
+      }
+
+      /* ==========================================================
+         CONTENIDO PRINCIPAL — Year Progress original
+         ========================================================== */
+      .container {
+        position: relative; z-index: 2;
+        max-width: 900px; width: 100%;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem 4rem;
+      }
+
+      /* ── Language Button ── */
+      .lang-btn {
+        position: fixed;
+        top: 1.25rem; right: 1.25rem;
+        z-index: 100;
+        display: flex; align-items: center; gap: 0.6rem;
+        padding: 0.5rem 1rem 0.5rem 0.6rem;
+        background: var(--glass);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--glass-border);
+        border-radius: 100px;
+        cursor: pointer;
+        transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        color: var(--text-primary);
+        font-family: 'DM Mono', monospace;
+        font-size: 0.65rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .lang-btn:hover {
+        border-color: rgba(255, 255, 255, 0.14);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+      .lang-btn:active { transform: scale(0.97); }
+
+      /* ── Flags ── */
+      .flag {
+        width: 28px; height: 18px;
+        border-radius: 3px; overflow: hidden; flex-shrink: 0;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+        background-size: cover; background-position: center;
+      }
+      .flag-ar {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3Crect width='60' height='10' fill='%2374ACDF'/%3E%3Crect y='10' width='60' height='10' fill='%23FFF'/%3E%3Crect y='20' width='60' height='10' fill='%2374ACDF'/%3E%3Ccircle cx='30' cy='15' r='3.2' fill='%23F6B40E'/%3E%3C/svg%3E");
+      }
+      .flag-uk {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3CclipPath id='c'%3E%3Cpath d='M0 0h60v30H0z'/%3E%3C/clipPath%3E%3Crect width='60' height='30' fill='%23012169'/%3E%3Cg clip-path='url(%23c)'%3E%3Cpath d='M0 0L60 30M60 0L0 30' stroke='%23FFF' stroke-width='6'/%3E%3Cpath d='M0 0L60 30M60 0L0 30' stroke='%23C8102E' stroke-width='2'/%3E%3Crect x='25' width='10' height='30' fill='%23FFF'/%3E%3Crect y='10' width='60' height='10' fill='%23FFF'/%3E%3Crect x='27' width='6' height='30' fill='%23C8102E'/%3E%3Crect y='12' width='60' height='6' fill='%23C8102E'/%3E%3C/g%3E%3C/svg%3E");
+      }
+
+      /* ── Header ── */
+      .header {
+        text-align: center; margin-bottom: 3rem;
+        opacity: 0; animation: fadeUp 0.8s ease forwards;
+      }
+      .header-label {
+        font-family: 'DM Mono', monospace;
+        font-size: 0.7rem; font-weight: 300;
+        letter-spacing: 0.35em; text-transform: uppercase;
+        color: var(--text-muted); margin-bottom: 0.75rem;
+      }
+      .header-year {
+        font-family: 'Syne', sans-serif;
+        font-size: clamp(3.5rem, 10vw, 7rem);
+        font-weight: 800; line-height: 1;
+        background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet), var(--accent-rose));
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: gradientShift 6s ease infinite;
+      }
+      .header-sub {
+        font-family: 'DM Mono', monospace;
+        font-size: 0.8rem; font-weight: 300;
+        color: var(--text-muted); margin-top: 0.5rem;
+      }
+
+      @keyframes gradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+      }
+
+      /* ── Percentage ── */
+      .percentage-section {
+        text-align: center; margin-bottom: 2.5rem;
+        opacity: 0; animation: fadeUp 0.8s ease 0.15s forwards;
+      }
+      .percentage-value {
+        font-family: 'Syne', sans-serif;
+        font-size: clamp(3rem, 8vw, 5.5rem);
+        font-weight: 700; color: var(--text-primary);
+        line-height: 1; display: inline-block;
+      }
+      .percentage-value .decimal {
+        font-size: 0.5em; color: var(--accent-cyan); font-weight: 600;
+      }
+      .percentage-value .symbol {
+        font-size: 0.4em; color: var(--text-muted);
+        font-weight: 400; margin-left: 0.1em; vertical-align: super;
+      }
+      .percentage-label {
+        font-size: 0.7rem; letter-spacing: 0.3em;
+        text-transform: uppercase; color: var(--text-dim); margin-top: 0.5rem;
+      }
+
+      /* ── Progress Bar ── */
+      .progress-section {
+        margin-bottom: 3rem;
+        opacity: 0; animation: fadeUp 0.8s ease 0.3s forwards;
+      }
+      .progress-track {
+        position: relative; width: 100%; height: 14px;
+        background: var(--surface); border-radius: 100px;
+        overflow: hidden; border: 1px solid var(--glass-border);
+      }
+      .progress-fill {
+        position: absolute; top: 0; left: 0; height: 100%;
+        border-radius: 100px;
+        background: linear-gradient(90deg, var(--accent-cyan), var(--accent-violet), var(--accent-rose));
+        background-size: 200% 100%;
+        animation: barGradient 4s ease infinite;
+        transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+        width: 0%;
+      }
+      .progress-fill::after {
+        content: ''; position: absolute; inset: 0;
+        background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
+        animation: shimmer 2.5s ease infinite;
+      }
+      .progress-glow {
+        position: absolute; top: -8px; height: 30px; width: 80px;
+        border-radius: 50%; background: var(--glow-cyan);
+        filter: blur(15px);
+        transition: left 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+        pointer-events: none; left: 0%;
+      }
+      .progress-spark {
+        position: absolute; top: 50%; width: 6px; height: 6px;
+        border-radius: 50%; background: #fff;
+        box-shadow: 0 0 8px 2px var(--accent-cyan), 0 0 20px 4px var(--glow-cyan);
+        transform: translate(-50%, -50%);
+        transition: left 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+        left: 0%; z-index: 2;
+      }
+
+      @keyframes barGradient {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+      }
+      @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(200%); }
+      }
+
+      /* ── Month Markers ── */
+      .month-markers {
+        position: relative; width: 100%; height: 28px; margin-top: 8px;
+      }
+      .month-marker {
+        position: absolute; top: 0; transform: translateX(-50%);
+        display: flex; flex-direction: column; align-items: center; gap: 4px;
+      }
+      .month-marker .tick {
+        width: 1px; height: 6px; background: var(--text-dim);
+        transition: background 0.4s ease;
+      }
+      .month-marker .name {
+        font-size: 0.55rem; letter-spacing: 0.1em;
+        color: var(--text-dim); text-transform: uppercase;
+        white-space: nowrap; transition: color 0.4s ease;
+      }
+      .month-marker.active .tick { background: var(--accent-cyan); }
+      .month-marker.active .name { color: var(--accent-cyan); }
+
+      /* ── Stats Grid ── */
+      .stats-grid {
+        display: grid; grid-template-columns: repeat(4, 1fr);
+        gap: 1rem; margin-bottom: 2.5rem;
+        opacity: 0; animation: fadeUp 0.8s ease 0.45s forwards;
+      }
+      .stat-card {
+        background: var(--glass);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px; padding: 1.25rem 1rem;
+        text-align: center; position: relative; overflow: hidden;
+        transition: border-color 0.3s ease, transform 0.3s ease;
+      }
+      .stat-card:hover {
+        border-color: rgba(255, 255, 255, 0.12);
+        transform: translateY(-2px);
+      }
+      .stat-card::before {
+        content: ''; position: absolute;
+        top: 0; left: 0; right: 0; height: 1px;
+        background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+      }
+      .stat-number {
+        font-family: 'Syne', sans-serif;
+        font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+        font-weight: 700; color: var(--text-primary); line-height: 1.1;
+      }
+      .stat-unit {
+        font-family: 'DM Mono', monospace;
+        font-size: 0.6rem; font-weight: 300;
+        letter-spacing: 0.2em; text-transform: uppercase;
+        color: var(--text-muted); margin-top: 0.5rem;
+      }
+      .stat-card:nth-child(1) .stat-number { color: var(--accent-cyan); }
+      .stat-card:nth-child(2) .stat-number { color: var(--accent-violet); }
+      .stat-card:nth-child(3) .stat-number { color: var(--accent-rose); }
+      .stat-card:nth-child(4) .stat-number { color: var(--accent-amber); }
+
+      /* ── Live Clock ── */
+      .live-section {
+        opacity: 0; animation: fadeUp 0.8s ease 0.6s forwards;
+      }
+      .live-label {
+        font-size: 0.65rem; letter-spacing: 0.3em;
+        text-transform: uppercase; color: var(--text-dim);
+        text-align: center; margin-bottom: 1rem;
+        display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+      }
+      .live-dot {
+        width: 6px; height: 6px; border-radius: 50%;
+        background: var(--accent-cyan);
+        animation: pulse 2s ease infinite;
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--glow-cyan); }
+        50% { opacity: 0.6; box-shadow: 0 0 0 6px transparent; }
+      }
+      .live-clock {
+        display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;
+      }
+      .clock-segment {
+        background: var(--glass);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px; padding: 0.75rem 1rem;
+        min-width: 72px; text-align: center;
+      }
+      .clock-value {
+        font-family: 'Syne', sans-serif;
+        font-size: 1.6rem; font-weight: 700;
+        color: var(--text-primary); line-height: 1;
+        font-variant-numeric: tabular-nums;
+      }
+      .clock-unit {
+        font-size: 0.55rem; letter-spacing: 0.2em;
+        text-transform: uppercase; color: var(--text-muted); margin-top: 0.35rem;
+      }
+      .clock-separator {
+        display: flex; align-items: center;
+        font-family: 'Syne', sans-serif;
+        font-size: 1.4rem; color: var(--text-dim);
+        animation: blink 1s step-end infinite;
+        padding-bottom: 0.75rem;
+      }
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.2; }
+      }
+
+      /* ==========================================================
+         FOOTER — Copia exacta del Gustavox
+         ========================================================== */
+      .page-footer {
+        position: relative; z-index: 2;
+        max-width: 900px; width: 100%;
+        margin: 0 auto;
+        text-align: center;
+        padding: 1.5rem 1.5rem 2rem;
+        border-top: 1px solid var(--border);
+        animation: fadeUp 0.6s ease forwards;
+        animation-delay: 0.75s; opacity: 0;
+      }
+      .page-footer p {
+        font-family: var(--fm); font-size: 0.75rem;
+        color: var(--text-dim); letter-spacing: 0.03em;
+      }
+      .page-footer a { color: var(--text-sec); transition: color 0.2s ease; }
+      .page-footer a:hover { color: var(--blue); }
+
+      /* ---- Keyframes ---- */
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* ── Responsive ── */
+      @media (max-width: 640px) {
+        .topbar { padding: 1.5rem 1.25rem 1.25rem; }
+        .topbar--inner { flex-direction: column; gap: 1rem; align-items: flex-start; }
+        .container { padding: 2rem 1.25rem 3rem; }
+
+        .lang-btn {
+          top: 0.75rem; right: 0.75rem;
+          padding: 0.4rem 0.8rem 0.4rem 0.5rem; font-size: 0.6rem;
+        }
+        .flag { width: 24px; height: 15px; }
+
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr); gap: 0.75rem;
+        }
+        .stat-card { padding: 1rem 0.75rem; }
+        .progress-track { height: 10px; }
+        .month-markers { height: 24px; }
+        .month-marker .name { font-size: 0.45rem; }
+
+        .clock-segment { min-width: 60px; padding: 0.6rem 0.65rem; }
+        .clock-value { font-size: 1.3rem; }
+
+        .page-footer { padding: 1.25rem 1.25rem 1.5rem; }
+      }
+
+      @media (max-width: 380px) {
+        .stats-grid { gap: 0.5rem; }
+        .live-clock { gap: 0.35rem; }
+        .clock-segment { min-width: 54px; }
+        .clock-value { font-size: 1.1rem; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- Language Toggle -->
+    <button class="lang-btn" id="langBtn" aria-label="Change language">
+      <div class="flag flag-ar" id="flagDisplay"></div>
+      <span id="langLabel">ES</span>
+    </button>
+
+    <!-- Topbar — Gustavox -->
+    <nav class="topbar">
+      <a href="index.html" class="topbar__back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12" />
+          <polyline points="12 19 5 12 12 5" />
+        </svg>
+        <span>Volver</span>
+      </a>
+      <a href="index.html" class="topbar__logo">
+        <span class="topbar__logo-icon">G</span>
+        <span>Gustavox</span>
+      </a>
+    </nav>
+
+    <!-- Contenido principal — Year Progress -->
+    <div class="container">
+
+      <header class="header">
+        <div class="header-label" data-i18n="title">Progreso del año</div>
+        <div class="header-year">2026</div>
+        <div class="header-sub" id="currentDate"></div>
+      </header>
+
+      <section class="percentage-section">
+        <div class="percentage-value">
+          <span id="pctInteger">0</span><span class="decimal" id="pctDecimal">.0000</span><span class="symbol">%</span>
+        </div>
+        <div class="percentage-label" data-i18n="subtitle">del año completado</div>
+      </section>
+
+      <section class="progress-section">
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+          <div class="progress-glow" id="progressGlow"></div>
+          <div class="progress-spark" id="progressSpark"></div>
+        </div>
+        <div class="month-markers" id="monthMarkers"></div>
+      </section>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number" id="statDays">0</div>
+          <div class="stat-unit" data-i18n="days">Días</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="statHours">0</div>
+          <div class="stat-unit" data-i18n="hours">Horas</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="statMinutes">0</div>
+          <div class="stat-unit" data-i18n="minutes">Minutos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="statRemaining">0</div>
+          <div class="stat-unit" data-i18n="remaining">Restantes</div>
+        </div>
       </div>
-      <div class="clock-separator">:</div>
-      <div class="clock-segment">
-        <div class="clock-value" id="clHours">00</div>
-        <div class="clock-unit" data-i18n="clHours">Horas</div>
-      </div>
-      <div class="clock-separator">:</div>
-      <div class="clock-segment">
-        <div class="clock-value" id="clMinutes">00</div>
-        <div class="clock-unit" data-i18n="clMin">Min</div>
-      </div>
-      <div class="clock-separator">:</div>
-      <div class="clock-segment">
-        <div class="clock-value" id="clSeconds">00</div>
-        <div class="clock-unit" data-i18n="clSec">Seg</div>
-      </div>
+
+      <section class="live-section">
+        <div class="live-label">
+          <span class="live-dot"></span>
+          <span data-i18n="liveLabel">Tiempo transcurrido en tiempo real</span>
+        </div>
+        <div class="live-clock">
+          <div class="clock-segment">
+            <div class="clock-value" id="clDays">000</div>
+            <div class="clock-unit" data-i18n="clDays">Días</div>
+          </div>
+          <div class="clock-separator">:</div>
+          <div class="clock-segment">
+            <div class="clock-value" id="clHours">00</div>
+            <div class="clock-unit" data-i18n="clHours">Horas</div>
+          </div>
+          <div class="clock-separator">:</div>
+          <div class="clock-segment">
+            <div class="clock-value" id="clMinutes">00</div>
+            <div class="clock-unit" data-i18n="clMin">Min</div>
+          </div>
+          <div class="clock-separator">:</div>
+          <div class="clock-segment">
+            <div class="clock-value" id="clSeconds">00</div>
+            <div class="clock-unit" data-i18n="clSec">Seg</div>
+          </div>
+        </div>
+      </section>
+
     </div>
-  </section>
 
-  <footer class="footer">
-    <div class="footer-text" data-i18n="footer">Precisión de microsegundos · Actualización cada 47ms</div>
-  </footer>
+    <!-- Footer — Gustavox -->
+    <footer class="page-footer">
+      <p>&copy; <script>document.write(new Date().getFullYear());</script> Gustavox · <a href="index.html">gustavox.dev</a></p>
+    </footer>
 
-</div>
+    <script>
+      const YEAR = 2026;
+      const isLeap = (YEAR % 4 === 0 && YEAR % 100 !== 0) || (YEAR % 400 === 0);
+      const TOTAL_DAYS = isLeap ? 366 : 365;
+      const TOTAL_MS = TOTAL_DAYS * 86400000;
+      const MONTH_DAYS = [31, isLeap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-<script>
-  const YEAR = 2026;
-  const isLeap = (YEAR % 4 === 0 && YEAR % 100 !== 0) || (YEAR % 400 === 0);
-  const TOTAL_DAYS = isLeap ? 366 : 365;
-  const TOTAL_MS = TOTAL_DAYS * 86400000;
-  const MONTH_DAYS = [31, isLeap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+      const T = {
+        es: {
+          title: 'Progreso del año',
+          subtitle: 'del año completado',
+          days: 'Días',
+          hours: 'Horas',
+          minutes: 'Minutos',
+          remaining: 'Restantes',
+          liveLabel: 'Tiempo transcurrido en tiempo real',
+          clDays: 'Días',
+          clHours: 'Horas',
+          clMin: 'Min',
+          clSec: 'Seg',
+          months: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+          locale: 'es-ES',
+          btnLabel: 'ES',
+          flagClass: 'flag-ar'
+        },
+        en: {
+          title: 'Year Progress',
+          subtitle: 'of the year completed',
+          days: 'Days',
+          hours: 'Hours',
+          minutes: 'Minutes',
+          remaining: 'Remaining',
+          liveLabel: 'Real-time elapsed',
+          clDays: 'Days',
+          clHours: 'Hrs',
+          clMin: 'Min',
+          clSec: 'Sec',
+          months: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+          locale: 'en-GB',
+          btnLabel: 'EN',
+          flagClass: 'flag-uk'
+        }
+      };
 
-  const T = {
-    es: {
-      title: 'Progreso del año',
-      subtitle: 'del año completado',
-      days: 'Días',
-      hours: 'Horas',
-      minutes: 'Minutos',
-      remaining: 'Restantes',
-      liveLabel: 'Tiempo transcurrido en tiempo real',
-      clDays: 'Días',
-      clHours: 'Horas',
-      clMin: 'Min',
-      clSec: 'Seg',
-      footer: 'Precisión de microsegundos · Actualización cada 47ms',
-      months: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
-      locale: 'es-ES',
-      btnLabel: 'ES',
-      flagClass: 'flag-ar'
-    },
-    en: {
-      title: 'Year Progress',
-      subtitle: 'of the year completed',
-      days: 'Days',
-      hours: 'Hours',
-      minutes: 'Minutes',
-      remaining: 'Remaining',
-      liveLabel: 'Real-time elapsed',
-      clDays: 'Days',
-      clHours: 'Hrs',
-      clMin: 'Min',
-      clSec: 'Sec',
-      footer: 'Microsecond precision · Updates every 47ms',
-      months: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-      locale: 'en-GB',
-      btnLabel: 'EN',
-      flagClass: 'flag-uk'
-    }
-  };
+      const browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+      let lang = browserLang.startsWith('es') ? 'es' : 'en';
 
-  const browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
-  let lang = browserLang.startsWith('es') ? 'es' : 'en';
+      function applyLang(l) {
+        const t = T[l];
+        document.documentElement.lang = l;
+        document.title = l === 'es' ? 'Progreso del Año — 2026 · Gustavox' : 'Year Progress — 2026 · Gustavox';
 
-  function applyLang(l) {
-    const t = T[l];
-    document.documentElement.lang = l;
-    document.title = l === 'es' ? 'Progreso del Año — 2026' : 'Year Progress — 2026';
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          const key = el.dataset.i18n;
+          if (t[key]) el.textContent = t[key];
+        });
 
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.dataset.i18n;
-      if (t[key]) el.textContent = t[key];
-    });
+        document.getElementById('flagDisplay').className = 'flag ' + t.flagClass;
+        document.getElementById('langLabel').textContent = t.btnLabel;
 
-    document.getElementById('flagDisplay').className = 'flag ' + t.flagClass;
-    document.getElementById('langLabel').textContent = t.btnLabel;
+        document.querySelectorAll('.month-marker .name').forEach((el, i) => {
+          el.textContent = t.months[i];
+        });
 
-    document.querySelectorAll('.month-marker .name').forEach((el, i) => {
-      el.textContent = t.months[i];
-    });
+        const d = new Date();
+        const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').textContent = d.toLocaleDateString(t.locale, opts);
+      }
 
-    const d = new Date();
-    const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    document.getElementById('currentDate').textContent = d.toLocaleDateString(t.locale, opts);
-  }
+      document.getElementById('langBtn').addEventListener('click', () => {
+        lang = lang === 'es' ? 'en' : 'es';
+        applyLang(lang);
+      });
 
-  document.getElementById('langBtn').addEventListener('click', () => {
-    lang = lang === 'es' ? 'en' : 'es';
-    applyLang(lang);
-  });
+      const markersEl = document.getElementById('monthMarkers');
+      let cumDays = 0;
+      MONTH_DAYS.forEach((_, i) => {
+        const pct = (cumDays / TOTAL_DAYS) * 100;
+        const m = document.createElement('div');
+        m.className = 'month-marker';
+        m.style.left = pct + '%';
+        m.innerHTML = '<div class="tick"></div><div class="name"></div>';
+        markersEl.appendChild(m);
+        cumDays += MONTH_DAYS[i];
+      });
 
-  const markersEl = document.getElementById('monthMarkers');
-  let cumDays = 0;
-  MONTH_DAYS.forEach((_, i) => {
-    const pct = (cumDays / TOTAL_DAYS) * 100;
-    const m = document.createElement('div');
-    m.className = 'month-marker';
-    m.style.left = pct + '%';
-    m.innerHTML = '<div class="tick"></div><div class="name"></div>';
-    markersEl.appendChild(m);
-    cumDays += MONTH_DAYS[i];
-  });
+      function update() {
+        const now = Date.now();
+        const start = new Date(YEAR, 0, 1).getTime();
+        const elapsed = Math.max(0, now - start);
+        const pct = Math.min(100, (elapsed / TOTAL_MS) * 100);
 
-  function update() {
-    const now = Date.now();
-    const start = new Date(YEAR, 0, 1).getTime();
-    const elapsed = Math.max(0, now - start);
-    const pct = Math.min(100, (elapsed / TOTAL_MS) * 100);
+        const intPart = Math.floor(pct);
+        const decPart = (pct - intPart).toFixed(4).slice(1);
+        document.getElementById('pctInteger').textContent = intPart;
+        document.getElementById('pctDecimal').textContent = decPart;
 
-    const intPart = Math.floor(pct);
-    const decPart = (pct - intPart).toFixed(4).slice(1);
-    document.getElementById('pctInteger').textContent = intPart;
-    document.getElementById('pctDecimal').textContent = decPart;
+        const pctStr = pct.toFixed(6) + '%';
+        document.getElementById('progressFill').style.width = pctStr;
+        document.getElementById('progressGlow').style.left = 'calc(' + pctStr + ' - 40px)';
+        document.getElementById('progressSpark').style.left = pctStr;
 
-    const pctStr = pct.toFixed(6) + '%';
-    document.getElementById('progressFill').style.width = pctStr;
-    document.getElementById('progressGlow').style.left = 'calc(' + pctStr + ' - 40px)';
-    document.getElementById('progressSpark').style.left = pctStr;
+        const totalSec = Math.floor(elapsed / 1000);
+        const days = Math.floor(totalSec / 86400);
+        const hours = Math.floor((totalSec % 86400) / 3600);
+        const minutes = Math.floor((totalSec % 3600) / 60);
+        const seconds = totalSec % 60;
 
-    const totalSec = Math.floor(elapsed / 1000);
-    const days = Math.floor(totalSec / 86400);
-    const hours = Math.floor((totalSec % 86400) / 3600);
-    const minutes = Math.floor((totalSec % 3600) / 60);
-    const seconds = totalSec % 60;
+        document.getElementById('statDays').textContent = days.toLocaleString(T[lang].locale);
+        document.getElementById('statHours').textContent = (elapsed / 3600000).toFixed(1);
+        document.getElementById('statMinutes').textContent = Math.floor(elapsed / 60000).toLocaleString(T[lang].locale);
+        document.getElementById('statRemaining').textContent = (TOTAL_DAYS - days).toLocaleString(T[lang].locale);
 
-    document.getElementById('statDays').textContent = days.toLocaleString(T[lang].locale);
-    document.getElementById('statHours').textContent = (elapsed / 3600000).toFixed(1);
-    document.getElementById('statMinutes').textContent = Math.floor(elapsed / 60000).toLocaleString(T[lang].locale);
-    document.getElementById('statRemaining').textContent = (TOTAL_DAYS - days).toLocaleString(T[lang].locale);
+        document.getElementById('clDays').textContent = String(days).padStart(3, '0');
+        document.getElementById('clHours').textContent = String(hours).padStart(2, '0');
+        document.getElementById('clMinutes').textContent = String(minutes).padStart(2, '0');
+        document.getElementById('clSeconds').textContent = String(seconds).padStart(2, '0');
 
-    document.getElementById('clDays').textContent = String(days).padStart(3, '0');
-    document.getElementById('clHours').textContent = String(hours).padStart(2, '0');
-    document.getElementById('clMinutes').textContent = String(minutes).padStart(2, '0');
-    document.getElementById('clSeconds').textContent = String(seconds).padStart(2, '0');
+        document.querySelectorAll('.month-marker').forEach((marker, i) => {
+          let md = 0;
+          for (let j = 0; j < i; j++) md += MONTH_DAYS[j];
+          marker.classList.toggle('active', (md / TOTAL_DAYS) * 100 <= pct);
+        });
+      }
 
-    document.querySelectorAll('.month-marker').forEach((marker, i) => {
-      let md = 0;
-      for (let j = 0; j < i; j++) md += MONTH_DAYS[j];
-      marker.classList.toggle('active', (md / TOTAL_DAYS) * 100 <= pct);
-    });
-  }
-
-  applyLang(lang);
-  update();
-  setInterval(update, 47);
-</script>
-
-</body>
+      applyLang(lang);
+      update();
+      setInterval(update, 47);
+    </script>
+  </body>
 </html>
