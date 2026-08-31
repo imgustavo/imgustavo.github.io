@@ -19,11 +19,7 @@
 
   /* ======================================================
        2. TRADUCCIONES (I18N)
-       ======================================================
-       Cada clave tiene { es: '...', en: '...' }
-       Las claves se asignan a elementos HTML vía data-i18n="clave"
-       y data-i18n-aria="clave" para aria-labels.
-    ====================================================== */
+       ====================================================== */
   var I18N = {
     /* --- Navegación --- */
     'nav-home': { es: 'Inicio', en: 'Home' },
@@ -69,6 +65,22 @@
     },
     'c1-aria': { es: 'Abrir Portfolio Web', en: 'Open Web Portfolio' },
 
+    /* --- Tarjeta 12: Palas y Paletas --- */
+    'c12-title': { es: 'Palas y Paletas', en: 'Palas y Paletas' },
+    'c12-desc': {
+      es: 'Juego 2D desarrollado en Python con mecánicas de paletas y física de pelota, ideal para aprender programación orientada a objetos y desarrollo de videojuegos.',
+      en: '2D game built in Python with paddle mechanics and ball physics, great for learning object-oriented programming and game development.',
+    },
+    'c12-aria': { es: 'Abrir Palas y Paletas', en: 'Open Palas y Paletas' },
+
+    /* --- Tarjeta 13: Dosis diaria de Nietzsche --- */
+    'c13-title': { es: 'Dosis diaria de Nietzsche', en: 'Daily Dose of Nietzsche' },
+    'c13-desc': {
+      es: 'Proyecto web que presenta una frase diaria de Friedrich Nietzsche, explorando su filosofía a través de citas seleccionadas para la reflexión cotidiana.',
+      en: 'Web project that presents a daily quote from Friedrich Nietzsche, exploring his philosophy through curated quotes for everyday reflection.',
+    },
+    'c13-aria': { es: 'Abrir Dosis diaria de Nietzsche', en: 'Open Daily Dose of Nietzsche' },
+
     /* --- Tarjeta 10: Cohorte 2026 --- */
     'c10-title': { es: 'Cohorte 2026', en: 'Cohort 2026' },
     'c10-desc': {
@@ -84,6 +96,7 @@
       en: 'Interactive game built with Scratch using block-based programming logic, great for learning and experimenting.',
     },
     'c11-aria': { es: 'Abrir Scratch Game', en: 'Open Scratch Game' },
+
     /* --- Tarjeta 2: TaskFlow --- */
     'c2-title': { es: 'TaskFlow', en: 'TaskFlow' },
     'c2-desc': {
@@ -151,7 +164,7 @@
     /* --- Ver más --- */
     'load-more': { es: 'Ver más proyectos', en: 'View more projects' },
 
-    /* --- Contador (usa {n} y {total} como placeholders) --- */
+    /* --- Contador --- */
     'count-all': { es: '{n} proyectos en total', en: '{n} projects in total' },
     'count-filter': { es: '{n} de {total} proyectos visibles', en: '{n} of {total} projects visible' },
 
@@ -243,13 +256,6 @@
   /* ======================================================
        5. SISTEMA DE IDIOMA
        ====================================================== */
-
-  /**
-   * Detecta el idioma del sistema.
-   * Prioridad: localStorage > sistema > 'en' por defecto.
-   * Español si el idioma del sistema empieza con 'es'.
-   * Cualquier otro idioma → inglés.
-   */
   function detectLanguage() {
     var saved = localStorage.getItem('gustavox-lang');
     if (saved === 'es' || saved === 'en') return saved;
@@ -257,32 +263,23 @@
     return sys.indexOf('es') === 0 ? 'es' : 'en';
   }
 
-  /**
-   * Aplica el idioma seleccionado a toda la página.
-   * Actualiza textos, aria-labels, metadatos y la UI del switcher.
-   */
   function applyLanguage(lang) {
     currentLang = lang;
 
-    // Efecto de transición suave
     document.body.classList.add('lang-fading');
 
     setTimeout(function () {
-      // Atributo lang del documento
       document.documentElement.lang = lang;
 
-      // Título de la pestaña
       if (I18N['page-title']) {
         document.title = I18N['page-title'][lang];
       }
 
-      // Meta descripción
       var metaDesc = document.querySelector('meta[name="description"]');
       if (metaDesc && I18N['page-desc']) {
         metaDesc.setAttribute('content', I18N['page-desc'][lang]);
       }
 
-      // Actualizar todos los elementos con data-i18n
       document.querySelectorAll('[data-i18n]').forEach(function (el) {
         var key = el.getAttribute('data-i18n');
         if (I18N[key] && I18N[key][lang] !== undefined) {
@@ -290,7 +287,6 @@
         }
       });
 
-      // Actualizar aria-labels
       document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
         var key = el.getAttribute('data-i18n-aria');
         if (I18N[key] && I18N[key][lang] !== undefined) {
@@ -298,23 +294,16 @@
         }
       });
 
-      // Actualizar contador (depende de filtros activos)
       updateCountText();
-
-      // Actualizar UI del switcher
       updateSwitcherUI(lang);
-
-      // Guardar preferencia
       localStorage.setItem('gustavox-lang', lang);
 
-      // Quitar efecto de transición
       requestAnimationFrame(function () {
         document.body.classList.remove('lang-fading');
       });
     }, 160);
   }
 
-  /** Marca visualmente el botón del idioma activo */
   function updateSwitcherUI(lang) {
     var btnES = document.getElementById('langES');
     var btnEN = document.getElementById('langEN');
@@ -322,7 +311,6 @@
     if (btnEN) btnEN.classList.toggle('active', lang === 'en');
   }
 
-  /** Inicializa los botones del language switcher */
   function initLanguageSwitcher() {
     document.querySelectorAll('.lang-btn').forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -335,7 +323,7 @@
   }
 
   /* ======================================================
-       6. CONTADOR DE PROYECTOS (usa I18N)
+       6. CONTADOR DE PROYECTOS
        ====================================================== */
   function updateCountText() {
     var countEl = document.getElementById('projectsCount');
@@ -390,7 +378,6 @@
   function applyFilter(cards, emptyEl, loadMoreWrap) {
     var shownCount = 0;
 
-    // Paso 1: mostrar/ocultar por categoría
     cards.forEach(function (card) {
       var categories = card.getAttribute('data-category') || '';
       var match = currentFilter === 'all' || categories.split(/\s+/).indexOf(currentFilter) !== -1;
@@ -401,7 +388,6 @@
       }
     });
 
-    // Paso 2: aplicar paginación al subconjunto filtrado
     var filtered = getFilteredCards(cards);
     var totalFiltered = filtered.length;
 
@@ -420,21 +406,17 @@
       }
     });
 
-    // Paso 3: contador
     updateCountText();
 
-    // Paso 4: botón "ver más"
     if (loadMoreWrap) {
       loadMoreWrap.classList.toggle('hidden', totalFiltered <= CONFIG.INITIAL_VISIBLE);
     }
 
-    // Paso 5: mensaje vacío
     if (emptyEl) {
       emptyEl.hidden = totalFiltered > 0;
     }
   }
 
-  /** Devuelve solo las tarjetas que no están filtradas-out */
   function getFilteredCards(allCards) {
     var arr = [];
     allCards.forEach(function (card) {
@@ -466,24 +448,22 @@
       toShow.forEach(function (card, i) {
         setTimeout(function () {
           card.classList.remove('card--hidden');
-          void card.offsetWidth; // forzar reflow
+          void card.offsetWidth;
           card.classList.remove('card--entering');
           card.classList.add('card--visible');
         }, 80 * i);
       });
 
-      // Ocultar botón si ya no hay más
       if (hiddenCards.length <= CONFIG.LOAD_MORE_STEP && loadMoreWrap) {
         loadMoreWrap.classList.add('hidden');
       }
 
-      // Actualizar contador después de la animación
       setTimeout(updateCountText, 80 * toShow.length + 50);
     });
   }
 
   /* ======================================================
-       9. SCROLL REVEAL (IntersectionObserver)
+       9. SCROLL REVEAL
        ====================================================== */
   function initReveal() {
     var reveals = document.querySelectorAll('.reveal');
@@ -523,7 +503,6 @@
 
     if (!navbar) return;
 
-    // Glassmorphism al hacer scroll
     window.addEventListener(
       'scroll',
       function () {
@@ -532,7 +511,6 @@
       { passive: true },
     );
 
-    // Sección activa
     var sectionObserver = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
@@ -551,7 +529,6 @@
       sectionObserver.observe(sec);
     });
 
-    // Smooth scroll
     navLinks.forEach(function (link) {
       link.addEventListener('click', function (e) {
         e.preventDefault();
@@ -563,7 +540,6 @@
       });
     });
 
-    // Menú hamburguesa
     function openMobileMenu() {
       menu.classList.add('open');
       toggle.classList.add('active');
@@ -638,17 +614,13 @@
        14. INICIALIZACIÓN
        ====================================================== */
   document.addEventListener('DOMContentLoaded', function () {
-    // 1. Detectar idioma del sistema
     currentLang = detectLanguage();
 
-    // 2. Generar título pixel art
     var pixelContainer = document.getElementById('pixelTitle');
     if (pixelContainer) createPixelTitle('Gustavox', pixelContainer);
 
-    // 3. Aplicar idioma detectado
     applyLanguage(currentLang);
 
-    // 4. Inicializar módulos
     setCurrentYear();
     initReveal();
     initNavbar();
